@@ -1,0 +1,928 @@
+[
+  {
+    "id": "strength.leg_press.single_leg_machine",
+    "familyId": "strength.leg_press",
+    "familyNameRu": "Жим ногами",
+    "aliasEn": "Single-leg machine leg press",
+    "discipline": "strength",
+    "pattern": "leg_press",
+    "resistanceMode": "machine_load",
+    "metric": "reps",
+    "equipmentRequirement": "leg_press_machine_single_leg_compatible",
+    "supportRequirement": "machine_integrated_seat_and_platform",
+    "spaceRequirement": "machine_operating_clearance",
+    "editorial": {
+      "displayNameRu": "Жим одной ногой",
+      "formalNameRu": "Жим одной ногой в совместимом тренажёре",
+      "aliases": [
+        "Жим одной ногой в совместимом тренажёре",
+        "Single-leg machine leg press",
+        "Одноногий жим ногами"
+      ],
+      "contexts": ["gym", "home"],
+      "directions": ["strength"],
+      "difficulty": "advanced",
+      "sideMode": "per_side",
+      "focusMode": "loading",
+      "cues": [
+        "Поставь рабочую стопу на платформу и сохраняй таз и спину на опоре.",
+        "Веди колено в направлении стопы, возвращая платформу плавно."
+      ],
+      "mistakes": [
+        "Разворот таза вслед за платформой.",
+        "Резкое выпрямление колена и потеря контроля на возврате."
+      ],
+      "optionalEquipment": "none",
+      "sourceRefs": ["https://www.nasm.org/resource-center/exercise-library/single-leg-press"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": ["strength.leg_press.machine"],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      },
+      "workoutRoles": ["main"],
+      "purposes": ["strength", "hypertrophy"],
+      "canonical": false,
+      "discoveryPriority": 50,
+      "priorityBasis": "editorial",
+      "searchKeywords": [
+        "передняя поверхность бедра",
+        "квадрицепс",
+        "ягодицы",
+        "задняя поверхность бедра",
+        "бицепс бедра",
+        "внутренняя поверхность бедра",
+        "пресс",
+        "кор",
+        "зал",
+        "тренажёрный зал",
+        "дом",
+        "дома",
+        "домашнее",
+        "силовые",
+        "сила",
+        "рост мышц"
+      ],
+      "execution": {
+        "addedLoad": "required",
+        "assistance": "none",
+        "countSemantics": "per_side_reps",
+        "repetitionUnit": "movement",
+        "assignmentGate": "standard_review"
+      },
+      "skillDemand": {
+        "kind": "none",
+        "requiresPriorSkill": false,
+        "rationale": "Односторонний жим платформы — unilateral-вариант обычного силового жима ногами с machine_load. Совместимость тренажёра, контроль таза и подбор нагрузки проверяются обычным method review; это не самостоятельный motor skill. Сохранить имеющийся advanced независимо от gate, убрать skill из ролей/целей и «навык» из searchKeywords. strength.technique_review не должен превращать его в skill-gated движение только ради покрытия advanced. Подробная страница NASM называет движение advanced; эту сложность сохраняем как отдельную редакционную характеристику, без переноса в gate."
+      }
+    },
+    "muscles": [
+      {
+        "group": "quads",
+        "role": "primary"
+      },
+      {
+        "group": "glutes",
+        "role": "secondary"
+      },
+      {
+        "group": "hamstrings",
+        "role": "secondary"
+      },
+      {
+        "group": "adductors",
+        "role": "secondary"
+      },
+      {
+        "group": "abs",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "id": "strength.knee_extension.single_leg_machine",
+    "familyId": "strength.knee_extension",
+    "familyNameRu": "Разгибание ног",
+    "aliasEn": "Single-leg seated machine leg extension",
+    "discipline": "strength",
+    "pattern": "knee_extension",
+    "resistanceMode": "machine_load",
+    "metric": "reps",
+    "equipmentRequirement": "leg_extension_machine_single_leg_compatible",
+    "supportRequirement": "machine_integrated_seat_and_pads",
+    "spaceRequirement": "machine_operating_clearance",
+    "editorial": {
+      "displayNameRu": "Разгибание одной ноги",
+      "formalNameRu": "Разгибание одной ноги сидя в совместимом тренажёре",
+      "aliases": [
+        "Разгибание одной ноги сидя в совместимом тренажёре",
+        "Single-leg seated machine leg extension",
+        "Одноногий leg extension"
+      ],
+      "contexts": ["gym", "home"],
+      "directions": ["strength"],
+      "difficulty": "intermediate",
+      "sideMode": "per_side",
+      "focusMode": "loading",
+      "cues": [
+        "Настрой сиденье и валик так, чтобы колено рабочей ноги совпадало с осью тренажёра.",
+        "Разгибай одну ногу и возвращай её без удара плит, удерживая таз на сиденье."
+      ],
+      "mistakes": [
+        "Подбрасывание веса корпусом.",
+        "Начало движения с неправильно настроенным валиком."
+      ],
+      "optionalEquipment": "none",
+      "sourceRefs": [
+        "https://www.acefitness.org/resources/everyone/exercise-library/body-part/legs/"
+      ],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": ["strength.knee_extension.machine"],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      },
+      "workoutRoles": ["accessory"],
+      "purposes": ["strength", "hypertrophy"],
+      "canonical": false,
+      "discoveryPriority": 64,
+      "priorityBasis": "editorial",
+      "searchKeywords": [
+        "передняя поверхность бедра",
+        "квадрицепс",
+        "зал",
+        "тренажёрный зал",
+        "дом",
+        "дома",
+        "домашнее",
+        "силовые",
+        "сила",
+        "рост мышц"
+      ],
+      "execution": {
+        "addedLoad": "required",
+        "assistance": "none",
+        "countSemantics": "per_side_reps",
+        "repetitionUnit": "movement",
+        "assignmentGate": "standard_review"
+      },
+      "skillDemand": {
+        "kind": "none",
+        "requiresPriorSkill": false,
+        "rationale": "Обычное силовое упражнение: нагрузка и техника оцениваются методистом. Сложность, одностороннее исполнение и снаряд сами по себе не требуют освоения отдельного двигательного навыка."
+      }
+    },
+    "muscles": [
+      {
+        "group": "quads",
+        "role": "primary"
+      }
+    ]
+  },
+  {
+    "id": "strength.knee_flexion.single_leg_seated_machine",
+    "familyId": "strength.knee_flexion",
+    "familyNameRu": "Сгибание ног",
+    "aliasEn": "Single-leg seated machine leg curl",
+    "discipline": "strength",
+    "pattern": "knee_flexion",
+    "resistanceMode": "machine_load",
+    "metric": "reps",
+    "equipmentRequirement": "seated_leg_curl_machine_single_leg_compatible",
+    "supportRequirement": "machine_integrated_seat_and_pads",
+    "spaceRequirement": "machine_operating_clearance",
+    "editorial": {
+      "displayNameRu": "Сгибание одной ноги",
+      "formalNameRu": "Сгибание одной ноги сидя в совместимом тренажёре",
+      "aliases": [
+        "Сгибание одной ноги сидя в совместимом тренажёре",
+        "Single-leg seated machine leg curl",
+        "Одноногий leg curl сидя"
+      ],
+      "contexts": ["gym", "home"],
+      "directions": ["strength"],
+      "difficulty": "intermediate",
+      "sideMode": "per_side",
+      "focusMode": "loading",
+      "cues": [
+        "Настрой ось и валики под рабочую ногу, удерживая бедро на сиденье.",
+        "Сгибай колено одной ноги и медленно возвращай валик."
+      ],
+      "mistakes": ["Подъём таза ради дополнительной амплитуды.", "Отпускание валика без контроля."],
+      "optionalEquipment": "none",
+      "sourceRefs": [
+        "https://www.nasm.org/resource-center/exercise-library/single-leg-seated-leg-curl"
+      ],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": ["strength.knee_flexion.seated_machine"],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      },
+      "workoutRoles": ["accessory"],
+      "purposes": ["strength", "hypertrophy"],
+      "canonical": false,
+      "discoveryPriority": 64,
+      "priorityBasis": "editorial",
+      "searchKeywords": [
+        "задняя поверхность бедра",
+        "бицепс бедра",
+        "икры",
+        "зал",
+        "тренажёрный зал",
+        "дом",
+        "дома",
+        "домашнее",
+        "силовые",
+        "сила",
+        "рост мышц"
+      ],
+      "execution": {
+        "addedLoad": "required",
+        "assistance": "none",
+        "countSemantics": "per_side_reps",
+        "repetitionUnit": "movement",
+        "assignmentGate": "standard_review"
+      },
+      "skillDemand": {
+        "kind": "none",
+        "requiresPriorSkill": false,
+        "rationale": "Обычное силовое упражнение: нагрузка и техника оцениваются методистом. Сложность, одностороннее исполнение и снаряд сами по себе не требуют освоения отдельного двигательного навыка."
+      }
+    },
+    "muscles": [
+      {
+        "group": "hamstrings",
+        "role": "primary"
+      },
+      {
+        "group": "calves",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "id": "strength.calf_raise.leg_press_machine",
+    "familyId": "strength.calf_raise",
+    "familyNameRu": "Подъём на носки",
+    "aliasEn": "Leg-press calf raise",
+    "discipline": "strength",
+    "pattern": "ankle_plantar_flexion",
+    "resistanceMode": "machine_load",
+    "metric": "reps",
+    "equipmentRequirement": "leg_press_machine_calf_raise_compatible",
+    "supportRequirement": "machine_integrated_seat_and_platform",
+    "spaceRequirement": "machine_operating_clearance",
+    "editorial": {
+      "displayNameRu": "Икры в жиме ногами",
+      "formalNameRu": "Подъём на носки на платформе совместимого тренажёра для жима ногами",
+      "aliases": [
+        "Подъём на носки на платформе совместимого тренажёра для жима ногами",
+        "Leg-press calf raise"
+      ],
+      "contexts": ["gym", "home"],
+      "directions": ["strength"],
+      "difficulty": "intermediate",
+      "sideMode": "bilateral",
+      "focusMode": "loading",
+      "cues": [
+        "Следуй настройке платформы для подъёма на носки, указанной производителем тренажёра.",
+        "Двигай платформу за счёт голеностопа, сохраняя таз на опоре и колени без рывков."
+      ],
+      "mistakes": [
+        "Соскальзывание стоп с края платформы.",
+        "Подталкивание платформы сгибанием и разгибанием коленей."
+      ],
+      "optionalEquipment": "none",
+      "sourceRefs": ["https://www.nasm.org/resource-center/exercise-library/leg-press-calf-raise"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [
+          "strength.calf_raise.seated_machine",
+          "strength.calf_raise.standing_dumbbell"
+        ],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      },
+      "workoutRoles": ["accessory"],
+      "purposes": ["strength", "hypertrophy"],
+      "canonical": false,
+      "discoveryPriority": 60,
+      "priorityBasis": "editorial",
+      "searchKeywords": [
+        "икры",
+        "зал",
+        "тренажёрный зал",
+        "дом",
+        "дома",
+        "домашнее",
+        "силовые",
+        "сила",
+        "рост мышц"
+      ],
+      "execution": {
+        "addedLoad": "required",
+        "assistance": "none",
+        "countSemantics": "total_reps",
+        "repetitionUnit": "movement",
+        "assignmentGate": "standard_review"
+      },
+      "skillDemand": {
+        "kind": "none",
+        "requiresPriorSkill": false,
+        "rationale": "Обычное силовое упражнение: нагрузка и техника оцениваются методистом. Сложность, одностороннее исполнение и снаряд сами по себе не требуют освоения отдельного двигательного навыка."
+      }
+    },
+    "muscles": [
+      {
+        "group": "calves",
+        "role": "primary"
+      }
+    ]
+  },
+  {
+    "id": "strength.horizontal_press.single_arm_cable_standing",
+    "familyId": "strength.horizontal_press",
+    "familyNameRu": "Жим от груди",
+    "aliasEn": "Standing single-arm cable chest press",
+    "discipline": "strength",
+    "pattern": "horizontal_push",
+    "resistanceMode": "machine_load",
+    "metric": "reps",
+    "equipmentRequirement": "cable_station_with_handle",
+    "supportRequirement": "none",
+    "spaceRequirement": "cable_operating_clearance",
+    "editorial": {
+      "displayNameRu": "Жим рукой в блоке",
+      "formalNameRu": "Жим от груди одной рукой стоя на регулируемом блоке",
+      "aliases": [
+        "Жим от груди одной рукой стоя на регулируемом блоке",
+        "Standing single-arm cable chest press",
+        "Одноручный жим в кроссовере"
+      ],
+      "contexts": ["gym", "home"],
+      "directions": ["strength"],
+      "difficulty": "intermediate",
+      "sideMode": "per_side",
+      "focusMode": "loading",
+      "cues": [
+        "Установи рукоять на высоте груди и встань устойчиво спиной к блоку.",
+        "Жми одной рукой вперёд, сохраняя плечи и таз направленными вперёд."
+      ],
+      "mistakes": [
+        "Сильный поворот корпуса вслед за рукой.",
+        "Рывок весом и отрыв стоп от устойчивой позиции."
+      ],
+      "optionalEquipment": "none",
+      "sourceRefs": [
+        "https://www.acefitness.org/resources/everyone/exercise-library/356/offset-single-arm-chest-press/",
+        "https://www.muscleandfitness.com/exercise/workouts/chest-exercises/single-arm-cable-chest-press/"
+      ],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [
+          "strength.horizontal_press.machine",
+          "strength.horizontal_press.dumbbell_bench"
+        ],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      },
+      "workoutRoles": ["main"],
+      "purposes": ["strength", "hypertrophy"],
+      "canonical": false,
+      "discoveryPriority": 60,
+      "priorityBasis": "editorial",
+      "searchKeywords": [
+        "грудь",
+        "грудные",
+        "трицепс",
+        "руки",
+        "плечи",
+        "пресс",
+        "кор",
+        "косые мышцы",
+        "зал",
+        "тренажёрный зал",
+        "дом",
+        "дома",
+        "домашнее",
+        "силовые",
+        "сила",
+        "рост мышц"
+      ],
+      "execution": {
+        "addedLoad": "required",
+        "assistance": "none",
+        "countSemantics": "per_side_reps",
+        "repetitionUnit": "movement",
+        "assignmentGate": "standard_review"
+      },
+      "skillDemand": {
+        "kind": "none",
+        "requiresPriorSkill": false,
+        "rationale": "Обычное силовое упражнение: нагрузка и техника оцениваются методистом. Сложность, одностороннее исполнение и снаряд сами по себе не требуют освоения отдельного двигательного навыка."
+      }
+    },
+    "muscles": [
+      {
+        "group": "chest",
+        "role": "primary"
+      },
+      {
+        "group": "triceps",
+        "role": "secondary"
+      },
+      {
+        "group": "shoulders",
+        "role": "secondary"
+      },
+      {
+        "group": "abs",
+        "role": "stabilizer"
+      },
+      {
+        "group": "obliques",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "id": "strength.overhead_press.single_arm_kettlebell",
+    "familyId": "strength.overhead_press",
+    "familyNameRu": "Жим над головой",
+    "aliasEn": "Standing single-arm kettlebell shoulder press",
+    "discipline": "strength",
+    "pattern": "vertical_push",
+    "resistanceMode": "external_load",
+    "metric": "reps",
+    "equipmentRequirement": "kettlebell:1",
+    "supportRequirement": "none",
+    "spaceRequirement": "standing_overhead_load_clear",
+    "editorial": {
+      "displayNameRu": "Жим гири",
+      "formalNameRu": "Жим одной гири над головой стоя",
+      "aliases": [
+        "Жим одной гири над головой стоя",
+        "Standing single-arm kettlebell shoulder press",
+        "Одноручный жим гири"
+      ],
+      "contexts": ["gym", "home", "outdoor"],
+      "directions": ["strength"],
+      "difficulty": "intermediate",
+      "sideMode": "per_side",
+      "focusMode": "loading",
+      "cues": [
+        "Удерживай гирю у плеча с ровной кистью и устойчивыми стопами.",
+        "Жми гирю вверх без наклона корпуса и верни её к плечу плавно."
+      ],
+      "mistakes": ["Залом кисти под гирей.", "Прогиб поясницы и уход корпуса в сторону."],
+      "optionalEquipment": "none",
+      "sourceRefs": ["https://www.acefitness.org/cp/pdfs/FitnessMatters/Jan10.pdf"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": ["strength.overhead_press.dumbbell_standing"],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      },
+      "workoutRoles": ["main"],
+      "purposes": ["strength", "hypertrophy"],
+      "canonical": false,
+      "discoveryPriority": 67,
+      "priorityBasis": "editorial",
+      "searchKeywords": [
+        "плечи",
+        "трицепс",
+        "руки",
+        "пресс",
+        "кор",
+        "косые мышцы",
+        "зал",
+        "тренажёрный зал",
+        "дом",
+        "дома",
+        "домашнее",
+        "улица",
+        "природа",
+        "на природе",
+        "силовые",
+        "сила",
+        "рост мышц"
+      ],
+      "execution": {
+        "addedLoad": "required",
+        "assistance": "none",
+        "countSemantics": "per_side_reps",
+        "repetitionUnit": "movement",
+        "assignmentGate": "standard_review"
+      },
+      "skillDemand": {
+        "kind": "none",
+        "requiresPriorSkill": false,
+        "rationale": "Обычное силовое упражнение: нагрузка и техника оцениваются методистом. Сложность, одностороннее исполнение и снаряд сами по себе не требуют освоения отдельного двигательного навыка."
+      }
+    },
+    "muscles": [
+      {
+        "group": "shoulders",
+        "role": "primary"
+      },
+      {
+        "group": "triceps",
+        "role": "secondary"
+      },
+      {
+        "group": "abs",
+        "role": "stabilizer"
+      },
+      {
+        "group": "obliques",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "id": "strength.triceps_extension.single_arm_cable",
+    "familyId": "strength.triceps_extension",
+    "familyNameRu": "Разгибание на трицепс",
+    "aliasEn": "Single-arm cable triceps pushdown",
+    "discipline": "strength",
+    "pattern": "elbow_extension",
+    "resistanceMode": "machine_load",
+    "metric": "reps",
+    "equipmentRequirement": "high_cable_station_with_handle",
+    "supportRequirement": "none",
+    "spaceRequirement": "cable_operating_clearance",
+    "editorial": {
+      "displayNameRu": "Трицепс рукой в блоке",
+      "formalNameRu": "Разгибание одной руки вниз с рукоятью верхнего блока",
+      "aliases": [
+        "Разгибание одной руки вниз с рукоятью верхнего блока",
+        "Single-arm cable triceps pushdown",
+        "Одноручное разгибание на блоке",
+        "Одноручный пушдаун"
+      ],
+      "contexts": ["gym", "home"],
+      "directions": ["strength"],
+      "difficulty": "intermediate",
+      "sideMode": "per_side",
+      "focusMode": "loading",
+      "cues": [
+        "Держи плечо рабочей руки рядом с корпусом и кисть на линии предплечья.",
+        "Разгибай только локоть и возвращай рукоять без раскачивания корпуса."
+      ],
+      "mistakes": ["Опускание рукояти всем плечом.", "Залом кисти и удар весовых плит."],
+      "optionalEquipment": "none",
+      "sourceRefs": [
+        "https://www.acefitness.org/resources/everyone/exercise-library/body-part/arms/triceps/"
+      ],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [
+          "strength.triceps_extension.cable_rope",
+          "strength.triceps_extension.dumbbell_kickback"
+        ],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      },
+      "workoutRoles": ["accessory"],
+      "purposes": ["strength", "hypertrophy"],
+      "canonical": false,
+      "discoveryPriority": 62,
+      "priorityBasis": "editorial",
+      "searchKeywords": [
+        "трицепс",
+        "руки",
+        "предплечья",
+        "хват",
+        "пресс",
+        "кор",
+        "зал",
+        "тренажёрный зал",
+        "дом",
+        "дома",
+        "домашнее",
+        "силовые",
+        "сила",
+        "рост мышц"
+      ],
+      "execution": {
+        "addedLoad": "required",
+        "assistance": "none",
+        "countSemantics": "per_side_reps",
+        "repetitionUnit": "movement",
+        "assignmentGate": "standard_review"
+      },
+      "skillDemand": {
+        "kind": "none",
+        "requiresPriorSkill": false,
+        "rationale": "Обычное силовое упражнение: нагрузка и техника оцениваются методистом. Сложность, одностороннее исполнение и снаряд сами по себе не требуют освоения отдельного двигательного навыка."
+      }
+    },
+    "muscles": [
+      {
+        "group": "triceps",
+        "role": "primary"
+      },
+      {
+        "group": "forearms",
+        "role": "stabilizer"
+      },
+      {
+        "group": "abs",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "id": "strength.biceps_curl.reverse_barbell",
+    "familyId": "strength.biceps_curl",
+    "familyNameRu": "Сгибание на бицепс",
+    "aliasEn": "Standing reverse-grip barbell curl",
+    "discipline": "strength",
+    "pattern": "elbow_flexion",
+    "resistanceMode": "external_load",
+    "metric": "reps",
+    "equipmentRequirement": "barbell_with_plates_and_collars",
+    "supportRequirement": "none",
+    "spaceRequirement": "barbell_clearance_non_slip",
+    "editorial": {
+      "displayNameRu": "Обратный подъём штанги",
+      "formalNameRu": "Сгибание рук со штангой стоя хватом сверху",
+      "aliases": [
+        "Сгибание рук со штангой стоя хватом сверху",
+        "Standing reverse-grip barbell curl",
+        "Обратное сгибание со штангой",
+        "Подъём обратным хватом"
+      ],
+      "contexts": ["gym", "home"],
+      "directions": ["strength"],
+      "difficulty": "intermediate",
+      "sideMode": "bilateral",
+      "focusMode": "loading",
+      "cues": [
+        "Возьми гриф хватом сверху и сохраняй кисти продолжением предплечий.",
+        "Сгибай локти рядом с корпусом и опускай штангу плавно."
+      ],
+      "mistakes": ["Раскачивание корпусом ради подъёма грифа.", "Залом кистей под нагрузкой."],
+      "optionalEquipment": "none",
+      "sourceRefs": [
+        "https://www.muscleandfitness.com/exercise/workouts/arm-exercises/reverse-grip-barbell-biceps-curl/",
+        "https://www.muscleandstrength.com/exercises/reverse-barbell-curl.html"
+      ],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": ["strength.biceps_curl.hammer_dumbbell", "strength.biceps_curl.barbell"],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      },
+      "workoutRoles": ["accessory"],
+      "purposes": ["strength", "hypertrophy"],
+      "canonical": false,
+      "discoveryPriority": 63,
+      "priorityBasis": "editorial",
+      "searchKeywords": [
+        "предплечья",
+        "хват",
+        "бицепс",
+        "руки",
+        "пресс",
+        "кор",
+        "зал",
+        "тренажёрный зал",
+        "дом",
+        "дома",
+        "домашнее",
+        "силовые",
+        "сила",
+        "рост мышц"
+      ],
+      "execution": {
+        "addedLoad": "required",
+        "assistance": "none",
+        "countSemantics": "total_reps",
+        "repetitionUnit": "movement",
+        "assignmentGate": "standard_review"
+      },
+      "skillDemand": {
+        "kind": "none",
+        "requiresPriorSkill": false,
+        "rationale": "Обычное силовое упражнение: нагрузка и техника оцениваются методистом. Сложность, одностороннее исполнение и снаряд сами по себе не требуют освоения отдельного двигательного навыка."
+      }
+    },
+    "muscles": [
+      {
+        "group": "forearms",
+        "role": "primary"
+      },
+      {
+        "group": "biceps",
+        "role": "secondary"
+      },
+      {
+        "group": "abs",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "id": "strength.wrist_curl.seated_dumbbell",
+    "familyId": "strength.wrist_curl",
+    "familyNameRu": "Сгибание кисти",
+    "aliasEn": "Seated dumbbell wrist flexion",
+    "discipline": "strength",
+    "pattern": "wrist_flexion",
+    "resistanceMode": "external_load",
+    "metric": "reps",
+    "equipmentRequirement": "dumbbell:1",
+    "supportRequirement": "stable_flat_bench",
+    "spaceRequirement": "bench_and_load_clear",
+    "editorial": {
+      "displayNameRu": "Сгибание кисти",
+      "formalNameRu": "Сгибание кисти с гантелью сидя, предплечье на бедре",
+      "aliases": [
+        "Сгибание кисти с гантелью сидя, предплечье на бедре",
+        "Seated dumbbell wrist flexion",
+        "Сгибание запястья с гантелью",
+        "Wrist curl"
+      ],
+      "contexts": ["gym", "home", "outdoor"],
+      "directions": ["strength"],
+      "difficulty": "beginner",
+      "sideMode": "per_side",
+      "focusMode": "loading",
+      "cues": [
+        "Сядь на устойчивую скамью и положи предплечье на бедро ладонью вверх; кисть оставь свободной.",
+        "Сгибай только кисть, удерживая предплечье на опоре, затем плавно верни гантель."
+      ],
+      "mistakes": [
+        "Подъём всего предплечья вместо движения кисти.",
+        "Выпускание гантели из пальцев без контроля."
+      ],
+      "optionalEquipment": "none",
+      "sourceRefs": [
+        "https://www.acefitness.org/resources/everyone/exercise-library/equipment/dumbbells/?page=4",
+        "https://www.acefitness.org/resources/everyone/exercise-library/30/wrist-curl-flexion/"
+      ],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      },
+      "workoutRoles": ["accessory"],
+      "purposes": ["strength", "hypertrophy"],
+      "canonical": false,
+      "discoveryPriority": 57,
+      "priorityBasis": "editorial",
+      "searchKeywords": [
+        "предплечья",
+        "хват",
+        "зал",
+        "тренажёрный зал",
+        "дом",
+        "дома",
+        "домашнее",
+        "улица",
+        "природа",
+        "на природе",
+        "силовые",
+        "сила",
+        "рост мышц"
+      ],
+      "execution": {
+        "addedLoad": "required",
+        "assistance": "none",
+        "countSemantics": "per_side_reps",
+        "repetitionUnit": "movement",
+        "assignmentGate": "standard_review"
+      },
+      "skillDemand": {
+        "kind": "none",
+        "requiresPriorSkill": false,
+        "rationale": "Обычное силовое упражнение: нагрузка и техника оцениваются методистом. Сложность, одностороннее исполнение и снаряд сами по себе не требуют освоения отдельного двигательного навыка."
+      }
+    },
+    "muscles": [
+      {
+        "group": "forearms",
+        "role": "primary"
+      }
+    ]
+  },
+  {
+    "id": "strength.suitcase_carry.single_dumbbell",
+    "familyId": "strength.suitcase_carry",
+    "familyNameRu": "Переноска с одной стороны",
+    "aliasEn": "Single-dumbbell suitcase carry",
+    "discipline": "strength",
+    "pattern": "loaded_carry",
+    "resistanceMode": "external_load",
+    "metric": "time",
+    "equipmentRequirement": "dumbbell:1",
+    "supportRequirement": "none",
+    "spaceRequirement": "walking_path_clear_non_slip",
+    "editorial": {
+      "displayNameRu": "Переноска одной гантели",
+      "formalNameRu": "Ходьба с одной гантелью в опущенной руке сбоку",
+      "aliases": [
+        "Ходьба с одной гантелью в опущенной руке сбоку",
+        "Single-dumbbell suitcase carry",
+        "Ходьба с гантелью в одной руке",
+        "Чемоданная переноска",
+        "Suitcase walk"
+      ],
+      "contexts": ["gym", "home", "outdoor"],
+      "directions": ["strength"],
+      "difficulty": "beginner",
+      "sideMode": "per_side",
+      "focusMode": "loading",
+      "cues": [
+        "Держи гантель в одной опущенной руке и начни ходьбу по свободной нескользкой дорожке.",
+        "Сохраняй плечи на одном уровне, не наклоняясь к грузу; отмеряй время отдельно для каждой стороны."
+      ],
+      "mistakes": [
+        "Боковой наклон корпуса или подъём плеча к уху.",
+        "Раскачивание гантели и слишком широкие шаги."
+      ],
+      "optionalEquipment": "none",
+      "sourceRefs": [
+        "https://www.acefitness.org/continuing-education/certified/october-2022/8147/kettlebells-kick-butt-in-more-ways-than-one/"
+      ],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": ["strength.farmer_carry.dumbbell"],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      },
+      "workoutRoles": ["accessory"],
+      "purposes": ["strength", "endurance"],
+      "canonical": false,
+      "discoveryPriority": 64,
+      "priorityBasis": "editorial",
+      "searchKeywords": [
+        "косые мышцы",
+        "кор",
+        "предплечья",
+        "хват",
+        "пресс",
+        "плечи",
+        "ягодицы",
+        "зал",
+        "тренажёрный зал",
+        "дом",
+        "дома",
+        "домашнее",
+        "улица",
+        "природа",
+        "на природе",
+        "силовые",
+        "сила",
+        "выносливость"
+      ],
+      "execution": {
+        "addedLoad": "required",
+        "assistance": "none",
+        "countSemantics": "per_side_seconds",
+        "repetitionUnit": "not_applicable",
+        "assignmentGate": "standard_review"
+      },
+      "skillDemand": {
+        "kind": "none",
+        "requiresPriorSkill": false,
+        "rationale": "Обычное силовое упражнение: нагрузка и техника оцениваются методистом. Сложность, одностороннее исполнение и снаряд сами по себе не требуют освоения отдельного двигательного навыка."
+      }
+    },
+    "muscles": [
+      {
+        "group": "obliques",
+        "role": "primary"
+      },
+      {
+        "group": "forearms",
+        "role": "primary"
+      },
+      {
+        "group": "abs",
+        "role": "stabilizer"
+      },
+      {
+        "group": "shoulders",
+        "role": "stabilizer"
+      },
+      {
+        "group": "glutes",
+        "role": "stabilizer"
+      }
+    ]
+  }
+]

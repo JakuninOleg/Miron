@@ -1,0 +1,528 @@
+.screen {
+  --accent: #ff765e;
+  --text: #f7f6f3;
+  --muted: #b8c0c4;
+  height: 100svh;
+  height: 100dvh;
+  padding-block: env(safe-area-inset-top, 0px) env(safe-area-inset-bottom, 0px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  color: var(--text);
+  background: #080e0f;
+  font-family: Manrope, sans-serif;
+  overflow: clip;
+  transition:
+    background-color 420ms ease,
+    color 300ms ease;
+}
+.screen[data-persona="lika"] {
+  --accent: #ef73a7;
+  --text: #30232d;
+  --muted: #765f6d;
+  background: #fff9fb;
+}
+.scene {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 28fr) minmax(0, 72fr);
+  grid-template-rows: minmax(0, 1fr) auto;
+  column-gap: clamp(24px, 3vw, 64px);
+  padding: clamp(20px, 3dvh, 44px) 4.5%;
+  animation: enter 340ms cubic-bezier(0.22, 0.7, 0.2, 1) both;
+}
+.screen[data-direction="back"] .scene {
+  animation-name: enterBack;
+}
+.intro {
+  align-self: center;
+  min-width: 0;
+}
+.eyebrow {
+  margin: 0 0 clamp(12px, 2dvh, 24px);
+  font-size: clamp(11px, 0.9vw, 15px);
+  letter-spacing: 0.12em;
+}
+.title {
+  margin: 0;
+  font:
+    900 clamp(50px, min(5.7vw, 11dvh), 112px)/1.02 "Roboto Condensed",
+    sans-serif;
+  letter-spacing: -0.035em;
+  outline: none;
+}
+.title span {
+  display: block;
+}
+.description {
+  max-width: 27ch;
+  margin: clamp(20px, 3.5dvh, 40px) 0 0;
+  color: var(--muted);
+  font-size: clamp(14px, 1.1vw, 20px);
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+.description span {
+  display: block;
+}
+.description .descriptionShort,
+.mobileCopy {
+  display: none;
+}
+.handNote {
+  color: var(--accent);
+  margin: clamp(24px, 5dvh, 72px) 0 clamp(20px, 4dvh, 50px) 8px;
+  font:
+    400 clamp(25px, 2.7vw, 48px)/1.1 Neucha,
+    cursive;
+  transform: rotate(-7deg);
+}
+.handNote svg {
+  width: 0.9em;
+  height: 0.9em;
+  display: inline-block;
+  vertical-align: middle;
+  stroke-width: 1.5;
+  margin-left: 0.15em;
+}
+.choices {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(14px, 1.6vw, 32px);
+  min-width: 0;
+  min-height: 0;
+}
+.card {
+  --coach-color: #ff765e;
+  position: relative;
+  isolation: isolate;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0;
+  border: 1px solid #73818566;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #101719;
+  color: #f7f6f3;
+  text-align: left;
+  transition:
+    border-color 180ms ease,
+    transform 140ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.card[data-coach="lika"] {
+  --coach-color: #ed729d;
+}
+.portrait {
+  object-fit: cover;
+  object-position: center top;
+  transition: transform 380ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.cardShade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, #080e0f 0%, #080e0feb 17%, #080e0f70 34%, transparent 55%);
+}
+.cardCopy {
+  position: absolute;
+  left: 7%;
+  right: 7%;
+  bottom: 4%;
+  display: grid;
+}
+.coachName {
+  position: relative;
+  justify-self: start;
+  color: var(--coach-color);
+  font:
+    900 clamp(46px, min(6.3vw, 10dvh), 130px)/1 "Roboto Condensed",
+    sans-serif;
+  letter-spacing: -0.035em;
+}
+.coachName::after {
+  content: "";
+  position: absolute;
+  bottom: -0.03em;
+  left: 0;
+  right: -3%;
+  height: 0.035em;
+  border-radius: 65% 35% 55% 20%;
+  background: currentColor;
+  transform: rotate(-2deg) scaleX(0);
+  transform-origin: left;
+  transition: transform 320ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.character {
+  margin-top: clamp(10px, 1.2dvh, 16px);
+  font-size: clamp(13px, 1.05vw, 19px);
+  font-weight: 700;
+  line-height: 1.4;
+}
+.detail {
+  margin-top: 4px;
+  color: #bec7ca;
+  font-size: clamp(12px, 0.95vw, 17px);
+  line-height: 1.5;
+}
+.quote {
+  margin-top: clamp(14px, 2dvh, 30px);
+  color: var(--coach-color);
+  font:
+    400 clamp(23px, 2vw, 38px)/1.15 Neucha,
+    cursive;
+}
+.selectionFrame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  fill: none;
+  stroke: var(--coach-color);
+  stroke-width: 3px;
+  opacity: 0;
+  clip-path: inset(0 100% 100% 0);
+  transition:
+    opacity 180ms ease,
+    clip-path 420ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.card[aria-pressed="true"] {
+  border-color: var(--coach-color);
+}
+.card[aria-pressed="true"] .selectionFrame {
+  opacity: 1;
+  clip-path: inset(0);
+}
+.card[aria-pressed="true"] .coachName::after {
+  transform: rotate(-2deg) scaleX(1);
+}
+.card:active,
+.next:active {
+  transform: scale(0.985);
+}
+@media (hover: hover) {
+  .card:hover .portrait {
+    transform: scale(1.025);
+  }
+  .card:hover {
+    border-color: var(--coach-color);
+  }
+  .next:not(:disabled):hover {
+    filter: brightness(1.06);
+  }
+}
+.actions {
+  grid-column: 1;
+  grid-row: 2;
+  min-width: 0;
+}
+.choiceHint {
+  min-height: 2.8em;
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: clamp(11px, 0.9vw, 15px);
+  line-height: 1.4;
+}
+.next {
+  min-height: 48px;
+  height: clamp(48px, 6.7dvh, 78px);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(12px, 1.6vw, 30px);
+  padding: 0 10px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--accent);
+  color: #101719;
+  font-size: clamp(14px, 1.3vw, 22px);
+  font-weight: 800;
+  transition:
+    background-color 350ms ease,
+    opacity 180ms ease,
+    transform 140ms ease,
+    filter 140ms ease;
+}
+.next svg {
+  width: 1.6em;
+  height: 1.6em;
+  stroke-width: 1.6;
+}
+.next:disabled {
+  opacity: 0.42;
+  cursor: default;
+}
+.actionFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: clamp(16px, 3dvh, 36px);
+  gap: 12px;
+}
+.back {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 2px;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: clamp(13px, 1.05vw, 18px);
+}
+.back svg {
+  width: 24px;
+  height: 24px;
+}
+.tagline {
+  display: none;
+  color: var(--muted);
+  font:
+    400 12px/1.25 Neucha,
+    cursive;
+}
+.card:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 4px;
+}
+.next:focus-visible,
+.back:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 4px;
+}
+@media (max-aspect-ratio: 1/1) {
+  .scene {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    gap: clamp(14px, 2dvh, 28px);
+    padding: clamp(14px, 2dvh, 28px) 6% clamp(10px, 1.5dvh, 20px);
+  }
+  .intro {
+    align-self: start;
+  }
+  .eyebrow {
+    font-size: clamp(9px, 2.4vw, 14px);
+    margin-bottom: 8px;
+  }
+  .title {
+    font-size: clamp(32px, 10.6vw, 68px);
+  }
+  .title span {
+    display: inline;
+  }
+  .description {
+    max-width: none;
+    margin-top: 10px;
+    font-size: clamp(12px, 3.1vw, 19px);
+    line-height: 1.45;
+  }
+  .description .descriptionFull,
+  .desktopCopy {
+    display: none;
+  }
+  .description .descriptionShort {
+    display: block;
+  }
+  .mobileCopy {
+    display: inline;
+  }
+  .handNote {
+    display: none;
+  }
+  .choices {
+    grid-column: 1;
+    grid-row: 2;
+    gap: clamp(10px, 2.8vw, 24px);
+  }
+  .cardCopy {
+    left: 7%;
+    right: 7%;
+    bottom: 5%;
+  }
+  .selectionFrame {
+    border: 2px solid var(--coach-color);
+    border-radius: inherit;
+    stroke: none;
+  }
+  .coachName {
+    font-size: clamp(42px, 16vw, 100px);
+  }
+  .character {
+    margin-top: 8px;
+    font-size: clamp(11px, 3vw, 22px);
+    min-height: 1.4em;
+    line-height: 1.4;
+  }
+  .detail {
+    display: none;
+  }
+  .quote {
+    font-size: clamp(18px, 5.5vw, 34px);
+    margin-top: 10px;
+    min-height: 1.15em;
+  }
+  .actions {
+    grid-column: 1;
+    grid-row: 3;
+  }
+  .choiceHint {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    min-height: 0;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .next {
+    font-size: clamp(14px, 4vw, 22px);
+  }
+  .actionFooter {
+    margin-top: 8px;
+  }
+  .tagline {
+    display: block;
+    font-size: clamp(14px, 4vw, 22px);
+  }
+}
+@media (max-aspect-ratio: 1/1) and (max-width: 599px) {
+  .choices {
+    margin-inline: -3vw;
+  }
+}
+@media (max-aspect-ratio: 1/1) and (min-width: 600px) {
+  .scene {
+    padding-inline: 10%;
+  }
+  .description {
+    max-width: 55ch;
+  }
+}
+@media (max-aspect-ratio: 1/1) and (max-height: 700px) {
+  .scene {
+    gap: 12px;
+    padding-top: 10px;
+  }
+  .eyebrow {
+    font-size: 9px;
+    margin-bottom: 6px;
+  }
+  .title {
+    font-size: clamp(31px, 10.6vw, 40px);
+  }
+  .description {
+    margin-top: 8px;
+    font-size: 11px;
+  }
+  .coachName {
+    font-size: clamp(42px, 16vw, 60px);
+  }
+  .character {
+    font-size: 11px;
+    margin-top: 7px;
+  }
+  .quote {
+    font-size: 18px;
+    margin-top: 8px;
+  }
+  .next {
+    height: 46px;
+    min-height: 46px;
+  }
+  .actionFooter {
+    margin-top: 4px;
+  }
+  .tagline {
+    font-size: 13px;
+  }
+}
+@media (min-aspect-ratio: 1/1) and (max-height: 650px) {
+  .scene {
+    padding-block: 12px;
+    column-gap: 18px;
+    grid-template-columns: minmax(0, 38fr) minmax(0, 62fr);
+  }
+  .eyebrow {
+    font-size: 9px;
+    margin-bottom: 8px;
+  }
+  .title {
+    font-size: clamp(28px, 7.8dvh, 50px);
+  }
+  .description {
+    font-size: 11px;
+    margin-top: 12px;
+    line-height: 1.4;
+  }
+  .handNote,
+  .quote,
+  .detail,
+  .tagline {
+    display: none;
+  }
+  .choiceHint {
+    font-size: 10px;
+    margin-bottom: 6px;
+  }
+  .next {
+    height: 44px;
+    min-height: 44px;
+    font-size: 12px;
+    gap: 8px;
+  }
+  .actionFooter {
+    margin-top: 4px;
+  }
+  .back {
+    font-size: 12px;
+  }
+  .coachName {
+    font-size: clamp(27px, 8dvh, 44px);
+  }
+  .character {
+    margin-top: 6px;
+    font-size: 10px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .screen,
+  .scene,
+  .card,
+  .portrait,
+  .selectionFrame,
+  .selectionFrame rect,
+  .coachName::after,
+  .next {
+    animation: none;
+    transition: none;
+  }
+  .card:active,
+  .next:active,
+  .card:hover .portrait {
+    transform: none;
+  }
+}
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes enterBack {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

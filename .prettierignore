@@ -1,0 +1,11 @@
+node_modules
+.next
+.local
+.tmp
+test-results
+playwright-report
+package-lock.json
+assets
+concepts
+public
+drizzle/meta

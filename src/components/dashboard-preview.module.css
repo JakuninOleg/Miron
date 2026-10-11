@@ -1,0 +1,1787 @@
+.shell {
+  --dash-bg: #0b1213;
+  --dash-surface: #121c1e;
+  --dash-raised: #1b272a;
+  --dash-text: #f7f6f2;
+  --dash-muted: #aebbc1;
+  --dash-line: #2d3b3f;
+  --dash-accent: #ff7b60;
+  --dash-accent-text: #ff967b;
+  --dash-button: #ff7b60;
+  --dash-button-text: #171315;
+  --dash-tint: #ff7b6016;
+  --dash-track: #2b373b;
+  --dash-art-sun: #3a4546;
+  --dash-art-mountain: #243337;
+  --dash-art-line: #3e5056;
+  --dash-art-path: #829198;
+  --dash-gym: url("/dashboard-preview/max-chat-gym-v1.webp");
+  min-height: 100dvh;
+  background: var(--dash-bg);
+  color: var(--dash-text);
+  font-family: var(--body);
+  font-size: 15px;
+  color-scheme: dark;
+  transition:
+    background-color 280ms ease,
+    color 280ms ease;
+}
+
+.shell[data-theme="rose"] {
+  --dash-bg: #faf8f6;
+  --dash-surface: #ffffff;
+  --dash-raised: #f6f2f4;
+  --dash-text: #24272c;
+  --dash-muted: #626773;
+  --dash-line: #e8e3e5;
+  --dash-accent: #cf3974;
+  --dash-accent-text: #b82863;
+  --dash-button: #f7b5cd;
+  --dash-button-text: #2e1c25;
+  --dash-tint: #f8edf2;
+  --dash-track: #ece9ed;
+  --dash-art-sun: #f8e2ec;
+  --dash-art-mountain: #f2ecf0;
+  --dash-art-line: #c4b9c2;
+  --dash-art-path: #8d7e89;
+  --dash-gym: url("/dashboard-preview/lika-chat-gym-v1.webp");
+  color-scheme: light;
+}
+
+.shell button {
+  border: 0;
+  background: none;
+  color: inherit;
+}
+.shell button:disabled {
+  opacity: 0.45;
+}
+.shell button,
+.shell textarea {
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease,
+    color 200ms ease,
+    transform 160ms ease-out;
+}
+.shell button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+.shell button:focus-visible,
+.shell textarea:focus-visible,
+.shell a:focus-visible {
+  outline: 2px solid var(--dash-accent);
+  outline-offset: 4px;
+}
+.shell svg {
+  stroke-width: 1.7;
+}
+.shell h2 {
+  font: 600 27px/1.2 var(--display);
+  letter-spacing: -0.35px;
+}
+.shell h3 {
+  font: 700 16px/1.4 var(--body);
+}
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.skipLink {
+  position: fixed;
+  left: 24px;
+  top: 12px;
+  z-index: 50;
+  padding: 12px 20px;
+  background: var(--dash-surface);
+  border: 2px solid var(--dash-accent);
+  border-radius: 12px;
+  transform: translateY(-180%);
+}
+.skipLink:focus {
+  transform: translateY(0);
+}
+.loading {
+  display: grid;
+  place-items: center;
+  min-height: 100dvh;
+  background: #0b1213;
+  color: #f7f6f2;
+}
+
+.sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: 220px;
+  padding: 32px 16px 30px;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--dash-line);
+  background: var(--dash-bg);
+  z-index: 3;
+  transition:
+    background-color 280ms ease,
+    border-color 280ms ease;
+}
+.brandButton {
+  align-self: flex-start;
+  padding: 0 13px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+.wordmark {
+  width: 160px;
+  height: auto;
+  display: block;
+  filter: invert(1);
+  mix-blend-mode: screen;
+}
+.shell[data-theme="rose"] .wordmark {
+  filter: none;
+  mix-blend-mode: multiply;
+}
+.desktopNavigation {
+  display: grid;
+  gap: 9px;
+  margin-top: 38px;
+}
+.desktopNavigation button,
+.profileLink {
+  display: flex;
+  align-items: center;
+  gap: 17px;
+  padding: 15px 17px;
+  min-height: 54px;
+  border-radius: 12px;
+  text-align: left;
+  font-size: 15px;
+}
+.desktopNavigation button[data-active="true"] {
+  background: var(--dash-tint);
+  color: var(--dash-accent-text);
+  font-weight: 700;
+}
+.sidebarBottom {
+  margin-top: auto;
+}
+.profileLink {
+  width: 100%;
+  border-top: 1px solid var(--dash-line) !important;
+  border-radius: 0;
+  padding-top: 24px;
+}
+.sidebarMotto {
+  padding: 44px 23px 6px;
+  color: var(--dash-muted);
+  font:
+    24px/1.1 Neucha,
+    cursive;
+  transform: rotate(-6deg);
+}
+.sidebarMotto span {
+  display: block;
+  width: 98px;
+  height: 3px;
+  margin-top: 10px;
+  background: var(--dash-accent);
+  clip-path: polygon(0 40%, 100% 0, 90% 85%, 3% 100%);
+}
+
+.main {
+  margin-left: 220px;
+  padding: 24px 28px 18px;
+  max-width: 1900px;
+}
+.topbar {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  min-height: 59px;
+  margin-bottom: 9px;
+}
+.greeting {
+  display: flex;
+  align-items: baseline;
+  gap: 30px;
+  flex: 1;
+  min-width: 0;
+}
+.greeting h1 {
+  font: 700 clamp(29px, 2.8vw, 42px)/1.2 var(--body);
+  letter-spacing: -1.5px;
+}
+.greeting h1 span {
+  position: relative;
+  display: inline-block;
+}
+.greeting h1 span::after {
+  content: "";
+  position: absolute;
+  width: 115px;
+  height: 4px;
+  background: var(--dash-accent);
+  left: 35px;
+  bottom: -8px;
+  clip-path: polygon(0 55%, 90% 0, 100% 45%, 85% 65%, 97% 100%, 4% 95%);
+  transform: rotate(-3deg);
+}
+.greeting p {
+  color: var(--dash-muted);
+  font-size: 16px;
+}
+.profileButton {
+  width: 45px;
+  height: 45px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--dash-line) !important;
+  border-radius: 50%;
+  background: var(--dash-raised) !important;
+}
+.mobileBrand {
+  display: none;
+}
+.previewLabel {
+  margin: 16px 0 16px;
+  color: var(--dash-muted);
+  font-size: 11px;
+  letter-spacing: 0.3px;
+}
+.dashboardGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(365px, 1fr);
+  gap: 18px;
+}
+.card {
+  min-width: 0;
+  border: 1px solid var(--dash-line);
+  border-radius: 16px;
+  background: var(--dash-surface);
+  transition:
+    background-color 280ms ease,
+    border-color 280ms ease;
+}
+.shell[data-theme="rose"] .card {
+  box-shadow: 0 4px 22px #3c202904;
+}
+.supportingCards {
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  gap: 16px;
+}
+.sectionHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.textAction {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  color: var(--dash-accent-text) !important;
+  min-height: 44px;
+  font-size: 12px;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.chatCard {
+  position: relative;
+  min-height: max(680px, calc(100dvh - 177px));
+  display: flex;
+  flex-direction: column;
+  padding: 25px 26px 16px;
+  overflow: clip;
+  isolation: isolate;
+}
+.coachHeader {
+  display: flex;
+  align-items: center;
+  gap: 19px;
+}
+.coachAvatar {
+  position: relative;
+  display: block;
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid var(--dash-line);
+  flex: none;
+  background: var(--dash-tint);
+}
+.coachAvatar img {
+  position: absolute;
+  width: 240%;
+  max-width: none;
+  height: auto;
+  left: -80%;
+  top: -35%;
+}
+.coachAvatar[data-companion="lika"] img {
+  left: -80%;
+  top: -26%;
+}
+.coachHeader h2 {
+  font: 700 25px/1.3 var(--body);
+}
+.coachHeader p {
+  margin-top: 4px;
+  color: var(--dash-muted);
+}
+.chatScribble {
+  margin-left: auto;
+  max-width: 116px;
+  color: var(--dash-accent-text);
+  font:
+    20px/1.15 Neucha,
+    cursive;
+  transform: rotate(-8deg);
+  opacity: 0.8;
+}
+.conversation {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  position: relative;
+  padding-top: 26px;
+  min-height: 0;
+}
+.welcomeMessage {
+  position: relative;
+  max-width: 500px;
+  padding: 17px 22px;
+  margin-bottom: 24px;
+  background: var(--dash-raised);
+  border: 1px solid var(--dash-line);
+  border-radius: 20px 20px 20px 4px;
+}
+.welcomeMessage h3 {
+  font-size: 23px;
+  margin-bottom: 6px;
+  letter-spacing: -0.4px;
+}
+.welcomeMessage p {
+  font-size: 16px;
+  line-height: 1.55;
+}
+.intentActions {
+  position: relative;
+  z-index: 1;
+  max-width: 520px;
+}
+.primaryAction {
+  display: flex;
+  justify-content: center;
+  gap: 13px;
+  align-items: center;
+  min-height: 57px;
+  border-radius: 14px;
+  background: var(--dash-button) !important;
+  color: var(--dash-button-text) !important;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 14px 18px;
+  width: 100%;
+}
+.primaryAction > svg:last-child {
+  margin-left: auto;
+}
+.primaryAction > svg:first-child {
+  margin-right: 5px;
+}
+.secondaryActions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 12px;
+}
+.secondaryActions button,
+.secondaryActions a {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 13px 14px;
+  border: 1px solid var(--dash-line) !important;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 600;
+  min-height: 52px;
+}
+.secondaryActions button > svg:last-child,
+.secondaryActions a > svg:last-child {
+  margin-left: auto;
+  width: 15px;
+}
+.intentHint {
+  margin: 13px 2px 0;
+  color: var(--dash-muted);
+  font-size: 13px;
+}
+.chatAtmosphere {
+  position: absolute;
+  z-index: -1;
+  inset: 30% -26px -16px;
+  background-image: var(--dash-gym);
+  background-size: cover;
+  background-position: center bottom;
+  opacity: 0.52;
+  mask-image: linear-gradient(transparent, #000 42%);
+  pointer-events: none;
+}
+.shell[data-theme="rose"] .chatAtmosphere {
+  opacity: 0.7;
+}
+.composerDock {
+  margin-top: auto;
+  padding-top: 70px;
+  position: relative;
+  z-index: 1;
+}
+.composer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--dash-surface);
+  border: 1px solid var(--dash-line);
+  border-radius: 30px;
+  padding: 8px;
+}
+.composer textarea {
+  resize: none;
+  flex: 1;
+  min-width: 0;
+  min-height: 42px;
+  max-height: 120px;
+  field-sizing: content;
+  background: transparent;
+  color: var(--dash-text);
+  border: 0;
+  padding: 10px 3px;
+  border-radius: 8px;
+  outline-offset: 0;
+  font-size: 15px;
+  line-height: 1.5;
+}
+.composer textarea::placeholder {
+  color: var(--dash-muted);
+  opacity: 1;
+}
+.micButton,
+.sendButton {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  flex: none;
+}
+.micButton {
+  background: var(--dash-raised) !important;
+}
+.sendButton {
+  background: var(--dash-button) !important;
+  color: var(--dash-button-text) !important;
+}
+.chatNotice {
+  margin: 0 6px 12px;
+  padding: 12px;
+  background: var(--dash-surface);
+  border: 1px solid var(--dash-line);
+  border-radius: 12px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.calendarCard {
+  padding: 18px 20px 20px;
+}
+.week {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 7px;
+  margin: 16px 0 18px;
+}
+.week button {
+  display: grid;
+  gap: 5px;
+  padding: 9px 1px 8px;
+  border: 1px solid transparent !important;
+  border-radius: 13px;
+  min-height: 66px;
+}
+.week button span {
+  font-size: 12px;
+  color: var(--dash-muted);
+}
+.week button strong {
+  font-size: 19px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.week button[aria-pressed="true"] {
+  border-color: var(--dash-accent) !important;
+  background: var(--dash-tint);
+}
+.calendarEmpty {
+  display: flex;
+  align-items: center;
+  gap: 17px;
+  min-height: 104px;
+  padding: 18px;
+  background: var(--dash-raised);
+  border-radius: 12px;
+}
+.calendarEmpty > svg {
+  color: var(--dash-muted);
+  width: 37px;
+  height: 37px;
+}
+.calendarEmpty h3 {
+  margin-bottom: 6px;
+}
+.calendarEmpty p {
+  color: var(--dash-muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+.pathCard {
+  padding: 20px;
+}
+.levelRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: relative;
+  margin-top: 14px;
+  min-height: 69px;
+}
+.levelCircle {
+  display: grid;
+  place-items: center;
+  font: 600 26px/1 var(--body);
+  width: 64px;
+  height: 64px;
+  border: 4px solid var(--dash-track);
+  border-radius: 50%;
+  flex: none;
+}
+.levelDetails {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 4px;
+}
+.levelDetails > span {
+  color: var(--dash-muted);
+  font-size: 12px;
+}
+.levelDetails strong {
+  font-size: 15px;
+  font-weight: 600;
+}
+.levelDetails strong span {
+  color: var(--dash-muted);
+  font-weight: 400;
+}
+.journeyArt {
+  display: block;
+  width: 165px;
+  max-width: 43%;
+  height: auto;
+  margin-left: auto;
+}
+.xpTrack {
+  height: 7px;
+  border-radius: 7px;
+  background: var(--dash-track);
+  margin: 8px 0 16px;
+}
+.chapter {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  background: var(--dash-raised) !important;
+  border-radius: 12px;
+  padding: 14px;
+  width: 100%;
+  text-align: left;
+}
+.chapter > svg:first-child {
+  color: var(--dash-muted);
+}
+.chapter > svg:last-child {
+  margin-left: auto;
+}
+.chapter span {
+  display: grid;
+  gap: 4px;
+}
+.chapter strong {
+  font-size: 15px;
+  font-weight: 700;
+}
+.chapter small {
+  color: var(--dash-muted);
+  font-size: 12px;
+}
+.achievementsCard {
+  padding: 16px 20px 19px;
+}
+.achievements {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+.achievement {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  padding: 0;
+  min-width: 0;
+}
+.achievementIcon {
+  display: grid;
+  place-items: center;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 2px solid var(--dash-track);
+  background: var(--dash-raised);
+  color: var(--dash-muted);
+  flex: none;
+}
+.achievementIcon svg {
+  width: 34px;
+  height: 34px;
+  stroke-width: 1.5;
+}
+.achievement strong {
+  font-size: 12px;
+  line-height: 1.4;
+  font-weight: 600;
+  margin-top: 5px;
+}
+.achievement small {
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--dash-muted);
+  max-width: 135px;
+}
+.pageFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 15px 4px 0;
+  color: var(--dash-muted);
+  font-size: 11px;
+}
+.pageFooter button {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  min-height: 32px;
+  font-size: 11px;
+}
+.mobileNavigation {
+  display: none;
+}
+.compactCalendarLabel {
+  display: none;
+}
+
+.dialog {
+  color: var(--dash-text);
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: auto 24px auto auto;
+  width: min(520px, calc(100vw - 48px));
+  max-height: calc(100dvh - 48px);
+  overflow: visible;
+  color-scheme: inherit;
+}
+.dialog::backdrop {
+  background: #05090d80;
+  backdrop-filter: blur(5px);
+}
+.dialogContent {
+  background: var(--dash-surface);
+  border: 1px solid var(--dash-line);
+  border-radius: 22px;
+  max-height: calc(100dvh - 48px);
+  overflow: auto;
+  box-shadow: 0 20px 80px #0003;
+  scrollbar-width: thin;
+}
+.dialog[open] .dialogContent {
+  animation: panelEnter 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.dialogHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  padding: 25px 25px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--dash-surface);
+  border-bottom: 1px solid var(--dash-line);
+}
+.dialogHeader h2 {
+  outline: none;
+  font-size: 30px;
+}
+.closeButton {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--dash-raised) !important;
+  flex: none;
+}
+.dialogBody {
+  padding: 24px 25px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.panelLead {
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 1.4;
+  letter-spacing: -0.5px;
+}
+.panelBody {
+  color: var(--dash-muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+.panelNote {
+  padding: 18px 20px;
+  background: var(--dash-raised);
+  border-radius: 14px;
+  color: var(--dash-muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
+.panelNote h3 {
+  color: var(--dash-text);
+  margin-bottom: 6px;
+}
+.panelSubheading {
+  margin-top: 5px;
+}
+.panelSecondary {
+  width: 100%;
+  border: 1px solid var(--dash-line) !important;
+  padding: 14px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 52px;
+}
+.panelEmptyIcon {
+  display: grid;
+  place-items: center;
+  width: 68px;
+  height: 68px;
+  background: var(--dash-tint);
+  color: var(--dash-accent-text);
+  border-radius: 20px;
+}
+.panelEmptyIcon svg {
+  width: 32px;
+  height: 32px;
+}
+.monthHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.monthHeading h3 {
+  text-transform: capitalize;
+  font-size: 18px;
+}
+.monthHeading button {
+  display: grid;
+  place-items: center;
+  height: 44px;
+  width: 44px;
+  border: 1px solid var(--dash-line) !important;
+  border-radius: 12px;
+}
+.monthGrid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 6px;
+}
+.monthGrid button {
+  min-height: 46px;
+  border-radius: 10px;
+  border: 1px solid transparent !important;
+  font-variant-numeric: tabular-nums;
+}
+.monthGrid button[aria-current="date"] {
+  color: var(--dash-accent-text);
+  font-weight: 700;
+}
+.monthGrid button[aria-pressed="true"] {
+  background: var(--dash-tint);
+  border-color: var(--dash-accent) !important;
+}
+.monthWeekday {
+  color: var(--dash-muted);
+  text-align: center;
+  font-size: 12px;
+  padding: 4px 0 8px;
+}
+.coachChoices {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+.coachChoices > button {
+  border-radius: 15px;
+  border: 2px solid var(--dash-line) !important;
+  overflow: hidden;
+  padding: 0;
+  text-align: left;
+}
+.coachChoices > button[data-coach="max"] {
+  --choice-accent: #ff7b60;
+}
+.coachChoices > button[data-coach="lika"] {
+  --choice-accent: #cf3974;
+}
+.coachChoices > button[aria-pressed="true"] {
+  border-color: var(--choice-accent) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--choice-accent) 15%, transparent);
+}
+.choicePortrait {
+  aspect-ratio: 4/5;
+  overflow: hidden;
+}
+.choicePortrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+.choiceCopy {
+  padding: 13px;
+  display: grid;
+  gap: 7px;
+}
+.choiceCopy strong {
+  font: 600 30px/1 var(--display);
+}
+.choiceCopy span {
+  font-size: 12px;
+  color: var(--dash-muted);
+  line-height: 1.6;
+}
+.achievementRules {
+  display: grid;
+  gap: 22px;
+}
+.achievementRules article {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.achievementRules h3 {
+  margin-bottom: 7px;
+}
+.achievementRules p {
+  color: var(--dash-muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
+.pathIntroduction {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.timelineStart {
+  display: flex;
+  gap: 13px;
+  align-items: flex-start;
+  background: var(--dash-tint);
+  padding: 17px;
+  border-radius: 13px;
+}
+.timelineStart > svg {
+  color: var(--dash-accent-text);
+}
+.timelineStart p {
+  color: var(--dash-muted);
+  font-size: 13px;
+  line-height: 1.7;
+  margin-top: 4px;
+}
+.chapterList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0;
+  color: var(--dash-muted);
+}
+.chapterList li {
+  display: flex;
+  gap: 17px;
+  align-items: center;
+  border-left: 1px solid var(--dash-line);
+  margin-left: 9px;
+  padding: 14px 0 14px 17px;
+}
+.chapterList strong {
+  font-size: 14px;
+  font-weight: 600;
+}
+.chapterList p {
+  font-size: 12px;
+  margin-top: 4px;
+}
+.profileSummary {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.profileSummary p {
+  color: var(--dash-muted);
+  margin-top: 5px;
+  font-size: 12px;
+}
+.profileCircle {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--dash-tint);
+  color: var(--dash-accent-text);
+  font-size: 22px;
+  font-weight: 700;
+}
+.interestTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+.interestTags span {
+  padding: 8px 12px;
+  border-radius: 11px;
+  background: var(--dash-raised);
+  font-size: 13px;
+}
+
+@keyframes panelEnter {
+  from {
+    opacity: 0;
+    transform: translateX(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@media (hover: hover) and (pointer: fine) {
+  .desktopNavigation button:hover,
+  .profileLink:hover,
+  .secondaryActions button:hover,
+  .secondaryActions a:hover,
+  .chapter:hover,
+  .monthGrid button:hover,
+  .panelSecondary:hover,
+  .week button:hover {
+    background: var(--dash-tint) !important;
+  }
+  .primaryAction:hover,
+  .sendButton:hover {
+    filter: brightness(1.04);
+  }
+  .textAction:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .achievement:hover .achievementIcon {
+    border-color: var(--dash-muted);
+    transform: translateY(-2px);
+  }
+}
+
+@media (min-width: 1720px) {
+  .main {
+    padding-inline: 38px;
+  }
+  .dashboardGrid {
+    gap: 24px;
+  }
+  .chatCard {
+    padding-inline: 34px;
+  }
+  .calendarCard,
+  .pathCard,
+  .achievementsCard {
+    padding-inline: 26px;
+  }
+  .intentActions,
+  .welcomeMessage {
+    max-width: 580px;
+  }
+  .welcomeMessage p {
+    font-size: 18px;
+  }
+  .secondaryActions button,
+  .secondaryActions a {
+    font-size: 15px;
+  }
+}
+@media (max-width: 1270px) {
+  .sidebar {
+    width: 186px;
+    padding-inline: 11px;
+  }
+  .wordmark {
+    width: 143px;
+  }
+  .main {
+    margin-left: 186px;
+    padding-inline: 20px;
+  }
+  .dashboardGrid {
+    grid-template-columns: minmax(0, 1.3fr) minmax(325px, 1fr);
+    gap: 15px;
+  }
+  .greeting {
+    display: block;
+  }
+  .greeting p {
+    margin-top: 12px;
+    font-size: 13px;
+  }
+  .chatCard {
+    padding-inline: 20px;
+  }
+  .chatScribble {
+    display: none;
+  }
+  .secondaryActions {
+    grid-template-columns: 1fr;
+    gap: 9px;
+  }
+  .secondaryActions button,
+  .secondaryActions a {
+    font-size: 14px;
+  }
+  .shell h2 {
+    font-size: 24px;
+  }
+  .textAction {
+    font-size: 11px;
+  }
+  .calendarEmpty {
+    padding: 14px;
+    gap: 12px;
+  }
+  .calendarEmpty > svg {
+    width: 29px;
+  }
+  .achievementIcon {
+    width: 63px;
+    height: 63px;
+  }
+}
+@media (min-width: 761px) and (max-width: 1040px) {
+  .sidebar {
+    width: 82px;
+    padding-inline: 11px;
+  }
+  .brandButton {
+    display: none;
+  }
+  .desktopNavigation {
+    margin-top: 25px;
+    gap: 18px;
+  }
+  .desktopNavigation button,
+  .profileLink {
+    padding: 13px 0;
+    flex-direction: column;
+    gap: 5px;
+    text-align: center;
+    font-size: 9px;
+  }
+  .sidebarMotto {
+    display: none;
+  }
+  .main {
+    margin-left: 82px;
+    padding: 20px;
+  }
+  .mobileBrand {
+    display: block;
+  }
+  .topbar {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .greeting {
+    order: 3;
+    flex-basis: 100%;
+    display: flex;
+    gap: 22px;
+  }
+  .greeting p {
+    margin-top: 0;
+  }
+  .profileButton {
+    margin-left: auto;
+  }
+  .dashboardGrid {
+    grid-template-columns: minmax(0, 1.2fr) minmax(290px, 1fr);
+    gap: 14px;
+  }
+  .card {
+    border-radius: 14px;
+  }
+  .calendarCard,
+  .pathCard,
+  .achievementsCard {
+    padding-inline: 15px;
+  }
+  .sectionHeading {
+    flex-wrap: wrap;
+    gap: 0;
+  }
+  .textAction {
+    min-height: 36px;
+  }
+  .welcomeMessage {
+    padding: 14px;
+  }
+  .welcomeMessage p {
+    font-size: 14px;
+  }
+  .desktopBreak {
+    display: none;
+  }
+  .primaryAction {
+    font-size: 14px;
+    padding-inline: 12px;
+  }
+  .primaryAction > svg:first-child {
+    width: 20px;
+    margin-right: 0;
+  }
+  .chatCard {
+    padding: 18px 16px 14px;
+    min-height: 700px;
+  }
+  .coachAvatar {
+    width: 56px;
+    height: 56px;
+  }
+  .coachHeader {
+    gap: 12px;
+  }
+  .coachHeader p {
+    font-size: 12px;
+  }
+  .week {
+    gap: 2px;
+    margin-top: 8px;
+  }
+  .week button {
+    min-height: 58px;
+  }
+  .calendarEmpty {
+    display: block;
+    text-align: center;
+  }
+  .calendarEmpty > svg {
+    margin-bottom: 5px;
+  }
+  .levelCircle {
+    width: 51px;
+    height: 51px;
+    font-size: 23px;
+  }
+  .journeyArt {
+    max-width: 36%;
+  }
+  .chapter {
+    padding-inline: 10px;
+    gap: 9px;
+  }
+  .chapter strong {
+    font-size: 13px;
+  }
+  .achievements {
+    gap: 8px;
+  }
+  .achievementIcon {
+    width: 53px;
+    height: 53px;
+  }
+  .achievementIcon svg {
+    width: 28px;
+    height: 28px;
+  }
+  .achievement strong {
+    font-size: 10px;
+  }
+  .achievement small {
+    font-size: 10px;
+  }
+}
+@media (max-width: 760px) {
+  .sidebar {
+    display: none;
+  }
+  .main {
+    margin-left: 0;
+    padding: max(20px, env(safe-area-inset-top)) 18px calc(98px + env(safe-area-inset-bottom));
+  }
+  .topbar {
+    display: grid;
+    grid-template-columns: 1fr 44px;
+    row-gap: 25px;
+    margin-bottom: 0;
+  }
+  .mobileBrand {
+    display: block;
+    justify-self: start;
+    padding: 0;
+    min-height: 44px;
+  }
+  .wordmark {
+    width: 152px;
+  }
+  .profileButton {
+    grid-column: 2;
+    grid-row: 1;
+    width: 42px;
+    height: 42px;
+  }
+  .greeting {
+    grid-column: 1/-1;
+    grid-row: 2;
+    display: block;
+  }
+  .greeting h1 {
+    font-size: clamp(27px, 7.5vw, 38px);
+    letter-spacing: -1.1px;
+  }
+  .greeting h1 span::after {
+    left: 5px;
+    bottom: -6px;
+    width: 93px;
+    height: 3px;
+  }
+  .greeting p {
+    font-size: 13px;
+    margin-top: 14px;
+  }
+  .previewLabel {
+    margin: 13px 0 15px;
+    font-size: 10px;
+  }
+  .dashboardGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 620px;
+    margin-inline: auto;
+  }
+  .supportingCards {
+    display: contents;
+  }
+  .shell h2 {
+    font-size: 25px;
+  }
+  .chatCard {
+    min-height: 0;
+    padding: 18px 16px 15px;
+  }
+  .coachHeader {
+    gap: 14px;
+  }
+  .coachAvatar {
+    width: 59px;
+    height: 59px;
+  }
+  .coachHeader h2 {
+    font: 700 21px/1.3 var(--body);
+  }
+  .coachHeader p {
+    font-size: 12px;
+  }
+  .conversation {
+    padding-top: 19px;
+  }
+  .welcomeMessage {
+    max-width: 100%;
+    padding: 14px 16px;
+    margin-bottom: 17px;
+  }
+  .welcomeMessage h3 {
+    font-size: 21px;
+  }
+  .welcomeMessage p {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .desktopBreak {
+    display: none;
+  }
+  .intentActions {
+    max-width: none;
+  }
+  .primaryAction {
+    font-size: 14px;
+    min-height: 52px;
+    gap: 9px;
+    border-radius: 12px;
+    padding: 13px 14px;
+  }
+  .primaryAction > svg:first-child {
+    width: 22px;
+    margin-right: 0;
+  }
+  .secondaryActions {
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+    margin-top: 9px;
+  }
+  .secondaryActions button,
+  .secondaryActions a {
+    min-height: 49px;
+    border-radius: 12px;
+    padding: 10px;
+    gap: 8px;
+    font-size: 12px;
+  }
+  .secondaryActions button > svg:first-child,
+  .secondaryActions a > svg:first-child {
+    width: 19px;
+  }
+  .secondaryActions button > svg:last-child,
+  .secondaryActions a > svg:last-child {
+    display: none;
+  }
+  .chatAtmosphere {
+    display: none;
+  }
+  .composerDock {
+    padding-top: 17px;
+  }
+  .composer {
+    padding: 5px;
+    gap: 5px;
+    border-radius: 27px;
+  }
+  .composer textarea {
+    font-size: 16px;
+    min-height: 40px;
+  }
+  .micButton,
+  .sendButton {
+    width: 42px;
+    height: 42px;
+  }
+  .calendarCard,
+  .pathCard,
+  .achievementsCard {
+    padding: 17px 16px;
+  }
+  .sectionHeading {
+    gap: 9px;
+  }
+  .textAction {
+    font-size: 11px;
+    min-height: 38px;
+    gap: 4px;
+  }
+  .textAction svg {
+    width: 15px;
+  }
+  .calendarCard h2 {
+    font-size: 23px;
+  }
+  .fullCalendarLabel {
+    display: none;
+  }
+  .compactCalendarLabel {
+    display: inline;
+  }
+  .week {
+    gap: 5px;
+    margin: 13px 0 14px;
+  }
+  .week button {
+    min-height: 60px;
+    padding: 7px 1px;
+    border-radius: 11px;
+  }
+  .week button strong {
+    font-size: 19px;
+  }
+  .week button span {
+    font-size: 11px;
+  }
+  .calendarEmpty {
+    min-height: 89px;
+    padding: 14px 12px;
+    gap: 13px;
+  }
+  .calendarEmpty h3 {
+    font-size: 14px;
+  }
+  .calendarEmpty p {
+    font-size: 12px;
+  }
+  .calendarEmpty > svg {
+    width: 30px;
+    height: 30px;
+  }
+  .levelRow {
+    margin-top: 10px;
+  }
+  .levelCircle {
+    width: 59px;
+    height: 59px;
+    font-size: 25px;
+  }
+  .journeyArt {
+    width: 150px;
+    max-width: 43%;
+  }
+  .xpTrack {
+    margin-top: 11px;
+  }
+  .chapter {
+    padding: 13px;
+  }
+  .chapter strong {
+    font-size: 14px;
+  }
+  .achievementIcon {
+    width: 65px;
+    height: 65px;
+  }
+  .achievement strong {
+    font-size: 11px;
+  }
+  .achievement small {
+    display: none;
+  }
+  .pageFooter {
+    max-width: 620px;
+    margin-inline: auto;
+  }
+  .mobileNavigation {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    position: fixed;
+    inset: auto 0 0;
+    padding: 10px 10px calc(9px + env(safe-area-inset-bottom));
+    background: var(--dash-bg);
+    border-top: 1px solid var(--dash-line);
+    z-index: 5;
+    transition:
+      background-color 280ms ease,
+      border-color 280ms ease;
+  }
+  .mobileNavigation button {
+    display: grid;
+    justify-items: center;
+    align-content: center;
+    gap: 4px;
+    min-height: 52px;
+    position: relative;
+    color: var(--dash-muted);
+    font-size: 10px;
+  }
+  .mobileNavigation button[data-active="true"] {
+    color: var(--dash-accent-text);
+    font-weight: 700;
+  }
+  .mobileNavigation button[data-active="true"]::after {
+    content: "";
+    width: 33px;
+    height: 3px;
+    border-radius: 4px;
+    background: var(--dash-accent);
+    position: absolute;
+    bottom: -4px;
+  }
+  .dialog {
+    width: calc(100vw - 20px);
+    max-height: calc(100dvh - 24px);
+    margin: auto auto 10px;
+  }
+  .dialogContent {
+    max-height: calc(100dvh - 24px);
+    border-radius: 21px;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .dialogHeader {
+    padding: 17px 19px 15px;
+  }
+  .dialogHeader h2 {
+    font-size: 27px;
+  }
+  .dialogBody {
+    padding: 19px 19px 24px;
+    gap: 20px;
+  }
+  .panelLead {
+    font-size: 21px;
+  }
+  .coachChoices {
+    gap: 12px;
+  }
+  .choiceCopy {
+    padding: 11px;
+  }
+  .choiceCopy strong {
+    font-size: 28px;
+  }
+  .choiceCopy span {
+    font-size: 11px;
+  }
+  .achievementRules article {
+    gap: 13px;
+  }
+  .achievementRules .achievementIcon {
+    width: 55px;
+    height: 55px;
+  }
+  @keyframes panelEnter {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+.shell[data-account="true"][data-persona="max"] {
+  --dash-gym: url("/dashboard-preview/max-chat-gym-v1.webp");
+}
+.shell[data-account="true"][data-persona="lika"] {
+  --dash-gym: url("/dashboard-preview/lika-chat-gym-v1.webp");
+}
+.accountStatus {
+  margin: 16px 0;
+  display: grid;
+  gap: 8px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.accountStatus p {
+  padding: 12px 16px;
+  background: var(--dash-raised);
+  border: 1px solid var(--dash-line);
+  border-radius: 12px;
+  overflow-wrap: anywhere;
+}
+.accountStatus button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding-inline: 8px;
+  color: var(--dash-accent-text);
+  text-decoration: underline;
+}
+.manualBuilderLink,
+.currentWorkoutLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  color: var(--dash-accent-text);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.manualBuilderLink {
+  margin-top: 5px;
+}
+.messageHistory {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  margin-top: 22px;
+  max-height: 340px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 2px;
+}
+.messageHistory article {
+  max-width: 90%;
+  align-self: flex-start;
+  background: var(--dash-raised);
+  border: 1px solid var(--dash-line);
+  border-radius: 15px 15px 15px 4px;
+  padding: 12px 16px;
+  overflow-wrap: anywhere;
+}
+.messageHistory:focus-visible {
+  outline: 2px solid var(--dash-accent);
+  outline-offset: 4px;
+}
+.messageHistory article[data-role="user"] {
+  align-self: flex-end;
+  background: var(--dash-tint);
+  border-radius: 15px 15px 4px 15px;
+}
+.messageHistory article > span {
+  color: var(--dash-muted);
+  font-size: 11px;
+}
+.messageHistory article p {
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+.shell[data-account="true"] .composerDock {
+  padding-top: 22px;
+}
+.shell[data-account="true"] .composerDock > .intentHint {
+  margin: 0 6px 12px;
+  line-height: 1.6;
+}
+.xpFill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--dash-accent);
+}
+.achievement[data-earned="true"] .achievementIcon,
+.achievementRules [data-earned="true"] .achievementIcon {
+  color: var(--dash-accent-text);
+  border-color: var(--dash-accent);
+  background: var(--dash-tint);
+}
+.accountHistory {
+  list-style: none;
+  display: grid;
+  gap: 12px;
+  padding: 0;
+}
+.accountHistory li {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid var(--dash-line);
+  padding-bottom: 12px;
+}
+.accountHistory li > div {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.accountHistory p {
+  margin-top: 5px;
+  color: var(--dash-muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.accountHistory li > span {
+  flex: none;
+  color: var(--dash-accent-text);
+  font-size: 12px;
+  white-space: nowrap;
+}
+@media (max-width: 374px) {
+  .main {
+    padding-inline: 12px;
+  }
+  .card {
+    border-radius: 13px;
+  }
+  .chatCard {
+    padding-inline: 13px;
+  }
+  .calendarCard,
+  .pathCard,
+  .achievementsCard {
+    padding-inline: 13px;
+  }
+  .greeting h1 {
+    font-size: 27px;
+  }
+  .previewLabel span {
+    display: none;
+  }
+  .sectionHeading {
+    flex-wrap: wrap;
+    gap: 0;
+  }
+  .primaryAction {
+    font-size: 13px;
+  }
+  .primaryAction > svg:first-child {
+    width: 19px;
+  }
+  .secondaryActions button,
+  .secondaryActions a {
+    font-size: 10px;
+    padding-inline: 8px;
+    gap: 5px;
+  }
+  .textAction {
+    min-height: 32px;
+  }
+  .journeyArt {
+    max-width: 34%;
+  }
+  .achievementIcon {
+    width: 56px;
+    height: 56px;
+  }
+  .achievement strong {
+    font-size: 10px;
+  }
+  .monthGrid {
+    gap: 3px;
+  }
+  .monthGrid button {
+    min-height: 43px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .shell,
+  .shell *,
+  .shell *::before,
+  .shell *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+  .shell button:active:not(:disabled) {
+    transform: none;
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "master": {
+    "width": 1254,
+    "height": 1254
+  },
+  "foregroundBounds": {
+    "left": 278,
+    "top": 396,
+    "right": 976,
+    "bottom": 818
+  },
+  "standardCrop": {
+    "left": 171,
+    "top": 151,
+    "width": 912,
+    "height": 912
+  },
+  "maskableCrop": {
+    "left": 83,
+    "top": 63,
+    "width": 1088,
+    "height": 1088
+  },
+  "maskableMaxBoundingRadiusRatio": 0.37547108980421245,
+  "files": [
+    {
+      "file": "public/favicon-16.png",
+      "width": 16,
+      "height": 16,
+      "maskable": false
+    },
+    {
+      "file": "public/favicon-32.png",
+      "width": 32,
+      "height": 32,
+      "maskable": false
+    },
+    {
+      "file": "public/favicon-48.png",
+      "width": 48,
+      "height": 48,
+      "maskable": false
+    },
+    {
+      "file": "public/apple-touch-icon.png",
+      "width": 180,
+      "height": 180,
+      "maskable": false
+    },
+    {
+      "file": "public/icons/apple-touch-icon-152.png",
+      "width": 152,
+      "height": 152,
+      "maskable": false
+    },
+    {
+      "file": "public/icons/apple-touch-icon-167.png",
+      "width": 167,
+      "height": 167,
+      "maskable": false
+    },
+    {
+      "file": "public/icons/icon-192.png",
+      "width": 192,
+      "height": 192,
+      "maskable": false
+    },
+    {
+      "file": "public/icons/icon-512.png",
+      "width": 512,
+      "height": 512,
+      "maskable": false
+    },
+    {
+      "file": "public/icons/icon-1024.png",
+      "width": 1024,
+      "height": 1024,
+      "maskable": false
+    },
+    {
+      "file": "public/icons/icon-maskable-192.png",
+      "width": 192,
+      "height": 192,
+      "maskable": true
+    },
+    {
+      "file": "public/icons/icon-maskable-512.png",
+      "width": 512,
+      "height": 512,
+      "maskable": true
+    }
+  ],
+  "icoSizes": [
+    16,
+    32,
+    48
+  ]
+}

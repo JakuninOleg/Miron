@@ -1,0 +1,5 @@
+ALTER TABLE "profiles" DROP CONSTRAINT "profiles_settings_check";--> statement-breakpoint
+ALTER TABLE "workout_steps" ADD COLUMN "metric" text DEFAULT 'reps' NOT NULL;--> statement-breakpoint
+ALTER TABLE "profiles" ADD CONSTRAINT "profiles_schedule_check" CHECK (cardinality("profiles"."training_days") between 1 and 7 and "profiles"."training_days" <@ ARRAY[0,1,2,3,4,5,6]::integer[] and "profiles"."reminder_time" ~ '^([01][0-9]|2[0-3]):[0-5][0-9]$');--> statement-breakpoint
+ALTER TABLE "profiles" ADD CONSTRAINT "profiles_settings_check" CHECK ("profiles"."theme" in ('dark','rose') and "profiles"."goal" in ('habit','strength','energy') and "profiles"."discipline" in ('strength','calisthenics','mobility','yoga') and "profiles"."location" in ('home','gym','outdoor'));--> statement-breakpoint
+ALTER TABLE "workout_steps" ADD CONSTRAINT "workout_steps_values_check" CHECK ("workout_steps"."ordinal">=0 and "workout_steps"."sets">0 and "workout_steps"."reps">0 and "workout_steps"."metric" in ('reps','time'));

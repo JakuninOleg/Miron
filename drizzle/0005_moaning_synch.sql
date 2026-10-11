@@ -1,0 +1,4 @@
+ALTER TABLE "recorded_sets" DROP CONSTRAINT "recorded_sets_values_check";--> statement-breakpoint
+ALTER TABLE "recorded_sets" ALTER COLUMN "reps" DROP NOT NULL;--> statement-breakpoint
+ALTER TABLE "recorded_sets" ADD COLUMN "duration_seconds" integer;--> statement-breakpoint
+ALTER TABLE "recorded_sets" ADD CONSTRAINT "recorded_sets_values_check" CHECK ("recorded_sets"."set_index">=0 and "recorded_sets"."weight_g">=0 and (("recorded_sets"."reps" is not null and "recorded_sets"."reps">0 and "recorded_sets"."duration_seconds" is null) or ("recorded_sets"."reps" is null and "recorded_sets"."duration_seconds" is not null and "recorded_sets"."duration_seconds" between 1 and 86400 and "recorded_sets"."weight_g"=0)));

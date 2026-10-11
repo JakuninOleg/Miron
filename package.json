@@ -1,0 +1,72 @@
+{
+  "name": "miron",
+  "version": "0.1.0",
+  "private": true,
+  "overrides": {
+    "@esbuild-kit/core-utils": {
+      "esbuild": "0.28.2"
+    }
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "next dev --hostname 127.0.0.1",
+    "build": "next build",
+    "start": "next start --hostname 127.0.0.1",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "tsx scripts/db-migrate.ts",
+    "db:seed": "tsx scripts/db-seed.ts",
+    "catalog:qa": "tsx scripts/catalog-qa.ts",
+    "db:local": "tsx scripts/local-postgres.ts",
+    "db:stop": "tsx scripts/local-postgres.ts stop",
+    "mail:local": "tsx scripts/local-mail.ts",
+    "voice:setup": "node scripts/voice/setup.mjs",
+    "voice:start": "node scripts/voice/start.mjs",
+    "voice:test": "node scripts/voice/test.mjs",
+    "build:deploy": "node scripts/deploy/build.mjs",
+    "start:deploy": "node scripts/deploy/start.mjs"
+  },
+  "dependencies": {
+    "@fontsource/manrope": "5.3.0",
+    "@fontsource/neucha": "^5.3.0",
+    "@fontsource/oswald": "5.3.0",
+    "@fontsource/roboto-condensed": "^5.3.0",
+    "better-auth": "1.7.7",
+    "dexie": "4.4.6",
+    "drizzle-orm": "0.45.3",
+    "lucide-react": "1.52.0",
+    "next": "16.3.8",
+    "nodemailer": "10.0.15",
+    "pg": "8.23.1",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "server-only": "0.0.1",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "@types/node": "26.6.4",
+    "@types/nodemailer": "8.0.2",
+    "@types/pg": "8.23.1",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "drizzle-kit": "0.31.11",
+    "embedded-postgres": "18.4.0-beta.17",
+    "esbuild": "0.28.2",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.3.8",
+    "fake-indexeddb": "6.2.5",
+    "prettier": "3.9.9",
+    "sharp": "0.35.5",
+    "tsx": "4.23.15",
+    "typescript": "6.0.3",
+    "vitest": "5.0.3"
+  }
+}

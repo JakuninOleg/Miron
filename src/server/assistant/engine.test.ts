@@ -1,0 +1,193 @@
+import { describe, expect, it, vi } from "vitest";
+import { runAssistantEngine, type EngineOptions } from "./engine";
+import { GENERATOR_POLICY } from "./policy";
+import type { Provider, ProviderReply } from "./provider";
+
+const allowed = JSON.stringify({
+  route: "in_scope",
+  topics: ["training"],
+  riskFlags: [],
+  trainingSafety: "allow",
+});
+const reviewed = JSON.stringify({ decision: "allow", reasonCode: "within_policy" });
+function reply(content: string, toolCalls: ProviderReply["toolCalls"] = []): ProviderReply {
+  return {
+    content,
+    toolCalls,
+    usage: { promptTokens: 100, completionTokens: 20, totalTokens: 120, costHintRub: 0.001 },
+  };
+}
+function setup(responses: ProviderReply[], overrides: Partial<EngineOptions<{ id: string }>> = {}) {
+  const provider = vi.fn<Provider>();
+  for (const response of responses) provider.mockResolvedValueOnce(response);
+  const executeTool = vi.fn().mockResolvedValue({
+    evidence: { saved: false, state: "preview" },
+    action: { id: "proposal" },
+  });
+  const options: EngineOptions<{ id: string }> = {
+    text: "Давай обсудим занятие",
+    companion: "lika",
+    history: [],
+    profile: { experience: "beginner" },
+    provider,
+    signal: new AbortController().signal,
+    tools: [],
+    executeTool,
+    ...overrides,
+  };
+  return { options, provider, executeTool };
+}
+
+describe("bounded beta assistant orchestration", () => {
+  it("runs scope, generation and output review before returning a model reply", async () => {
+    const { options, provider } = setup([
+      reply(allowed),
+      reply("Открой текущее занятие и сверим карточки."),
+      reply(reviewed),
+    ]);
+    const result = await runAssistantEngine(options);
+    expect(result.source).toBe("model");
+    expect(result.useful).toBe(true);
+    expect(result.usage.calls).toBe(3);
+    expect(provider.mock.calls[1][0].messages[0].content).toContain(GENERATOR_POLICY);
+    expect(provider.mock.calls[2][0].json).toBe(true);
+  });
+
+  it("responds to urgent pain locally without provider, quota or tools", async () => {
+    const { options, provider, executeTool } = setup([], {
+      text: "Сейчас давит в груди и трудно дышать",
+    });
+    const result = await runAssistantEngine(options);
+    expect(result.text).toContain("103 или 112");
+    expect(result.source).toBe("prepared");
+    expect(result.useful).toBe(false);
+    expect(provider).not.toHaveBeenCalled();
+    expect(executeTool).not.toHaveBeenCalled();
+  });
+
+  it("uses a prepared boundary for unrelated and mixed requests", async () => {
+    for (const route of ["out_of_scope", "mixed"] as const) {
+      const { options, provider } = setup([
+        reply(JSON.stringify({ route, topics: [], riskFlags: [], trainingSafety: "allow" })),
+      ]);
+      const result = await runAssistantEngine(options);
+      expect(result.source).toBe("prepared");
+      expect(provider).toHaveBeenCalledTimes(1);
+    }
+  });
+
+  it("does not turn a spurious extreme flag on an unrelated topic into a workout refusal", async () => {
+    const { options, provider } = setup(
+      [
+        reply(
+          JSON.stringify({
+            route: "out_of_scope",
+            topics: [],
+            riskFlags: [],
+            trainingSafety: "refuse_extreme",
+          }),
+        ),
+      ],
+      {
+        text: "Напиши код интернет-магазина, тренировки не интересуют.",
+      },
+    );
+    const result = await runAssistantEngine(options);
+    expect(result.text).toContain("С посторонними задачами");
+    expect(result.text).not.toContain("Максимальную попытку");
+    expect(provider).toHaveBeenCalledTimes(1);
+  });
+
+  it("keeps urgent help above a topic boundary and an actual extreme request below it", async () => {
+    const urgent = setup([
+      reply(
+        JSON.stringify({
+          route: "out_of_scope",
+          topics: ["safety"],
+          riskFlags: ["urgent_distress"],
+          trainingSafety: "urgent_help",
+        }),
+      ),
+    ]);
+    expect((await runAssistantEngine(urgent.options)).text).toContain("103 или 112");
+    const extreme = setup([
+      reply(
+        JSON.stringify({
+          route: "in_scope",
+          topics: ["training"],
+          riskFlags: [],
+          trainingSafety: "refuse_extreme",
+        }),
+      ),
+    ]);
+    expect((await runAssistantEngine(extreme.options)).text).toContain("Максимальную попытку");
+  });
+
+  it("blocks gender placeholders before displaying the generated text", async () => {
+    const { options, provider } = setup([reply(allowed), reply("Ты готов(а) начать?")]);
+    await expect(runAssistantEngine(options)).rejects.toMatchObject({ code: "AI_REPLY_BLOCKED" });
+    expect(provider).toHaveBeenCalledTimes(2);
+  });
+
+  it("fails closed on malformed classifier and blocked reviewer", async () => {
+    const malformed = setup([reply('{"route":"in_scope"}')]);
+    await expect(runAssistantEngine(malformed.options)).rejects.toMatchObject({
+      code: "AI_POLICY_UNAVAILABLE",
+    });
+    expect(malformed.provider).toHaveBeenCalledTimes(1);
+    const blocked = setup([
+      reply(allowed),
+      reply("Увеличь вес на 20 кг."),
+      reply('{"decision":"block","reasonCode":"unsafe_advice"}'),
+    ]);
+    await expect(runAssistantEngine(blocked.options)).rejects.toMatchObject({
+      code: "AI_REPLY_BLOCKED",
+    });
+  });
+
+  it("executes at most one tool batch and reserves final call for review", async () => {
+    const call = {
+      id: "call1",
+      type: "function" as const,
+      function: { name: "preview_workout", arguments: "{}" },
+    };
+    const { options, provider, executeTool } = setup([
+      reply(allowed),
+      reply("", [call]),
+      reply("Вот черновик; просмотри его в подборе."),
+      reply(reviewed),
+    ]);
+    const result = await runAssistantEngine(options);
+    expect(result.action).toEqual({ id: "proposal" });
+    expect(provider).toHaveBeenCalledTimes(4);
+    expect(executeTool).toHaveBeenCalledTimes(1);
+    expect(provider.mock.calls[2][0].toolsAllowed).toBe(false);
+    expect(provider.mock.calls[3][0].tools).toBeUndefined();
+  });
+
+  it("does not execute further requested tools after the bounded batch", async () => {
+    const call = {
+      id: "call1",
+      type: "function" as const,
+      function: { name: "read_profile", arguments: "{}" },
+    };
+    const { options, executeTool } = setup([reply(allowed), reply("", [call]), reply("", [call])]);
+    await expect(runAssistantEngine(options)).rejects.toMatchObject({ code: "AI_TOOL_LIMIT" });
+    expect(executeTool).toHaveBeenCalledTimes(1);
+  });
+
+  it("keeps recent medical text out of provider context", async () => {
+    const { options, provider } = setup([reply(allowed), reply("Привет!"), reply(reviewed)], {
+      history: [
+        {
+          id: "old",
+          role: "user",
+          text: "Болит колено, диагноз секретный",
+          createdAt: new Date().toISOString(),
+        },
+      ],
+    });
+    await runAssistantEngine(options);
+    expect(JSON.stringify(provider.mock.calls)).not.toContain("диагноз секретный");
+  });
+});

@@ -1,0 +1,1739 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>MIRON — база данных и каталог упражнений</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --page: #f4f3ef;
+        --panel: #fff;
+        --ink: #20211f;
+        --muted: #61645d;
+        --line: #d8dcd4;
+        --soft: #eef0ea;
+        --accent: #a93560;
+        --accent-soft: #f5e9ed;
+        --dark: #222421;
+        --code: #485649;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--page);
+        color: var(--ink);
+        font:
+          15px/1.5 system-ui,
+          -apple-system,
+          "Segoe UI",
+          sans-serif;
+      }
+      button,
+      input,
+      select {
+        font: inherit;
+      }
+      button,
+      a,
+      input,
+      select {
+        touch-action: manipulation;
+      }
+      button {
+        cursor: pointer;
+      }
+      button:focus-visible,
+      a:focus-visible,
+      input:focus-visible,
+      select:focus-visible {
+        outline: 3px solid var(--accent);
+        outline-offset: 3px;
+      }
+      button {
+        border: 1px solid var(--line);
+        background: var(--panel);
+        border-radius: 7px;
+        padding: 8px 13px;
+        color: var(--ink);
+      }
+      button:hover {
+        background: var(--soft);
+      }
+      button[aria-pressed="true"],
+      button[aria-selected="true"] {
+        background: var(--dark);
+        color: #fff;
+        border-color: var(--dark);
+      }
+      a {
+        color: var(--accent);
+        text-underline-offset: 3px;
+      }
+      header {
+        padding: 26px 32px 20px;
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 22px;
+        background: var(--panel);
+      }
+      .brand {
+        font-weight: 750;
+        letter-spacing: 0.25em;
+        font-size: 22px;
+      }
+      .eyebrow {
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      h1 {
+        font-size: 27px;
+        line-height: 1.2;
+        margin: 7px 0 5px;
+        font-weight: 650;
+        letter-spacing: -0.025em;
+      }
+      h2 {
+        font-size: 19px;
+        line-height: 1.3;
+        margin: 0 0 7px;
+      }
+      h3 {
+        font-size: 15px;
+        margin: 0 0 5px;
+      }
+      p {
+        margin: 0;
+      }
+      .sub {
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .summary {
+        display: flex;
+        gap: 27px;
+      }
+      .summary strong {
+        font-size: 23px;
+        font-weight: 650;
+        display: block;
+      }
+      .summary span {
+        display: block;
+        font-size: 11px;
+        color: var(--muted);
+      }
+      main {
+        padding: 23px 32px 35px;
+        max-width: 1900px;
+        margin: auto;
+      }
+      .tabs {
+        display: flex;
+        gap: 7px;
+        align-items: center;
+        margin-bottom: 22px;
+      }
+      .tabs button {
+        min-width: 160px;
+      }
+      .source {
+        margin-left: auto;
+        text-align: right;
+        font-size: 11px;
+        color: var(--muted);
+      }
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        margin: 12px 0 14px;
+      }
+      .toolbar .spacer {
+        flex: 1;
+      }
+      .toolbar button {
+        font-size: 13px;
+      }
+      input,
+      select {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        padding: 9px 12px;
+        color: var(--ink);
+        max-width: 100%;
+      }
+      label {
+        display: flex;
+        gap: 5px;
+        flex-direction: column;
+        font-size: 11px;
+        color: var(--muted);
+      }
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 340px;
+        gap: 22px;
+        align-items: start;
+      }
+      .diagram-shell {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .diagram-top {
+        border-bottom: 1px solid var(--line);
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        justify-content: space-between;
+      }
+      .diagram-top h2 {
+        margin: 0;
+        font-size: 16px;
+      }
+      .legend {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        font-size: 11px;
+        color: var(--muted);
+        align-items: center;
+      }
+      .legend i {
+        display: inline-block;
+        width: 18px;
+        border-top: 2px solid var(--code);
+        vertical-align: middle;
+        margin-right: 4px;
+      }
+      .map-viewport {
+        overflow: auto;
+        min-height: 360px;
+        max-height: 750px;
+        padding: 12px;
+        background-image: radial-gradient(var(--line) 0.65px, transparent 0.65px);
+        background-size: 18px 18px;
+      }
+      .map-viewport svg {
+        display: block;
+      }
+      .edge {
+        fill: none;
+        stroke: var(--code);
+        stroke-width: 1.7;
+        opacity: 0.36;
+      }
+      .edge.active {
+        stroke: var(--accent);
+        stroke-width: 2.7;
+        opacity: 1;
+      }
+      .edge-label {
+        font-size: 11px;
+        fill: var(--muted);
+        paint-order: stroke;
+        stroke: var(--panel);
+        stroke-width: 4px;
+        stroke-linejoin: round;
+      }
+      .node {
+        cursor: pointer;
+        outline: none;
+      }
+      .node .card {
+        fill: var(--panel);
+        stroke: var(--line);
+        stroke-width: 1.5;
+      }
+      .node:hover .card,
+      .node:focus .card {
+        stroke: var(--accent);
+        stroke-width: 2;
+      }
+      .node.selected .card {
+        stroke: var(--accent);
+        stroke-width: 2.5;
+      }
+      .node .node-head {
+        fill: var(--soft);
+      }
+      .node.selected .node-head {
+        fill: var(--accent-soft);
+      }
+      .node-label {
+        font-size: 13px;
+        fill: var(--ink);
+        font-weight: 650;
+      }
+      .node-code {
+        font-size: 11.5px;
+        fill: var(--muted);
+        font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+      }
+      .node-key {
+        font-size: 11px;
+        fill: var(--code);
+        font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+      }
+      .group-caption {
+        font-size: 12px;
+        fill: var(--muted);
+        letter-spacing: 0.04em;
+      }
+      .sidebar {
+        padding: 0 2px;
+      }
+      .sidebar .table-name {
+        font:
+          13px ui-monospace,
+          Consolas,
+          monospace;
+        color: var(--accent);
+        overflow-wrap: anywhere;
+      }
+      .description {
+        color: var(--muted);
+        font-size: 13px;
+        margin: 8px 0 15px;
+      }
+      .detail-section {
+        border-top: 1px solid var(--line);
+        padding-top: 14px;
+        margin-top: 15px;
+      }
+      .column-table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 11px;
+      }
+      .column-table td {
+        padding: 6px 3px;
+        vertical-align: top;
+        border-bottom: 1px solid var(--line);
+      }
+      .column-table code {
+        font-size: 11px;
+        overflow-wrap: anywhere;
+      }
+      .column-table td:last-child {
+        color: var(--muted);
+        text-align: right;
+      }
+      .key-tag {
+        font-size: 9px;
+        color: var(--accent);
+        margin-right: 4px;
+        font-weight: 700;
+      }
+      .relation {
+        padding: 9px 0;
+        border-bottom: 1px solid var(--line);
+        font-size: 12px;
+      }
+      .relation button {
+        font-family: ui-monospace, Consolas, monospace;
+        font-size: 11px;
+        padding: 3px 6px;
+        margin-bottom: 5px;
+        text-align: left;
+      }
+      .relation code {
+        display: block;
+        font-size: 10.5px;
+        line-height: 1.5;
+        overflow-wrap: anywhere;
+        color: var(--muted);
+      }
+      .detail-note {
+        font-size: 12px;
+        color: var(--muted);
+        padding: 12px 0;
+        border-top: 1px solid var(--line);
+        margin-top: 15px;
+      }
+      .reading {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-top: 22px;
+        border-top: 1px solid var(--line);
+        padding-top: 17px;
+      }
+      .reading p {
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .reading strong {
+        color: var(--ink);
+      }
+      .catalog-title {
+        display: flex;
+        justify-content: space-between;
+        gap: 15px;
+        align-items: end;
+      }
+      .status-note {
+        font-size: 13px;
+        color: var(--muted);
+        margin: 5px 0 15px;
+      }
+      .filters {
+        display: grid;
+        grid-template-columns: minmax(200px, 2fr) repeat(2, 1fr);
+        gap: 12px;
+        margin: 12px 0 15px;
+      }
+      .table-scroll {
+        overflow-x: auto;
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+        background: var(--panel);
+      }
+      .catalog-table {
+        border-collapse: collapse;
+        width: 100%;
+        min-width: 1120px;
+        table-layout: fixed;
+      }
+      .catalog-table th {
+        text-align: left;
+        font-size: 11px;
+        color: var(--muted);
+        font-weight: 550;
+        background: var(--soft);
+        padding: 12px 13px;
+        border-bottom: 1px solid var(--line);
+      }
+      .catalog-table td {
+        padding: 13px;
+        vertical-align: top;
+        font-size: 12px;
+        border-bottom: 1px solid var(--line);
+      }
+      .catalog-table th:nth-child(1) {
+        width: 45px;
+      }
+      .catalog-table th:nth-child(2) {
+        width: 24%;
+      }
+      .catalog-table th:nth-child(3) {
+        width: 19%;
+      }
+      .catalog-table th:nth-child(4) {
+        width: 17%;
+      }
+      .catalog-table th:nth-child(5) {
+        width: 25%;
+      }
+      .exercise-name {
+        font-weight: 600;
+        font-size: 13px;
+        margin-bottom: 2px;
+      }
+      .alias {
+        font-size: 11px;
+        color: var(--muted);
+      }
+      .status {
+        display: inline-block;
+        font-size: 10px;
+        font-weight: 600;
+        color: var(--accent);
+        background: var(--accent-soft);
+        padding: 3px 6px;
+        border-radius: 4px;
+      }
+      .resource {
+        display: block;
+        margin-bottom: 3px;
+      }
+      .resource small {
+        color: var(--muted);
+        font-size: 10px;
+      }
+      .catalog-table details {
+        margin-top: 6px;
+      }
+      .catalog-table summary {
+        font-size: 11px;
+        color: var(--muted);
+        cursor: pointer;
+      }
+      .catalog-table code {
+        font-size: 10px;
+        overflow-wrap: anywhere;
+      }
+      .footnote {
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 12px;
+      }
+      .blank-search {
+        padding: 30px;
+        text-align: center;
+        color: var(--muted);
+      }
+      .skill-edge {
+        fill: none;
+        stroke: var(--code);
+        stroke-width: 1.8;
+      }
+      .skill-edge.preparation {
+        stroke-dasharray: 7 5;
+        opacity: 0.55;
+      }
+      .skill-node {
+        cursor: pointer;
+      }
+      .skill-node rect {
+        fill: var(--panel);
+        stroke: var(--line);
+        stroke-width: 1.5;
+      }
+      .skill-node:focus rect,
+      .skill-node.selected rect {
+        stroke: var(--accent);
+        stroke-width: 2.5;
+      }
+      .skill-node text {
+        fill: var(--ink);
+        font-size: 12px;
+      }
+      .skill-node .skill-caption {
+        fill: var(--muted);
+        font-size: 10px;
+      }
+      .skill-info {
+        padding: 16px 0;
+      }
+      [hidden] {
+        display: none !important;
+      }
+      @media (max-width: 1100px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+        .sidebar {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 17px;
+        }
+        .sidebar .detail-section {
+          margin-top: 0;
+        }
+        .reading {
+          margin-top: 18px;
+        }
+      }
+      @media (max-width: 650px) {
+        header {
+          padding: 20px;
+          align-items: start;
+          flex-direction: column;
+        }
+        .summary {
+          gap: 25px;
+        }
+        main {
+          padding: 18px 14px;
+        }
+        .tabs {
+          flex-wrap: wrap;
+        }
+        .tabs button {
+          min-width: auto;
+        }
+        .source {
+          width: 100%;
+          text-align: left;
+          margin-top: 6px;
+        }
+        .filters {
+          grid-template-columns: 1fr;
+        }
+        .sidebar,
+        .reading {
+          grid-template-columns: 1fr;
+        }
+        .diagram-top {
+          align-items: start;
+          flex-direction: column;
+        }
+        .map-viewport {
+          min-height: 300px;
+        }
+        .toolbar .spacer {
+          display: none;
+        }
+      }
+      @media print {
+        header {
+          padding: 12px;
+        }
+        .tabs,
+        .toolbar,
+        .filters,
+        .sidebar {
+          display: none;
+        }
+        .layout {
+          display: block;
+        }
+        main {
+          padding: 8px;
+        }
+        .map-viewport {
+          max-height: none;
+          overflow: visible;
+          background: none;
+        }
+        .map-viewport svg {
+          max-width: 100%;
+          height: auto;
+        }
+        .reading {
+          display: block;
+        }
+        .catalog-table {
+          min-width: 0;
+        }
+        .catalog-table td {
+          font-size: 9px;
+          padding: 6px;
+        }
+        .catalog-table th {
+          font-size: 9px;
+        }
+        .table-scroll {
+          overflow: visible;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div>
+        <div class="brand">MIRON</div>
+        <h1>Как устроена база данных</h1>
+        <p class="sub">Связи таблиц и фактический каталог упражнений</p>
+      </div>
+      <div class="summary" id="stats"></div>
+    </header>
+    <main>
+      <nav class="tabs" aria-label="Справочник">
+        <button id="tab-erd" role="tab" aria-controls="erd-panel" aria-selected="true">
+          Схема данных</button
+        ><button
+          id="tab-exercises"
+          role="tab"
+          aria-controls="exercises-panel"
+          aria-selected="false"
+        >
+          Упражнения
+        </button>
+        <button id="tab-skills" role="tab" aria-controls="skills-panel" aria-selected="false">
+          Навыки
+        </button>
+        <div class="source" id="source"></div>
+      </nav>
+      <section id="erd-panel" aria-labelledby="tab-erd">
+        <div class="toolbar" id="groups" aria-label="Область схемы"></div>
+        <div class="layout">
+          <div>
+            <div class="diagram-shell">
+              <div class="diagram-top">
+                <h2 id="map-title">Каталог и программы</h2>
+                <div class="legend">
+                  <span><i></i>внешний ключ</span><span>1 → N · одна запись / много</span
+                  ><span>PK — первичный ключ · FK — внешний</span>
+                </div>
+              </div>
+              <div class="map-viewport" id="viewport">
+                <svg id="map" role="img" aria-label="ERD MIRON"></svg>
+              </div>
+            </div>
+            <div class="toolbar">
+              <button id="zoom-out" aria-label="Уменьшить схему">−</button
+              ><span id="zoom-label" class="sub">100%</span
+              ><button id="zoom-in" aria-label="Увеличить схему">+</button
+              ><button id="fit">По ширине</button><button id="clear">Снять выделение</button
+              ><span class="spacer"></span><button id="export-svg">Скачать всю ERD · SVG</button>
+            </div>
+            <div class="reading">
+              <p>
+                <strong>Путь тренировки.</strong> Семейство → вариант → версия карточки → шаг
+                шаблона → план человека → занятие → выполненные подходы. Макс и Лика связаны с медиа
+                через версию карточки.
+              </p>
+              <p>
+                <strong>Снимки сохраняют историю.</strong> При старте в занятие копируются шаги и
+                инвентарь. Между исходными строками и копиями нет FK; изменения настроек не
+                переписывают начатое занятие.
+              </p>
+            </div>
+          </div>
+          <aside class="sidebar" id="details" aria-live="polite"></aside>
+        </div>
+      </section>
+      <section id="exercises-panel" aria-labelledby="tab-exercises" hidden>
+        <div class="catalog-title">
+          <div>
+            <div class="eyebrow">Каталог PostgreSQL</div>
+            <h2>Добавленные варианты упражнений</h2>
+          </div>
+          <div class="legend">
+            <a href="exercises.csv" download>Упражнения · CSV</a>
+            <a href="catalog-semantic-qa.csv" download>Семантическая проверка · CSV</a>
+          </div>
+        </div>
+        <p class="status-note" id="catalog-note"></p>
+        <div class="filters">
+          <label
+            >Название, мышцы или запрос<input
+              id="search"
+              type="search"
+              placeholder="Например, молотки, пресс дома" /></label
+          ><label
+            >Место<select id="context">
+              <option value="">Все места</option>
+            </select></label
+          ><label
+            >Мышечная группа<select id="muscle">
+              <option value="">Все мышцы</option>
+            </select></label
+          ><label
+            >Роль мышцы<select id="muscle-role">
+              <option value="primary">Основной акцент</option>
+              <option value="any">Любое участие</option>
+            </select></label
+          ><label
+            >Направление<select id="discipline">
+              <option value="">Все направления</option>
+            </select></label
+          ><label
+            >Обязательный ресурс<select id="resource">
+              <option value="">Любой ресурс</option>
+            </select></label
+          >
+          <label
+            >Роль в тренировке<select id="workout-role">
+              <option value="">Все роли</option>
+            </select></label
+          >
+          <label
+            >Цель упражнения<select id="purpose">
+              <option value="">Все цели</option>
+            </select></label
+          >
+          <label
+            >Карточки<select id="canonical">
+              <option value="">Все варианты</option>
+              <option value="true">Основные карточки</option>
+              <option value="false">Другие варианты</option>
+            </select></label
+          >
+          <label
+            >Сложность<select id="difficulty">
+              <option value="">Любая сложность</option>
+            </select></label
+          >
+          <label
+            >Характер навыка<select id="skill-kind">
+              <option value="">Любой характер</option>
+            </select></label
+          >
+          <label
+            >Требуемая проверка<select id="assignment-gate">
+              <option value="">Любая проверка</option>
+            </select></label
+          >
+        </div>
+        <p class="sub" id="result-count" aria-live="polite" style="margin-bottom: 10px"></p>
+        <div class="table-scroll">
+          <table class="catalog-table">
+            <thead>
+              <tr>
+                <th>№</th>
+                <th>Упражнение / вариант</th>
+                <th>Акцент / другие мышцы</th>
+                <th>Направления / места</th>
+                <th>Обязательные ресурсы</th>
+                <th>Статус / медиа</th>
+              </tr>
+            </thead>
+            <tbody id="exercise-rows"></tbody>
+          </table>
+        </div>
+        <p class="footnote">
+          Ресурсы в этой таблице перечислены как обязательные условия, связанные AND. Фильтр ищет
+          наличие выбранного ресурса в требованиях. Место — типичная подборка: инвентарь и
+          подходящая поверхность проверяются отдельно. Для йоги и растяжки мышцы обозначают область
+          фокуса, а не обещание роста мышц. Техника, сложность и связи замен пока требуют экспертной
+          проверки. Сложность описывает выполнение; характер навыка — освоение отдельного движения;
+          допуск — требуемую проверку. Роль в тренировке и цель не определяют допуск. Даже обычная
+          карточка с экспертной проверкой остаётся черновиком до публикации.
+        </p>
+      </section>
+      <section id="skills-panel" aria-labelledby="tab-skills" hidden>
+        <div class="eyebrow">Редакционный граф · PostgreSQL</div>
+        <h2>Как связаны этапы навыка</h2>
+        <p class="sub" id="skill-history"></p>
+        <p class="status-note">
+          Все графы — черновики для проверки тренером. Сплошная связь — кандидат обязательной
+          подготовки; пунктир — полезная подготовка без условия допуска. Открытие навыка
+          автоматически не рассчитывается.
+        </p>
+        <div class="toolbar">
+          <label>Навык<select id="skill-graph"></select></label
+          ><span id="skill-summary" class="sub"></span>
+        </div>
+        <div class="diagram-shell">
+          <div class="diagram-top">
+            <h3 id="skill-title"></h3>
+            <div class="legend">
+              <span><i></i>предварительное условие</span
+              ><span><i style="border-top-style: dashed"></i>подготовка</span>
+            </div>
+          </div>
+          <div id="skill-viewport" class="map-viewport">
+            <svg id="skill-map" role="img" aria-label="Граф подготовки навыка"></svg>
+          </div>
+        </div>
+        <div id="skill-details" class="skill-info" aria-live="polite"></div>
+      </section>
+    </main>
+    <script>
+      const DB = /* INLINE_DATABASE_SNAPSHOT */ null;
+      const meta = {
+        users: [
+          "Пользователь",
+          "Единый аккаунт MIRON. Идентификатор связывает вход, настройки и личные данные.",
+          "auth",
+        ],
+        auth_accounts: [
+          "Способы входа",
+          "Парольный или OAuth-вход: провайдер и его идентификатор аккаунта.",
+          "auth",
+        ],
+        auth_sessions: ["Сессии входа", "Сессии пользователя и сроки их действия.", "auth"],
+        auth_verifications: [
+          "Подтверждение и сброс",
+          "Служебные проверки Better Auth по identifier. Внешнего ключа к users нет.",
+          "auth",
+        ],
+        auth_rate_limits: [
+          "Лимиты авторизации",
+          "Счётчик обращений по ключу. Внешнего ключа к users нет.",
+          "auth",
+        ],
+        profiles: [
+          "Профиль и расписание",
+          "Цель, уровень, напарник, тема, дни тренировок и настройки напоминаний. До одного профиля на аккаунт.",
+          "profile",
+        ],
+        equipment_profiles: [
+          "Наборы инвентаря",
+          "Набор доступных ресурсов по месту занятий. Само место не добавляет оборудование.",
+          "profile",
+        ],
+        profile_resources: [
+          "Инвентарь человека",
+          "Количество, нагрузка и подтверждение устойчивости доступного предмета или опоры.",
+          "profile",
+        ],
+        resource_types: [
+          "Справочник ресурсов",
+          "Оборудование, опоры, свободное пространство и крепления. Используется каталогом и инвентарём.",
+          "profile",
+        ],
+        exercises: [
+          "Семейства упражнений",
+          "Общее движение объединяет конкретные варианты исполнения.",
+          "catalog",
+        ],
+        exercise_variants: [
+          "Варианты упражнений",
+          "Конкретное исполнение, паттерн движения, сопротивление и единица результата.",
+          "catalog",
+        ],
+        variant_requirements: [
+          "Требования варианта",
+          "Обязательные ресурсы и количество. Требования относятся к варианту, а не к его ревизии.",
+          "catalog",
+        ],
+        variant_revisions: [
+          "Версии карточек",
+          "Версия текста, короткое имя, алиасы, места и направления. Шаблон и занятие ссылаются на конкретную версию.",
+          "catalog",
+        ],
+        muscle_groups: [
+          "Мышечные группы",
+          "Справочник областей: грудь, спина, бицепс и другие.",
+          "catalog",
+        ],
+        variant_revision_muscles: [
+          "Акцент и участие мышц",
+          "Многие группы на одну ревизию; роль primary, secondary или stabilizer. Числовых долей нагрузки нет.",
+          "catalog",
+        ],
+        skill_graph_revisions: [
+          "Версии графов навыков",
+          "Редакционный граф, источники и статус проверки. Это не автоматическая разблокировка навыка.",
+          "skills",
+        ],
+        skill_graph_nodes: [
+          "Этапы навыка",
+          "Этап закрепляет конкретную ревизию упражнения, all/any и ручную проверку тренером.",
+          "skills",
+        ],
+        skill_graph_edges: [
+          "Связи этапов",
+          "Предварительные условия отделены от полезной подготовки; оба конца принадлежат одной ревизии графа.",
+          "skills",
+        ],
+        media_assets: [
+          "Медиа Макса и Лики",
+          "Ключ файла, персонаж, тип, права и статус. Бинарные изображения не хранятся в PostgreSQL. Привязка к ревизии необязательна.",
+          "catalog",
+        ],
+        program_templates: [
+          "Шаблоны программ",
+          "Редакторский шаблон. Сейчас доступны четыре локальных demo-шаблона; физического версионирования шаблонов пока нет.",
+          "plans",
+        ],
+        template_steps: [
+          "Шаги шаблона",
+          "Порядок упражнений, закреплённая ревизия карточки и цели подходов/повторов.",
+          "plans",
+        ],
+        plans: ["Планы человека", "План аккаунта по выбранному шаблону.", "plans"],
+        workouts: [
+          "Занятия",
+          "Конкретная тренировка с состоянием, ревизией, временем и снимком условий.",
+          "training",
+        ],
+        workout_steps: [
+          "Шаги занятия",
+          "Снимок названий, инструкций и целей, ссылка на ревизию карточки.",
+          "training",
+        ],
+        workout_resources: [
+          "Ресурсы занятия",
+          "Снимок инвентаря при старте. Изменения исходного набора не меняют этот снимок.",
+          "training",
+        ],
+        recorded_sets: [
+          "Выполненные подходы",
+          "Фактический результат по шагу. Вес хранится в граммах; единица результата определяется metric шага.",
+          "training",
+        ],
+        workout_commands: [
+          "Журнал команд",
+          "operation_id и сохранённый результат обеспечивают безопасный повтор офлайн-команды.",
+          "training",
+        ],
+        xp_events: [
+          "События опыта",
+          "Начисление опыта. Уникальность по владельцу, занятию и событию предотвращает повторную награду.",
+          "training",
+        ],
+        ai_trials: [
+          "Пробный AI-доступ",
+          "Одна проба на аккаунт: срок, лимит, использованные и зарезервированные ответы.",
+          "ai",
+        ],
+        ai_reply_reservations: [
+          "Резервы AI-ответов",
+          "Резерв до вызова модели и статусы consumed/released. Qwen пока не подключён.",
+          "ai",
+        ],
+      };
+      const labels = {
+        auth: "Аккаунт и вход",
+        profile: "Профиль и инвентарь",
+        catalog: "Каталог и программы",
+        skills: "Графы навыков",
+        training: "Занятие и результат",
+        ai: "AI-доступ",
+        all: `Вся база · ${DB.tables.length} таблиц`,
+      };
+      const maps = {
+        catalog: {
+          exercises: [26, 66],
+          exercise_variants: [346, 66],
+          variant_revisions: [666, 66],
+          media_assets: [986, 66],
+          resource_types: [26, 266],
+          variant_requirements: [346, 266],
+          template_steps: [666, 266],
+          program_templates: [986, 266],
+          workouts: [666, 466],
+          plans: [986, 466],
+          muscle_groups: [26, 466],
+          variant_revision_muscles: [346, 466],
+          skill_graph_revisions: [26, 666],
+          skill_graph_nodes: [346, 666],
+          skill_graph_edges: [666, 666],
+        },
+        skills: {
+          variant_revisions: [26, 66],
+          skill_graph_revisions: [26, 266],
+          skill_graph_nodes: [346, 266],
+          skill_graph_edges: [666, 266],
+        },
+        training: {
+          users: [26, 66],
+          variant_revisions: [666, 66],
+          plans: [26, 266],
+          workouts: [346, 266],
+          workout_steps: [666, 266],
+          recorded_sets: [986, 266],
+          resource_types: [26, 466],
+          workout_resources: [346, 466],
+          workout_commands: [666, 466],
+          xp_events: [986, 466],
+        },
+        auth: {
+          users: [26, 166],
+          auth_accounts: [346, 66],
+          auth_sessions: [346, 266],
+          auth_verifications: [666, 66],
+          auth_rate_limits: [666, 266],
+        },
+        profile: {
+          users: [26, 66],
+          profiles: [346, 66],
+          equipment_profiles: [346, 266],
+          profile_resources: [666, 266],
+          resource_types: [986, 266],
+        },
+        ai: { users: [26, 66], ai_trials: [346, 66], ai_reply_reservations: [666, 66] },
+      };
+      const esc = (v) =>
+        String(v ?? "").replace(
+          /[&<>"']/g,
+          (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c],
+        );
+      const tables = DB.tables;
+      const fks = DB.foreignKeys.map((f) => ({
+        ...f,
+        table: f.fromTable,
+        columns: f.fromColumns,
+        referencesTable: f.toTable,
+        referencesColumns: f.toColumns,
+      }));
+      const byName = new Map(tables.map((t) => [t.name, t]));
+      let area = "catalog",
+        selected = "exercise_variants",
+        zoom = 1;
+      const W = 258,
+        H = 165;
+      function pk(t) {
+        return t.constraints.filter((c) => c.kind === "p").flatMap((c) => c.columns || []);
+      }
+      function unique(t) {
+        return t.constraints.filter((c) => ["p", "u"].includes(c.kind)).map((c) => c.columns || []);
+      }
+      function cardMany(fk) {
+        const t = byName.get(fk.table);
+        return unique(t).some((u) => u.length && u.every((c) => fk.columns.includes(c)))
+          ? "0..1"
+          : "0..N";
+      }
+      function nullable(fk) {
+        return fk.columns.some(
+          (c) => byName.get(fk.table).columns.find((col) => col.name === c)?.nullable,
+        );
+      }
+      function allMap() {
+        const groups = [
+          [
+            "auth",
+            ["users", "auth_accounts", "auth_sessions", "auth_verifications", "auth_rate_limits"],
+          ],
+          ["profile", ["profiles", "equipment_profiles", "profile_resources", "resource_types"]],
+          [
+            "catalog",
+            [
+              "exercises",
+              "exercise_variants",
+              "variant_requirements",
+              "variant_revisions",
+              "media_assets",
+              "muscle_groups",
+              "variant_revision_muscles",
+            ],
+          ],
+          ["plans", ["program_templates", "template_steps", "plans"]],
+          ["skills", ["skill_graph_revisions", "skill_graph_nodes", "skill_graph_edges"]],
+          [
+            "training",
+            [
+              "workouts",
+              "workout_steps",
+              "recorded_sets",
+              "workout_resources",
+              "workout_commands",
+              "xp_events",
+            ],
+          ],
+          ["ai", ["ai_trials", "ai_reply_reservations"]],
+        ];
+        const positions = {};
+        groups.forEach(([g, names], col) =>
+          names.forEach((name, row) => (positions[name] = [26 + col * 306, 66 + row * 192])),
+        );
+        return positions;
+      }
+      function line(a, b, index) {
+        const [ax, ay] = a,
+          [bx, by] = b;
+        let sx, sy, tx, ty, d;
+        if (ax === bx) {
+          sx = ax + W;
+          sy = ay + H / 2;
+          tx = bx + W;
+          ty = by + H / 2;
+          const rail = sx + 24 + (index % 3) * 7;
+          d = `M${sx},${sy} C${rail},${sy} ${rail},${ty} ${tx},${ty}`;
+        } else {
+          const forward = bx > ax;
+          sx = ax + (forward ? W : 0);
+          sy = ay + H / 2;
+          tx = bx + (forward ? 0 : W);
+          ty = by + H / 2;
+          if (area === "all" && Math.abs(bx - ax) > 306) {
+            const direction = forward ? 1 : -1;
+            const startRail = sx + direction * (17 + (index % 3));
+            const endRail = tx - direction * (17 + (index % 3));
+            const corridor = ay - 12 - (index % 4) * 2;
+            d = `M${sx},${sy} H${startRail} V${corridor} H${endRail} V${ty} H${tx}`;
+          } else {
+            const mid = (sx + tx) / 2;
+            d = `M${sx},${sy} C${mid},${sy} ${mid},${ty} ${tx},${ty}`;
+          }
+        }
+        return { d, sx, sy, tx, ty };
+      }
+      function svgContents(positions, active) {
+        const names = Object.keys(positions),
+          visible = fks.filter((f) => positions[f.table] && positions[f.referencesTable]);
+        let s = `<defs><marker id="arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#485649"/></marker><marker id="arrow-active" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#a93560"/></marker></defs><title>MIRON: физические связи PostgreSQL</title><desc>Внешние ключи от родительской таблицы к дочерней. Нажмите таблицу для списка всех колонок и связей.</desc>`;
+        if (area === "all")
+          Object.entries({
+            auth: 0,
+            profile: 1,
+            catalog: 2,
+            plans: 3,
+            skills: 4,
+            training: 5,
+            ai: 6,
+          }).forEach(
+            ([g, col]) =>
+              (s += `<text class="group-caption" x="${26 + col * 306}" y="35">${esc(g === "catalog" ? "Каталог и медиа" : g === "plans" ? "Шаблон и план" : labels[g])}</text>`),
+          );
+        visible.forEach((fk, i) => {
+          const points = line(positions[fk.referencesTable], positions[fk.table], i);
+          const isActive = active === fk.table || active === fk.referencesTable;
+          s += `<path class="edge${isActive ? " active" : ""}" d="${points.d}" marker-end="url(#${isActive ? "arrow-active" : "arrow"})"><title>${esc(fk.referencesTable)} (${esc(fk.referencesColumns.join(", "))}) → ${esc(fk.table)} (${esc(fk.columns.join(", "))}); родитель имеет ${cardMany(fk)} дочерних записей</title></path>`;
+          if (isActive) {
+            s += `<text class="edge-label" x="${points.sx + (points.tx > points.sx ? 8 : -21)}" y="${points.sy - 9}">${nullable(fk) ? "0..1" : "1"}</text><text class="edge-label" x="${points.tx + (points.tx > points.sx ? -34 : 9)}" y="${points.ty - 9}">${cardMany(fk)}</text>`;
+          }
+        });
+        names.forEach((name) => {
+          const t = byName.get(name),
+            [x, y] = positions[name],
+            foreign = fks.filter((f) => f.table === name).flatMap((f) => f.columns),
+            keys = [...new Set([...pk(t), ...foreign])],
+            display = keys.slice(0, 4);
+          s += `<g class="node${name === active ? " selected" : ""}" data-table="${name}" tabindex="0" role="button" aria-label="${esc(meta[name][0])}: ${name}" transform="translate(${x},${y})"><title>${esc(meta[name][1])}</title><rect class="card" width="${W}" height="${H}" rx="8"/><path class="node-head" d="M8,1 H${W - 8} Q${W - 1},1 ${W - 1},8 V54 H1 V8 Q1,1 8,1"/><text class="node-label" x="13" y="22">${esc(meta[name][0])}</text><text class="node-code" x="13" y="42">${esc(name)}</text>${display.map((c, i) => `<text class="node-key" x="13" y="${75 + i * 18}">${pk(t).includes(c) ? "PK" : "FK"} ${esc(c)}${pk(t).includes(c) && foreign.includes(c) ? " · FK" : ""}</text>`).join("")}<text class="node-code" x="${W - 13}" y="${H - 10}" text-anchor="end">${t.columns.length} полей</text></g>`;
+        });
+        return s;
+      }
+      function dimensions(p) {
+        return {
+          w: Math.max(...Object.values(p).map((v) => v[0])) + W + 35,
+          h: Math.max(...Object.values(p).map((v) => v[1])) + H + 30,
+        };
+      }
+      function draw() {
+        const p = area === "all" ? allMap() : maps[area],
+          size = dimensions(p),
+          svg = document.getElementById("map");
+        svg.setAttribute("viewBox", `0 0 ${size.w} ${size.h}`);
+        svg.setAttribute("width", size.w * zoom);
+        svg.setAttribute("height", size.h * zoom);
+        svg.innerHTML = svgContents(p, selected);
+        svg.querySelectorAll(".node").forEach((node) => {
+          const select = () => {
+            selected = node.dataset.table;
+            draw();
+            details();
+          };
+          node.addEventListener("click", select);
+          node.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              select();
+            }
+          });
+        });
+        document.getElementById("zoom-label").textContent = Math.round(zoom * 100) + "%";
+        document.getElementById("map-title").textContent = labels[area];
+        document
+          .querySelectorAll("#groups button")
+          .forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.group === area)));
+      }
+      function fit() {
+        const p = area === "all" ? allMap() : maps[area],
+          size = dimensions(p);
+        zoom = Math.min(
+          1.15,
+          Math.max(0.5, (document.getElementById("viewport").clientWidth - 24) / size.w),
+        );
+        draw();
+      }
+      function details() {
+        const t = byName.get(selected || "exercise_variants"),
+          name = t.name;
+        const primary = pk(t),
+          foreign = fks.filter((f) => f.table === name),
+          incoming = fks.filter((f) => f.referencesTable === name),
+          foreignCols = foreign.flatMap((f) => f.columns);
+        const relations = (list, outgoing) =>
+          list
+            .map(
+              (f) =>
+                `<div class="relation"><button data-related="${esc(outgoing ? f.referencesTable : f.table)}">${esc(outgoing ? f.referencesTable : f.table)}</button><code>${esc(f.columns.join(", "))} → ${esc(f.referencesTable)} (${esc(f.referencesColumns.join(", "))})</code><span class="sub">${outgoing ? `У этой строки: ${nullable(f) ? "0..1" : "1"} родитель` : `Дочерних строк: ${cardMany(f)}`} · ON DELETE ${esc(f.onDelete)}</span></div>`,
+            )
+            .join("");
+        document.getElementById("details").innerHTML =
+          `<div><div class="eyebrow">${esc(meta[name][2] === "plans" ? "Шаблон и план" : labels[meta[name][2]])}</div><h2>${esc(meta[name][0])}</h2><div class="table-name">${esc(name)}</div><p class="description">${esc(meta[name][1])}</p><h3>Поля · ${t.columns.length}</h3><table class="column-table"><tbody>${t.columns.map((c) => `<tr><td>${primary.includes(c.name) ? '<span class="key-tag">PK</span>' : ""}${foreignCols.includes(c.name) ? '<span class="key-tag">FK</span>' : ""}<code>${esc(c.name)}</code></td><td>${esc(c.type)}${c.nullable ? " · null" : ""}</td></tr>`).join("")}</tbody></table></div><div>${foreign.length ? `<div class="detail-section"><h3>Ссылается на · ${foreign.length}</h3>${relations(foreign, true)}</div>` : ""}${incoming.length ? `<div class="detail-section"><h3>На неё ссылаются · ${incoming.length}</h3>${relations(incoming, false)}</div>` : ""}<p class="detail-note">${foreign.some((f) => f.columns.length > 1) ? "Составной FK включает владельца: нельзя привязать дочернюю строку к чужому занятию или инвентарю." : "Связи в этом списке взяты из ограничений PostgreSQL."} ${["users", "profiles", "ai_trials"].includes(name) ? "FK сам по себе не требует существования дочерней записи; 0..1 показывает ограничение БД." : ""}</p></div>`;
+        document.querySelectorAll("[data-related]").forEach(
+          (b) =>
+            (b.onclick = () => {
+              selected = b.dataset.related;
+              if (!(area === "all" ? allMap() : maps[area])[selected]) area = "all";
+              fit();
+              details();
+            }),
+        );
+      }
+      const disciplineNames = {
+        strength: "Силовые",
+        mobility: "Мобильность",
+        stretch: "Растяжка",
+        yoga: "Йога",
+        calisthenics: "Калистеника",
+      };
+      const resistanceNames = {
+        bodyweight: "Свой вес",
+        free_weight: "Свободный вес",
+        machine: "Тренажёр",
+        cable: "Блок / трос",
+        band: "Резинка",
+        none: "Без отягощения",
+        isometric: "Удержание",
+      };
+      const contextNames = {
+        gym: "Зал",
+        home: "Дом",
+        outdoor: "Улица / природа",
+        workout_park: "Воркаут-площадка",
+      };
+      const difficultyNames = {
+        beginner: "Начальный",
+        intermediate: "Средний",
+        advanced: "Продвинутый",
+      };
+      const skillKindNames = {
+        none: "Обычное упражнение",
+        preparation: "Подготовка к навыку",
+        movement: "Отдельный двигательный навык",
+      };
+      const assignmentGateNames = {
+        standard_review: "Экспертная проверка карточки",
+        skill_review: "Проверка навыка тренером",
+      };
+      const muscleNames = {
+        chest: "Грудь",
+        back: "Спина",
+        lower_back: "Разгибатели спины",
+        shoulders: "Плечи",
+        biceps: "Бицепс",
+        triceps: "Трицепс",
+        forearms: "Предплечья",
+        abs: "Пресс",
+        obliques: "Косые мышцы",
+        glutes: "Ягодицы",
+        quads: "Передняя поверхность бедра",
+        hamstrings: "Задняя поверхность бедра",
+        calves: "Икры",
+        hip_flexors: "Сгибатели бедра",
+        adductors: "Внутренняя поверхность бедра",
+        hip_abductors: "Отводящие мышцы бедра",
+        neck: "Шея",
+        feet: "Мышцы стопы",
+      };
+      const muscleText = (e, role) =>
+        (e.muscles || [])
+          .filter((m) => m.role === role)
+          .map((m) => muscleNames[m.group] || m.nameRu || m.group)
+          .join(", ");
+      const workoutRoleNames = DB.catalogTaxonomy?.workoutRoles || {
+        warmup: "Разминка",
+        main: "Основная часть",
+        accessory: "Дополнение",
+        skill: "Практика навыка",
+        cooldown: "Заминка",
+        recovery: "Восстановление",
+      };
+      const purposeNames = DB.catalogTaxonomy?.purposes || {
+        strength: "Сила",
+        hypertrophy: "Рост мышц",
+        endurance: "Выносливость",
+        mobility: "Подвижность",
+        flexibility: "Гибкость",
+        skill: "Навык",
+        balance: "Баланс",
+        relaxation: "Расслабление",
+      };
+      const normalize = (value) =>
+        String(value || "")
+          .toLocaleLowerCase("ru")
+          .replaceAll("ё", "е");
+      const muscleSearchAliases = {
+        chest: ["грудь", "грудные"],
+        back: ["спина", "широчайшие"],
+        biceps: ["бицепс", "банка", "руки"],
+        triceps: ["трицепс", "руки"],
+        forearms: ["предплечья", "хват", "руки"],
+        glutes: ["ягодицы", "попа"],
+        abs: ["пресс", "кор"],
+        shoulders: ["плечи", "дельты"],
+        quads: ["квадрицепс"],
+        calves: ["икры"],
+      };
+      function primaryMatch(e, tokens) {
+        const focus = normalize(
+          (e.muscles || [])
+            .filter((muscle) => muscle.role === "primary")
+            .flatMap((muscle) => [
+              muscle.group,
+              muscle.nameRu,
+              muscleNames[muscle.group],
+              ...(muscleSearchAliases[muscle.group] || []),
+            ])
+            .join(" "),
+        );
+        const stopWords = new Set([
+          "на",
+          "для",
+          "с",
+          "со",
+          "в",
+          "и",
+          "у",
+          "по",
+          "без",
+          "к",
+          "от",
+          "до",
+          "из",
+        ]);
+        return tokens.filter((token) => !stopWords.has(token) && focus.includes(token)).length;
+      }
+      const contextSearch = {
+        home: "дома домашние",
+        gym: "зале зала",
+        outdoor: "улице природе природа",
+        workout_park: "площадке воркаут площадка",
+      };
+      function searchText(e) {
+        return normalize(
+          [
+            e.displayNameRu,
+            e.formalNameRu,
+            e.nameRu,
+            e.aliasEn,
+            e.id,
+            e.exerciseNameRu,
+            ...(e.aliases || []),
+            ...(e.editorial?.searchKeywords || []),
+            ...(e.muscles || []).flatMap((m) => [
+              m.group,
+              m.nameRu,
+              muscleNames[m.group],
+              ...(muscleSearchAliases[m.group] || []),
+            ]),
+            ...(e.directions || [e.discipline]).flatMap((key) => [key, disciplineNames[key]]),
+            ...(e.contexts || []).flatMap((key) => [key, contextNames[key], contextSearch[key]]),
+            ...(e.editorial?.workoutRoles || []).map((key) => workoutRoleNames[key]),
+            ...(e.editorial?.purposes || []).map((key) => purposeNames[key]),
+          ].join(" "),
+        );
+      }
+      function countLabel(e) {
+        const execution = e.editorial?.execution;
+        if (!execution) return e.metric === "time" ? "Секунды" : "Повторы";
+        const labels = {
+          total_reps: "Повторы всего",
+          per_side_reps: "Повторы на каждую сторону",
+          total_seconds: "Секунды всего",
+          per_side_seconds: "Секунды на каждую сторону",
+        };
+        return `${labels[execution.countSemantics]}${execution.repetitionUnit === "left_right_pair" ? " · повтор = левая + правая" : e.editorial.sideMode === "alternating" ? " · повтор = одно движение" : ""}`;
+      }
+      function catalogTags(e) {
+        const editorial = e.editorial;
+        if (!editorial) return "";
+        return `<div class="alias" style="margin-top:7px">${editorial.canonical ? "Основная карточка · " : ""}Приоритет редакции: ${esc(editorial.discoveryPriority)}</div><div class="alias">Роль: ${(editorial.workoutRoles || []).map((key) => esc(workoutRoleNames[key])).join(" · ")}</div><div class="alias">Цель: ${(editorial.purposes || []).map((key) => esc(purposeNames[key])).join(" · ")}</div><div class="alias">${esc(countLabel(e))}</div>`;
+      }
+      function skillDemandDetails(e) {
+        const demand = e.editorial?.skillDemand;
+        return demand
+          ? `<p class="alias" data-skill-rationale><strong>Почему так классифицировано:</strong> ${esc(demand.rationale)}</p>`
+          : "";
+      }
+      function classificationTags(e, annotate = true) {
+        const editorial = e.editorial;
+        if (!editorial) return '<div class="alias">Классификация не задана</div>';
+        const demand = editorial.skillDemand;
+        const gate = editorial.execution?.assignmentGate;
+        const attribute = (name, value) => (annotate ? ` data-${name}="${esc(value)}"` : "");
+        return `<div class="alias"${attribute("difficulty", editorial.difficulty)} style="margin-top:7px">Сложность: ${esc(difficultyNames[editorial.difficulty] || editorial.difficulty)}</div>${demand ? `<div class="alias"${attribute("skill-kind", demand.kind)}>${esc(skillKindNames[demand.kind] || demand.kind)}</div><div class="alias"${attribute("prior-skill", String(demand.requiresPriorSkill))}>Предварительный навык: ${demand.requiresPriorSkill ? "требуется" : "не требуется"}</div>` : '<div class="alias">Характер навыка не задан</div>'}<span class="status"${attribute("skill-gate", gate || "missing")} style="margin-top:5px">${esc(assignmentGateNames[gate] || "Допуск не задан")}</span>`;
+      }
+      function exerciseDetails(e) {
+        const ed = e.editorial;
+        if (!ed)
+          return `<details><summary>Семейство и ID</summary><div class="alias">${esc(e.exerciseNameRu)}</div><code>${esc(e.id)}</code></details>`;
+        const relationNames = (ids) =>
+          ids.map((id) => DB.exercises.find((x) => x.id === id)?.displayNameRu || id).join(", ");
+        return `<details><summary>Техника, алиасы и данные</summary><p>${esc(ed.formalNameRu)}</p><div class="alias">Алиасы: ${esc(ed.aliases.join(", "))}</div><div class="detail-classification">${classificationTags(e, false)}</div>${skillDemandDetails(e)}<p><strong>Черновик техники</strong><br>${ed.cues.map(esc).join("<br>")}</p><p>Ошибки: ${ed.mistakes.map(esc).join(" · ")}</p><div class="alias">${e.metric === "time" ? "Время в секундах" : "Повторы"}${ed.sideMode === "per_side" ? " · На каждую сторону" : ed.sideMode === "alternating" ? " · Поочерёдно" : ""}</div>${ed.optionalEquipment !== "none" ? `<p class="alias">Необязательные ресурсы: ${esc(ed.optionalEquipment)}</p>` : ""}${ed.relations.alternatives.length ? `<p class="alias">Кандидаты на замену: ${esc(relationNames(ed.relations.alternatives))}</p>` : ""}${ed.relations.regressions.length ? `<p class="alias">Кандидаты проще: ${esc(relationNames(ed.relations.regressions))}</p>` : ""}${ed.relations.progressions.length ? `<p class="alias">Кандидаты сложнее: ${esc(relationNames(ed.relations.progressions))}</p>` : ""}<p class="alias">Редакционные ориентиры: ${ed.sourceRefs
+          .filter((url) => url.startsWith("https://"))
+          .map(
+            (url, i) =>
+              `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">Источник ${i + 1}</a>`,
+          )
+          .join(
+            " · ",
+          )}. Карточка ожидает проверки специалистом.</p><code>${esc(e.id)}</code><br><code>family: ${esc(e.exerciseId)}</code></details>`;
+      }
+      function exercises() {
+        const q = normalize(document.getElementById("search").value.trim()),
+          d = document.getElementById("discipline").value,
+          r = document.getElementById("resource").value,
+          c = document.getElementById("context").value,
+          m = document.getElementById("muscle").value,
+          role = document.getElementById("muscle-role").value,
+          workoutRole = document.getElementById("workout-role").value,
+          purpose = document.getElementById("purpose").value,
+          difficulty = document.getElementById("difficulty").value,
+          skillKind = document.getElementById("skill-kind").value,
+          assignmentGate = document.getElementById("assignment-gate").value,
+          canonical = document.getElementById("canonical").value;
+        const queryTokens = q.split(/\s+/).filter(Boolean);
+        const rows = DB.exercises
+          .filter(
+            (e) =>
+              (!d || (e.directions || [e.discipline]).includes(d)) &&
+              (!c || e.contexts?.includes(c)) &&
+              (!m ||
+                e.muscles?.some(
+                  (muscle) => muscle.group === m && (role === "any" || muscle.role === "primary"),
+                )) &&
+              (!r || e.requirements.some((req) => req.code === r)) &&
+              (!workoutRole || e.editorial?.workoutRoles?.includes(workoutRole)) &&
+              (!purpose || e.editorial?.purposes?.includes(purpose)) &&
+              (!difficulty || e.editorial?.difficulty === difficulty) &&
+              (!skillKind || e.editorial?.skillDemand?.kind === skillKind) &&
+              (!assignmentGate || e.editorial?.execution?.assignmentGate === assignmentGate) &&
+              (!canonical || String(e.editorial?.canonical) === canonical) &&
+              queryTokens.every((token) => searchText(e).includes(token)),
+          )
+          .sort(
+            (a, b) =>
+              Number(normalize(b.displayNameRu || b.nameRu) === q) -
+                Number(normalize(a.displayNameRu || a.nameRu) === q) ||
+              primaryMatch(b, queryTokens) - primaryMatch(a, queryTokens) ||
+              Number(b.editorial?.canonical || false) - Number(a.editorial?.canonical || false) ||
+              (b.editorial?.discoveryPriority || 0) - (a.editorial?.discoveryPriority || 0) ||
+              (a.displayNameRu || a.nameRu).localeCompare(b.displayNameRu || b.nameRu, "ru"),
+          );
+        document.getElementById("result-count").textContent =
+          `Показано ${rows.length} из ${DB.exercises.length} вариантов`;
+        document.getElementById("exercise-rows").innerHTML =
+          rows
+            .map(
+              (e, i) =>
+                `<tr data-variant="${esc(e.id)}"><td>${i + 1}</td><td><div class="exercise-name">${esc(e.displayNameRu || e.nameRu)}</div><div class="alias">${esc(e.exerciseNameRu)}</div>${exerciseDetails(e)}${catalogTags(e)}</td><td><strong>${esc(muscleText(e, "primary") || (e.editorial?.focusMode === "relaxation" ? "Расслабление" : "Без разметки"))}</strong>${muscleText(e, "secondary") ? `<div class="alias" style="margin-top:4px">Также: ${esc(muscleText(e, "secondary"))}</div>` : ""}${muscleText(e, "stabilizer") ? `<div class="alias" style="margin-top:4px">Стабилизация: ${esc(muscleText(e, "stabilizer"))}</div>` : ""}</td><td>${(e.directions || [e.discipline]).map((direction) => esc(disciplineNames[direction] || direction)).join(" · ")}<div class="alias" style="margin-top:6px">${(e.contexts || []).map((context) => esc(contextNames[context] || context)).join(" · ")}</div><div class="alias" style="margin-top:6px">${esc(e.resistanceModeLabel || resistanceNames[e.resistanceMode] || e.resistanceMode)} · ${e.metric === "time" ? "секунды" : "повторы"}</div></td><td>${e.requirements.map((req) => `<span class="resource">${esc(req.displayNameRu || req.nameRu)}${req.quantity > 1 ? " × " + req.quantity : ""}${req.requiresConfirmation ? "<br><small>Требует подтверждения</small>" : ""}</span>`).join("") || '<span class="alias">В БД требований нет</span>'}</td><td><span class="status">${e.status === "draft" ? "Черновик" : esc(e.status)}</span>${classificationTags(e)}<div class="alias" style="margin-top:5px">${e.revisionCount} версий · ${e.mediaCount} медиа</div></td></tr>`,
+            )
+            .join("") ||
+          '<tr><td colspan="6" class="blank-search">По этим фильтрам ничего не найдено.</td></tr>';
+      }
+      document.getElementById("stats").innerHTML =
+        `<div><strong>${tables.length}</strong><span>таблиц</span></div><div><strong>${fks.length}</strong><span>внешних ключей</span></div><div><strong>${DB.exercises.length}</strong><span>вариантов упражнений</span></div>`;
+      document.getElementById("source").innerHTML =
+        `Источник: локальный PostgreSQL · физическая схема<br>Снимок: ${new Date(DB.generatedAt).toLocaleString("ru-RU", { timeZone: "Europe/Moscow", dateStyle: "short", timeStyle: "short" })} МСК`;
+      document.getElementById("groups").innerHTML = Object.entries(labels)
+        .map(
+          ([key, label]) =>
+            `<button data-group="${key}" aria-pressed="${key === area}">${label}</button>`,
+        )
+        .join("");
+      document.querySelectorAll("[data-group]").forEach(
+        (b) =>
+          (b.onclick = () => {
+            area = b.dataset.group;
+            const p = area === "all" ? allMap() : maps[area];
+            if (!p[selected]) selected = Object.keys(p)[0];
+            fit();
+            details();
+          }),
+      );
+      document.getElementById("catalog-note").textContent =
+        `${new Set(DB.exercises.map((e) => e.exerciseId)).size} семейств · ${DB.exercises.length} вариантов. Все ${DB.exercises.filter((e) => e.status === "draft").length} — черновики. Изображения техники ещё не добавлены.`;
+      const disciplines = [...new Set(DB.exercises.flatMap((e) => e.directions || [e.discipline]))];
+      document.getElementById("discipline").innerHTML += [...disciplines]
+        .map(
+          (d) =>
+            `<option value="${esc(d)}">${esc(disciplineNames[d] || d)} · ${DB.exercises.filter((e) => (e.directions || [e.discipline]).includes(d)).length}</option>`,
+        )
+        .join("");
+      const resources = new Map(
+        DB.exercises
+          .flatMap((e) => e.requirements)
+          .map((r) => [r.code, r.displayNameRu || r.nameRu]),
+      );
+      document.getElementById("resource").innerHTML += [...resources]
+        .sort((a, b) => a[1].localeCompare(b[1], "ru"))
+        .map(([c, n]) => `<option value="${esc(c)}">${esc(n)}</option>`)
+        .join("");
+      document.getElementById("context").innerHTML += Object.entries(contextNames)
+        .map(
+          ([key, name]) =>
+            `<option value="${key}">${esc(name)} · ${DB.exercises.filter((e) => e.contexts?.includes(key)).length}</option>`,
+        )
+        .join("");
+      document.getElementById("muscle").innerHTML += Object.entries(muscleNames)
+        .map(([key, name]) => `<option value="${key}">${esc(name)}</option>`)
+        .join("");
+      for (const [id, taxonomy] of [
+        ["workout-role", workoutRoleNames],
+        ["purpose", purposeNames],
+        ["difficulty", difficultyNames],
+        ["skill-kind", skillKindNames],
+        ["assignment-gate", assignmentGateNames],
+      ]) {
+        document.getElementById(id).innerHTML += Object.entries(taxonomy)
+          .map(([key, label]) => `<option value="${key}">${esc(label)}</option>`)
+          .join("");
+      }
+      [
+        "search",
+        "discipline",
+        "resource",
+        "context",
+        "muscle",
+        "muscle-role",
+        "workout-role",
+        "purpose",
+        "canonical",
+        "difficulty",
+        "skill-kind",
+        "assignment-gate",
+      ].forEach((id) => document.getElementById(id).addEventListener("input", exercises));
+      function tab(which) {
+        ["erd", "exercises", "skills"].forEach((id) => {
+          document.getElementById(id + "-panel").hidden = id !== which;
+          document.getElementById("tab-" + id).setAttribute("aria-selected", String(id === which));
+        });
+        if (which === "erd") fit();
+        else if (which === "skills") drawSkillGraph();
+        else exercises();
+      }
+      document.getElementById("tab-erd").onclick = () => tab("erd");
+      document.getElementById("tab-exercises").onclick = () => tab("exercises");
+      document.getElementById("tab-skills").onclick = () => tab("skills");
+      let selectedSkillNode = "";
+      const skillGraphs = DB.skillGraphs || [];
+      const historicalSkillGraphs = DB.historicalSkillGraphs || [];
+      document.getElementById("skill-history").textContent =
+        `Активные графы: ${skillGraphs.length} · черновики: ${skillGraphs.filter((graph) => graph.status === "draft").length}. Исторических ревизий: ${historicalSkillGraphs.length}; физических ревизий в БД: ${DB.stats.skillGraphRevisions ?? skillGraphs.length + historicalSkillGraphs.length}. В списке ниже — только активные графы. Активных этапов: ${DB.stats.activeSkillGraphNodes ?? skillGraphs.reduce((sum, graph) => sum + graph.nodes.length, 0)}; физических строк этапов: ${DB.stats.skillGraphNodes ?? "не указано"}.`;
+      document.getElementById("skill-graph").innerHTML = skillGraphs
+        .map((graph) => `<option value="${esc(graph.code)}">${esc(graph.nameRu)}</option>`)
+        .join("");
+      document.getElementById("skill-graph").onchange = () => {
+        selectedSkillNode = "";
+        drawSkillGraph();
+      };
+      function skillName(node) {
+        return (
+          DB.exercises.find((exercise) => exercise.id === node.variantId)?.displayNameRu ||
+          node.variantId
+        );
+      }
+      function skillPositions(graph, includePreparation = true) {
+        const levels = new Map(graph.nodes.map((node) => [node.id, 0]));
+        const incoming = new Map(graph.nodes.map((node) => [node.id, 0]));
+        const outgoing = new Map(graph.nodes.map((node) => [node.id, []]));
+        for (const edge of graph.edges.filter(
+          (edge) => includePreparation || edge.kind === "prerequisite",
+        )) {
+          incoming.set(edge.to, incoming.get(edge.to) + 1);
+          outgoing.get(edge.from).push(edge.to);
+        }
+        const queue = graph.nodes.filter((node) => !incoming.get(node.id)).map((node) => node.id);
+        let processed = 0;
+        while (queue.length) {
+          const from = queue.shift();
+          processed += 1;
+          for (const to of outgoing.get(from)) {
+            levels.set(to, Math.max(levels.get(to), levels.get(from) + 1));
+            incoming.set(to, incoming.get(to) - 1);
+            if (!incoming.get(to)) queue.push(to);
+          }
+        }
+        if (includePreparation && processed !== graph.nodes.length)
+          return skillPositions(graph, false);
+        const slots = new Map();
+        const positions = new Map();
+        for (const node of graph.nodes) {
+          const column = levels.get(node.id);
+          const row = slots.get(column) || 0;
+          slots.set(column, row + 1);
+          positions.set(node.id, [24 + column * 320, 30 + row * 145]);
+        }
+        return positions;
+      }
+      function drawSkillGraph() {
+        const graph =
+          skillGraphs.find((item) => item.code === document.getElementById("skill-graph").value) ||
+          skillGraphs[0];
+        if (!graph) {
+          document.getElementById("skills-panel").hidden = true;
+          document.getElementById("tab-skills").hidden = true;
+          return;
+        }
+        if (!graph.nodes.some((node) => node.id === selectedSkillNode))
+          selectedSkillNode = graph.nodes[0].id;
+        document.getElementById("skill-title").textContent = graph.nameRu;
+        document.getElementById("skill-summary").textContent =
+          `Ревизия ${graph.revision} · ${graph.nodes.length} этапов · ${graph.edges.length} связей · черновик`;
+        const positions = skillPositions(graph);
+        const width = Math.max(...[...positions.values()].map(([x]) => x + 278)) + 74;
+        const height = Math.max(...[...positions.values()].map(([, y]) => y + 105)) + 30;
+        const svg = document.getElementById("skill-map");
+        svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+        svg.setAttribute("width", width);
+        svg.setAttribute("height", height);
+        svg.innerHTML =
+          '<defs><marker id="skill-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10" fill="var(--code)"/></marker></defs>' +
+          graph.edges
+            .map((edge) => {
+              const [fromX, fromY] = positions.get(edge.from),
+                [toX, toY] = positions.get(edge.to);
+              const startX = fromX + 264,
+                startY = fromY + 52,
+                endY = toY + 52;
+              const sameColumn = fromX === toX;
+              const endX = sameColumn ? toX + 264 : toX;
+              const midX = sameColumn ? startX + 44 : (startX + endX) / 2;
+              return `<path data-kind="${edge.kind}" class="skill-edge ${edge.kind}" d="M${startX},${startY} C${midX},${startY} ${midX},${endY} ${endX},${endY}" marker-end="url(#skill-arrow)"/>`;
+            })
+            .join("") +
+          graph.nodes
+            .map((node) => {
+              const [x, y] = positions.get(node.id);
+              const name = skillName(node);
+              const words = name.split(" ");
+              let first = "",
+                second = "";
+              for (const word of words) {
+                if ((first + " " + word).trim().length < 33 && !second)
+                  first = (first + " " + word).trim();
+                else second = (second + " " + word).trim();
+              }
+              return `<g class="skill-node ${node.id === selectedSkillNode ? "selected" : ""}" data-node="${esc(node.id)}" tabindex="0" role="button" aria-label="${esc(name)}: этап графа"><rect x="${x}" y="${y}" width="264" height="105" rx="7"/><text x="${x + 12}" y="${y + 24}">${esc(first)}</text><text x="${x + 12}" y="${y + 42}">${esc(second)}</text><text class="skill-caption" x="${x + 12}" y="${y + 66}">${!graph.edges.some((edge) => edge.to === node.id && edge.kind === "prerequisite") ? "Без заданных предусловий" : node.prerequisiteMode === "all" ? "Все предварительные условия" : "Любое предварительное условие"}</text><text class="skill-caption" x="${x + 12}" y="${y + 85}">Этап графа · черновик</text></g>`;
+            })
+            .join("");
+        for (const element of svg.querySelectorAll(".skill-node")) {
+          const select = () => {
+            selectedSkillNode = element.dataset.node;
+            drawSkillGraph();
+          };
+          element.onclick = select;
+          element.onkeydown = (event) => {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              select();
+              svg.querySelector(`[data-node="${CSS.escape(selectedSkillNode)}"]`)?.focus();
+            }
+          };
+        }
+        const node = graph.nodes.find((item) => item.id === selectedSkillNode);
+        const exercise = DB.exercises.find((item) => item.id === node.variantId);
+        const prerequisites = graph.edges
+          .filter((edge) => edge.to === node.id && edge.kind === "prerequisite")
+          .map((edge) => skillName(graph.nodes.find((item) => item.id === edge.from)));
+        const preparations = graph.edges
+          .filter((edge) => edge.to === node.id && edge.kind === "preparation")
+          .map((edge) => skillName(graph.nodes.find((item) => item.id === edge.from)));
+        document.getElementById("skill-details").innerHTML =
+          `<h3>${esc(skillName(node))}</h3><p class="sub">${node.prerequisiteMode === "all" ? "Все" : "Любое из"} предварительных условий: ${esc(prerequisites.join(" · ") || "начальный этап, решение тренера")}</p>${preparations.length ? `<p class="sub">Полезная подготовка: ${esc(preparations.join(" · "))}</p>` : ""}<p>${node.assessmentNotes.map(esc).join("<br>")}</p><p class="sub">Оценка этапа графа: ручная проверка тренером. Она не определяет допуск самой карточки. Числовой порог и дозировка не заданы.</p>${exercise ? classificationTags(exercise) + catalogTags(exercise) + exerciseDetails(exercise) : ""}`;
+      }
+      document.getElementById("zoom-out").onclick = () => {
+        zoom = Math.max(0.5, zoom - 0.15);
+        draw();
+      };
+      document.getElementById("zoom-in").onclick = () => {
+        zoom = Math.min(1.8, zoom + 0.15);
+        draw();
+      };
+      document.getElementById("fit").onclick = fit;
+      document.getElementById("clear").onclick = () => {
+        selected = null;
+        draw();
+        details();
+      };
+      window.makeFullSvg = () => {
+        const p = allMap(),
+          size = dimensions(p),
+          old = area;
+        area = "all";
+        const content = svgContents(p, null);
+        area = old;
+        const css = [...document.styleSheets]
+          .flatMap((s) => [...s.cssRules].map((r) => r.cssText))
+          .join("\n");
+        return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size.w} ${size.h + 106}" width="${size.w}" height="${size.h + 106}"><style>${css}</style><rect width="100%" height="100%" fill="#ffffff"/><text class="node-label" x="26" y="29" style="font-size:22px">MIRON / ERD</text><text class="node-code" x="26" y="53">${tables.length} таблиц · ${fks.length} внешних ключей · стрелка: родитель → дочерняя таблица · PK/FK: ключевые поля</text><g transform="translate(0,65)">${content}</g><text class="node-code" x="26" y="${size.h + 88}">Источник: локальный PostgreSQL · снимок ${esc(new Date(DB.generatedAt).toLocaleDateString("ru-RU"))} · точные составные ключи и кардинальность доступны в интерактивной версии.</text></svg>`;
+      };
+      document.getElementById("export-svg").onclick = () => {
+        const url = URL.createObjectURL(
+          new Blob([window.makeFullSvg()], { type: "image/svg+xml;charset=utf-8" }),
+        );
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "miron-erd.svg";
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+      };
+      details();
+      exercises();
+      fit();
+      if (location.hash === "#exercises") tab("exercises");
+      if (location.hash === "#skills") tab("skills");
+    </script>
+  </body>
+</html>

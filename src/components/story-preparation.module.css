@@ -1,0 +1,212 @@
+.sequence {
+  grid-column: 1;
+  grid-row: 2;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-block: clamp(18px, 3dvh, 36px);
+}
+.steps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: clamp(14px, 2.5dvh, 28px);
+}
+.steps li {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 1.2vw, 22px);
+  font-size: clamp(15px, 1.25vw, 24px);
+  font-weight: 600;
+  opacity: 0.46;
+  transition: opacity 300ms ease;
+}
+.steps li[data-state="active"],
+.steps li[data-state="done"] {
+  opacity: 1;
+}
+.indicator {
+  position: relative;
+  width: clamp(32px, 3.2vw, 54px);
+  height: clamp(32px, 3.2vw, 54px);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  color: var(--accent, #ff896d);
+}
+.cutRing {
+  width: 92%;
+  height: 92%;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 40deg,
+    transparent 0deg 24deg,
+    currentColor 24deg 180deg,
+    transparent 180deg 204deg,
+    currentColor 204deg 360deg
+  );
+  mask: radial-gradient(circle, transparent 48%, #000 51%);
+}
+.steps li[data-state="active"] .cutRing {
+  animation: turn 1.3s linear infinite;
+}
+.steps li[data-state="done"] .indicator {
+  border-radius: 50%;
+  background: var(--accent, #ff896d);
+  color: var(--button-ink, #231a19);
+}
+.check {
+  width: 68%;
+  height: 68%;
+  animation: checkIn 360ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.check path {
+  stroke-dasharray: 30;
+  stroke-dashoffset: 30;
+  animation: draw 320ms ease-out forwards;
+}
+.burst {
+  position: absolute;
+  inset: -5px;
+  border: 1px solid var(--accent, #ff896d);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: burst 430ms ease-out both;
+}
+.status {
+  font-size: clamp(12px, 1vw, 18px);
+  margin: clamp(24px, 4dvh, 50px) 0 12px;
+  opacity: 0.7;
+  min-height: 20px;
+}
+.track {
+  height: 7px;
+  border-radius: 5px;
+  overflow: hidden;
+  background: #88888830;
+}
+.track span {
+  display: block;
+  height: 100%;
+  background: var(--accent, #ff896d);
+  transform-origin: left;
+  transition: transform 450ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (max-aspect-ratio: 1/1) {
+  .sequence {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto auto;
+    justify-content: normal;
+    gap: 10px;
+    padding: 0;
+  }
+  .steps {
+    gap: clamp(8px, 1.3dvh, 18px);
+  }
+  .steps li {
+    font-size: clamp(13px, 3.7vw, 24px);
+    gap: clamp(12px, 3vw, 24px);
+  }
+  .indicator {
+    width: clamp(28px, 8vw, 54px);
+    height: clamp(28px, 8vw, 54px);
+  }
+  .status {
+    grid-row: 3;
+    font-size: clamp(11px, 2.8vw, 18px);
+    margin: 0;
+    min-height: 1.4em;
+  }
+  .track {
+    grid-row: 4;
+  }
+}
+@media (max-aspect-ratio: 1/1) and (max-height: 700px) {
+  .sequence {
+    gap: 6px;
+  }
+  .steps {
+    gap: 7px;
+  }
+  .steps li {
+    font-size: 12px;
+  }
+  .indicator {
+    width: 25px;
+    height: 25px;
+  }
+  .status {
+    font-size: 10px;
+  }
+  .track {
+    height: 5px;
+  }
+}
+@media (min-aspect-ratio: 1/1) and (max-height: 650px) {
+  .sequence {
+    padding-block: 10px;
+  }
+  .steps {
+    gap: 5px;
+  }
+  .steps li {
+    font-size: 11px;
+    gap: 8px;
+  }
+  .indicator {
+    width: 23px;
+    height: 23px;
+  }
+  .status {
+    font-size: 10px;
+    margin: 8px 0 6px;
+    min-height: 14px;
+  }
+  .track {
+    height: 5px;
+  }
+}
+@keyframes turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes checkIn {
+  from {
+    transform: scale(0.75);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes burst {
+  from {
+    transform: scale(0.75);
+    opacity: 0.8;
+  }
+  to {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sequence *,
+  .sequence *::before,
+  .sequence *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .check path {
+    stroke-dashoffset: 0;
+  }
+}

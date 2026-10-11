@@ -1,0 +1,22 @@
+node_modules/
+.next/
+.local/
+.tmp/
+.env
+.env.local
+.env.*.local
+.env.*
+!.env.example
+coverage/
+test-results/
+playwright-report/
+*.tsbuildinfo
+*.log
+__pycache__/
+*.py[cod]
+.deploy/
+# Local design masters and verification captures; optimized runtime art is in public/.
+concepts/
+artifacts/
+assets/onboarding/
+assets/dashboard/

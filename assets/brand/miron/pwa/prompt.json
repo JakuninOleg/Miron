@@ -1,0 +1,6 @@
+{
+  "tool": "Built-in image_gen.imagegen",
+  "created": "2026-10-06",
+  "reference": "../v2/miron-mark-charcoal.png",
+  "prompt": "Use case: logo-brand. Create a square 1:1 PWA app icon MASTER using the exact ribbon M in the provided artwork. This is a practical export of the existing brand symbol, not a redesign.\nOnly the white and pink ribbon M centered on a solid edge-to-edge charcoal background #141416. Preserve the smooth rounded shoulder at upper left, pearly-white left ribbon, soft blush central twist and saturated pink rising diagonal/right upright, satin shading inside the shape, crisp clean outline, small diagonal dark gap at upper right. No typography.\nIMPORTANT MASKABLE SAFE AREA: the M must be centered in both axes and occupy ONLY 64% of the square width and about 38% height. Every part of the M must fit completely inside the central circle whose radius is 40% of the square side. Leave generous background all around for operating system masks. Full square opaque background, no transparency, no pre-rounded app container, no visible circle or safe-area guide, no border. No extra glow, no shadow outside the ribbon, no bloom, no bevelled square, no new elements, no lettering, no texture or particles.\nCanvas must be square, polished standalone icon master, clean background extends to all four edges."
+}

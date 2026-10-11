@@ -1,0 +1,549 @@
+.screen {
+  --coral: #ff765e;
+  --pink: #ed729d;
+  height: 100svh;
+  height: 100dvh;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  background: #080e0f;
+  color: #f7f6f3;
+  font-family: Manrope, sans-serif;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  overflow: clip;
+}
+.scene {
+  position: relative;
+  isolation: isolate;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+}
+.artStage {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+}
+.picture {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+.art {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 35%;
+}
+.artShade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, #071012eb, #0710128c 25%, transparent 43%),
+    linear-gradient(0deg, #071012 0%, #071012c2 9%, transparent 30%);
+}
+.copy {
+  margin: 0 0 0 5.5%;
+  align-self: center;
+  width: 30%;
+  position: relative;
+  isolation: isolate;
+}
+.intro {
+  position: relative;
+  isolation: isolate;
+}
+.copyPaint {
+  position: absolute;
+  z-index: -1;
+  left: -5vw;
+  top: 12%;
+  width: calc(100% + 4vw);
+  height: calc(100% + 8dvh);
+  background: url("/story-first/paint-frame-v1.webp") center / 100% 100% no-repeat;
+  opacity: 0.52;
+  pointer-events: none;
+}
+.eyebrow {
+  display: none;
+}
+.title {
+  position: relative;
+  margin: 0;
+  font-family: "Roboto Condensed", Oswald, sans-serif;
+  font-weight: 900;
+  font-size: clamp(43px, min(5.55vw, 9.8dvh), 100px);
+  line-height: 0.98;
+  letter-spacing: -1px;
+  transform: scaleX(0.87);
+  transform-origin: left center;
+  width: 114.94%;
+}
+.greeting,
+.names,
+.maxLine,
+.likaLine {
+  display: block;
+}
+.title em {
+  font-style: normal;
+  position: relative;
+  display: inline-block;
+}
+.maxName {
+  color: var(--coral);
+}
+.likaName {
+  color: var(--pink);
+}
+.maxName:after,
+.likaName:after {
+  content: "";
+  position: absolute;
+  bottom: 0.02em;
+  left: 0;
+  width: 100%;
+  height: 0.055em;
+  background: currentColor;
+  clip-path: polygon(0 60%, 46% 0, 100% 30%, 95% 85%, 42% 55%, 1% 100%);
+  transform: rotate(-2deg);
+  transform-origin: left center;
+  animation: underlineReveal 380ms ease-out both;
+}
+.likaName:after {
+  animation-delay: 90ms;
+}
+.description {
+  margin: clamp(16px, 3.6dvh, 36px) 0 0;
+  font-size: clamp(13px, 1.4vw, 24px);
+  line-height: 1.35;
+  letter-spacing: -0.3px;
+  color: #e5e8e7;
+}
+.description svg {
+  width: 1.35em;
+  height: 1.35em;
+  vertical-align: middle;
+  stroke-width: 1.7;
+  transform: rotate(-10deg);
+  margin-left: 4px;
+}
+.cta {
+  min-height: 48px;
+  height: clamp(48px, 7.3dvh, 72px);
+  width: 100%;
+  margin-top: clamp(20px, 4.4dvh, 46px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 0 12px;
+  background: linear-gradient(105deg, #ff825f, #fa735f);
+  color: #120e0c;
+  border: 1px solid #ff9a7840;
+  border-radius: 7px;
+  font-size: clamp(15px, 1.4vw, 24px);
+  font-weight: 700;
+  transition:
+    transform 160ms ease,
+    filter 160ms ease;
+}
+.cta > svg {
+  width: 1.5em;
+  height: 1.5em;
+  stroke-width: 1.8;
+}
+.cta:hover {
+  filter: brightness(1.06);
+}
+.cta:active {
+  transform: scale(0.985);
+}
+.bubble {
+  position: absolute;
+  isolation: isolate;
+  padding: calc(clamp(10px, 1.2vw, 22px) + 3px);
+  color: #111616;
+  font-size: clamp(13px, 1.25vw, 22px);
+  font-weight: 700;
+  line-height: 1.25;
+  transform: rotate(-6deg);
+}
+.bubbleShape {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 150%;
+  overflow: visible;
+  fill: #f0ede7;
+  stroke: #111616;
+  stroke-width: 3px;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+.portraitBubbleShape {
+  display: none;
+}
+.bubble p {
+  margin: 0;
+}
+.speaker {
+  position: absolute;
+  top: -22px;
+  left: 0;
+  background: #090f10;
+  padding: 3px 11px;
+  border-radius: 7px 7px 0 0;
+  font:
+    600 clamp(16px, 1.5vw, 24px)/1 Oswald,
+    sans-serif;
+  color: var(--coral);
+}
+.maxBubble {
+  left: 35%;
+  top: 8%;
+  width: 13.5%;
+}
+.likaBubble {
+  right: 10%;
+  top: 19%;
+  width: 14%;
+  transform: rotate(-5deg);
+}
+.likaBubble .speaker {
+  color: var(--pink);
+}
+.likaBubble .bubbleShape {
+  left: -16.6667%;
+  width: 116.6667%;
+}
+.artNote {
+  position: absolute;
+  left: 26%;
+  top: 8%;
+  margin: 0;
+  color: #b2b5b580;
+  font:
+    clamp(17px, 1.8vw, 27px)/1.1 Neucha,
+    sans-serif;
+  transform: rotate(-13deg);
+}
+.artNote span {
+  display: block;
+  text-align: center;
+  font-size: 1.6em;
+  margin-top: 8px;
+}
+.bottom {
+  margin: 0;
+  padding: 0 5.5% clamp(22px, 6dvh, 68px);
+}
+.features {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  max-width: 1250px;
+  margin-inline: auto;
+}
+.feature {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(12px, 1.6vw, 26px);
+  padding-inline: clamp(12px, 1.5vw, 25px);
+  border-right: 1px solid #6170744a;
+}
+.feature:last-child {
+  border: 0;
+}
+.feature > svg {
+  width: clamp(28px, 3vw, 48px);
+  height: clamp(28px, 3vw, 48px);
+  flex-shrink: 0;
+  stroke-width: 1.5;
+}
+.feature h2 {
+  margin: 0 0 4px;
+  font:
+    500 clamp(13px, 1.2vw, 20px)/1.2 Oswald,
+    sans-serif;
+}
+.feature p {
+  color: #b5c0c3;
+  font-size: clamp(11px, 1.05vw, 18px);
+  line-height: 1.4;
+  margin: 0;
+}
+.mobileProgress {
+  display: none;
+}
+@media (max-width: 1200px) {
+  .feature {
+    gap: 12px;
+  }
+}
+@media (max-aspect-ratio: 1/1) {
+  .scene {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto auto;
+  }
+  .copy {
+    display: contents;
+  }
+  .intro {
+    grid-row: 1;
+    margin: 0 6%;
+    padding-top: clamp(2px, 0.6dvh, 10px);
+  }
+  .copyPaint {
+    display: none;
+  }
+  .eyebrow {
+    display: block;
+    color: #a9bdc7;
+    font-size: clamp(8px, min(2.5vw, 1.55dvh), 15px);
+    line-height: 1.2;
+    letter-spacing: clamp(1.3px, 0.42vw, 3px);
+    margin: 0 0 clamp(8px, 1.2dvh, 20px);
+  }
+  .title {
+    font-size: clamp(33px, min(13.2vw, 7.7dvh), 91px);
+    line-height: 0.99;
+    width: 121.95%;
+    transform: scaleX(0.82);
+  }
+  .names {
+    white-space: nowrap;
+  }
+  .maxLine,
+  .likaLine {
+    display: inline;
+  }
+  .maxName:after,
+  .likaName:after {
+    bottom: -0.09em;
+    height: 0.07em;
+  }
+  .description {
+    margin: clamp(10px, 1.6dvh, 22px) 0 clamp(5px, 0.7dvh, 10px);
+    font-size: clamp(12px, min(4vw, 2.4dvh), 27px);
+    line-height: 1.3;
+    white-space: nowrap;
+    letter-spacing: -0.3px;
+  }
+  .description svg {
+    width: 1.1em;
+    height: 1.1em;
+    margin-left: 2px;
+  }
+  .artStage {
+    position: relative;
+    inset: auto;
+    grid-row: 2;
+    min-height: 0;
+    overflow: hidden;
+    z-index: 0;
+  }
+  .picture {
+    inset: 0;
+  }
+  .art {
+    object-position: center 15%;
+  }
+  .artShade {
+    background: linear-gradient(0deg, #080e0f 0%, transparent 21%, transparent 92%, #080e0f 100%);
+  }
+  .maxBubble,
+  .likaBubble {
+    padding: calc(clamp(9px, 2vw, 20px) + 2px);
+    font-family: Neucha, sans-serif;
+    font-size: clamp(13px, 3.7vw, 27px);
+  }
+  .maxBubble {
+    left: 4%;
+    top: 9%;
+    width: 27%;
+    transform: rotate(-8deg);
+  }
+  .likaBubble {
+    top: 2%;
+    right: 6%;
+    width: 37%;
+    padding: clamp(12px, 3vw, 24px);
+    font-family: Manrope, sans-serif;
+    font-size: clamp(12px, 3.2vw, 25px);
+    line-height: 1.4;
+    transform: none;
+  }
+  .likaBubble .portraitBubbleShape {
+    left: 0;
+    width: 100%;
+  }
+  .speaker {
+    display: none;
+  }
+  .desktopBubbleShape {
+    display: none;
+  }
+  .portraitBubbleShape {
+    display: block;
+    stroke-width: 2px;
+  }
+  .artNote {
+    left: 7%;
+    top: auto;
+    bottom: 8%;
+    color: #b1bcc085;
+    font-size: clamp(15px, 4.2vw, 34px);
+  }
+  .artNote span {
+    font-size: 1.3em;
+    margin-top: 3px;
+  }
+  .cta {
+    grid-row: 3;
+    margin: 0 6%;
+    width: 88%;
+    height: clamp(46px, 7.1dvh, 76px);
+    min-height: 44px;
+    font-size: clamp(16px, 4.5vw, 28px);
+    gap: clamp(16px, 5vw, 38px);
+    border-radius: 9px;
+  }
+  .bottom {
+    grid-row: 4;
+    padding: clamp(12px, 2.1dvh, 30px) 6% clamp(10px, 2dvh, 26px);
+    margin: 0;
+  }
+  .features {
+    display: none;
+  }
+  .mobileProgress {
+    display: block;
+  }
+  .mobileProgress p {
+    text-align: center;
+    color: #b3c3ce;
+    font:
+      400 clamp(9px, min(2.8vw, 1.7dvh), 16px)/1.2 Oswald,
+      sans-serif;
+    letter-spacing: clamp(2px, 0.8vw, 5px);
+    margin: clamp(10px, 1.7dvh, 24px) 0 0;
+  }
+}
+@media (max-aspect-ratio: 1/1) and (min-width: 600px) {
+  .intro {
+    margin-inline: 10%;
+  }
+  .title {
+    font-size: clamp(64px, 8.1dvh, 110px);
+  }
+  .description {
+    font-size: clamp(21px, 2.5dvh, 31px);
+  }
+  .art {
+    object-fit: cover;
+    object-position: center 17%;
+  }
+  .artStage {
+    background: radial-gradient(ellipse at center, #37272b44, transparent 70%);
+  }
+  .maxBubble {
+    left: 3%;
+    top: 8%;
+    width: 21%;
+    font-size: clamp(22px, 2.5vw, 30px);
+  }
+  .likaBubble {
+    right: 5%;
+    top: 2%;
+    width: 27%;
+    font-size: clamp(22px, 2.5vw, 30px);
+  }
+  .artNote {
+    left: 5%;
+  }
+  .cta {
+    margin-inline: 10%;
+    width: 80%;
+  }
+}
+@media (min-aspect-ratio: 1/1) and (max-height: 600px) {
+  .copy {
+    align-self: start;
+    padding-top: clamp(12px, 4dvh, 24px);
+    width: 36%;
+  }
+  .copyPaint {
+    display: none;
+  }
+  .title {
+    font-size: clamp(28px, 8.5dvh, 50px);
+  }
+  .description {
+    margin-top: 12px;
+    font-size: clamp(11px, 2.7dvh, 15px);
+  }
+  .cta {
+    margin-top: 14px;
+    height: 44px;
+    min-height: 44px;
+    font-size: 14px;
+  }
+  .bottom {
+    display: none;
+  }
+  .artNote {
+    display: none;
+  }
+  .bubble {
+    font-size: 12px;
+    padding: 11px;
+  }
+  .bubbleShape {
+    stroke-width: 2px;
+  }
+  .speaker {
+    font-size: 14px;
+    top: -18px;
+  }
+  .maxBubble {
+    top: 9%;
+    left: 29%;
+    width: 15%;
+  }
+  .likaBubble {
+    top: 22%;
+    right: 2%;
+    width: 18%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .maxName:after,
+  .likaName:after {
+    animation: none;
+  }
+  .cta {
+    transition: none;
+  }
+  .cta:active {
+    transform: none;
+  }
+}
+@keyframes underlineReveal {
+  from {
+    transform: scaleX(0) rotate(-2deg);
+  }
+  to {
+    transform: scaleX(1) rotate(-2deg);
+  }
+}
+@media (max-aspect-ratio: 1/1) and (max-height: 750px) {
+  .artNote {
+    display: none;
+  }
+}

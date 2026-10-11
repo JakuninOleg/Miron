@@ -1,0 +1,4205 @@
+[
+  {
+    "id": "stretch.calf.wall_straight_knee",
+    "familyId": "stretch.calf",
+    "familyNameRu": "Растяжка икр",
+    "aliasEn": "Wall calf stretch straight knee",
+    "discipline": "stretch",
+    "pattern": "ankle_dorsiflexion",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "solid_wall",
+    "spaceRequirement": "wall_and_lunge_clear_non_slip",
+    "editorial": {
+      "displayNameRu": "Икры у стены",
+      "formalNameRu": "Растяжка икроножной мышцы у стены",
+      "aliases": ["Растяжка икроножной мышцы у стены", "Wall calf stretch straight knee"],
+      "contexts": ["home", "gym"],
+      "directions": ["stretch"],
+      "difficulty": "beginner",
+      "sideMode": "per_side",
+      "focusMode": "stretch",
+      "cues": [
+        "Поставь одну ногу назад и прижми пятку к полу.",
+        "Перенеси вес вперёд, сохраняя заднее колено почти прямым."
+      ],
+      "mistakes": ["Отрыв задней пятки.", "Рывки корпусом."],
+      "optionalEquipment": "none",
+      "sourceRefs": ["https://www.nasm.org/resource-center/blog/recovery/stretches-for-beginners"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": ["stretch.calf.seated_strap"],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "calves",
+        "role": "primary"
+      }
+    ]
+  },
+  {
+    "id": "stretch.calf.wall_bent_knee",
+    "familyId": "stretch.calf",
+    "familyNameRu": "Растяжка икр",
+    "aliasEn": "Wall calf stretch bent knee",
+    "discipline": "stretch",
+    "pattern": "ankle_dorsiflexion",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "solid_wall",
+    "spaceRequirement": "wall_and_lunge_clear_non_slip",
+    "editorial": {
+      "displayNameRu": "Икры с согнутым коленом",
+      "formalNameRu": "Растяжка икры у стены с согнутым коленом",
+      "aliases": ["Растяжка икры у стены с согнутым коленом", "Wall calf stretch bent knee"],
+      "contexts": ["home", "gym"],
+      "directions": ["stretch"],
+      "difficulty": "beginner",
+      "sideMode": "per_side",
+      "focusMode": "stretch",
+      "cues": [
+        "Поставь одну ногу назад и немного согни её колено.",
+        "Мягко подай колено вперёд, не отрывая пятку."
+      ],
+      "mistakes": ["Пятка поднимается.", "Колено заваливается внутрь."],
+      "optionalEquipment": "none",
+      "sourceRefs": [
+        "https://www.acefitness.org/resources/everyone/exercise-library/214/seated-calf-stretch/"
+      ],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": ["stretch.calf.wall_straight_knee"],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "calves",
+        "role": "primary"
+      }
+    ]
+  },
+  {
+    "id": "stretch.quadriceps.standing_supported",
+    "familyId": "stretch.quadriceps",
+    "familyNameRu": "Растяжка передней поверхности бедра",
+    "aliasEn": "Supported standing quadriceps stretch",
+    "discipline": "stretch",
+    "pattern": "knee_flexion",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "solid_wall",
+    "spaceRequirement": "wall_and_standing_clear_non_slip",
+    "editorial": {
+      "displayNameRu": "Квадрицепс стоя",
+      "formalNameRu": "Растяжка передней поверхности бедра стоя с опорой",
+      "aliases": [
+        "Растяжка передней поверхности бедра стоя с опорой",
+        "Supported standing quadriceps stretch"
+      ],
+      "contexts": ["home", "gym"],
+      "directions": ["stretch"],
+      "difficulty": "beginner",
+      "sideMode": "per_side",
+      "focusMode": "stretch",
+      "cues": [
+        "Держись за устойчивую стену и возьми стопу сзади.",
+        "Сохраняй бёдра рядом, не прогибаясь в пояснице."
+      ],
+      "mistakes": ["Резкое подтягивание стопы.", "Колено уходит далеко в сторону."],
+      "optionalEquipment": "none",
+      "sourceRefs": ["https://www.nasm.org/resource-center/blog/recovery/stretches-for-beginners"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": ["stretch.quadriceps.side_lying"],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "quads",
+        "role": "primary"
+      },
+      {
+        "group": "hip_flexors",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "id": "stretch.hamstring.supine_strap",
+    "familyId": "stretch.hamstring",
+    "familyNameRu": "Растяжка задней поверхности бедра",
+    "aliasEn": "Supine hamstring stretch with strap",
+    "discipline": "stretch",
+    "pattern": "hip_flexion",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "stretch_strap:1",
+    "supportRequirement": "floor_support",
+    "spaceRequirement": "floor_body_and_leg_clear",
+    "editorial": {
+      "displayNameRu": "Заднее бедро с ремнём",
+      "formalNameRu": "Растяжка задней поверхности бедра лёжа с ремнём",
+      "aliases": [
+        "Растяжка задней поверхности бедра лёжа с ремнём",
+        "Supine hamstring stretch with strap"
+      ],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["stretch"],
+      "difficulty": "beginner",
+      "sideMode": "per_side",
+      "focusMode": "stretch",
+      "cues": [
+        "Лёжа на спине, накинь ремень на стопу и подними ногу.",
+        "Оставь таз на поверхности, натягивая ремень плавно."
+      ],
+      "mistakes": ["Резкое натяжение ремня.", "Подъём таза вслед за ногой."],
+      "optionalEquipment": "mat",
+      "sourceRefs": [
+        "https://www.acefitness.org/continuing-education/certified/august-2025/8924/a-pro-s-guide-to-muscle-mechanics-the-hamstrings/"
+      ],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": ["stretch.hamstring.supine_hand_supported"],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "hamstrings",
+        "role": "primary"
+      },
+      {
+        "group": "calves",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "id": "stretch.hip_flexor.half_kneeling",
+    "familyId": "stretch.hip_flexor",
+    "familyNameRu": "Растяжка сгибателей бедра",
+    "aliasEn": "Half-kneeling hip flexor stretch",
+    "discipline": "stretch",
+    "pattern": "hip_extension",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "floor_support",
+    "spaceRequirement": "kneeling_lunge_clear",
+    "editorial": {
+      "displayNameRu": "Сгибатели бедра с колена",
+      "formalNameRu": "Растяжка сгибателей бедра с колена",
+      "aliases": ["Растяжка сгибателей бедра с колена", "Half-kneeling hip flexor stretch"],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["stretch"],
+      "difficulty": "beginner",
+      "sideMode": "per_side",
+      "focusMode": "stretch",
+      "cues": [
+        "Из выпада с колена выровняй таз и слегка подожми его.",
+        "Плавно перенеси вес вперёд, сохраняя корпус высоким."
+      ],
+      "mistakes": [
+        "Прогиб в пояснице вместо движения таза.",
+        "Давление коленом на жёсткую поверхность."
+      ],
+      "optionalEquipment": "mat",
+      "sourceRefs": [
+        "https://www.acefitness.org/resources/everyone/exercise-library/142/kneeling-hip-flexor-stretch/"
+      ],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": ["stretch.hip_flexor.standing_split"],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "hip_flexors",
+        "role": "primary"
+      },
+      {
+        "group": "quads",
+        "role": "secondary"
+      },
+      {
+        "group": "abs",
+        "role": "stabilizer"
+      },
+      {
+        "group": "glutes",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "id": "stretch.gluteal.supine_figure_four",
+    "familyId": "stretch.gluteal",
+    "familyNameRu": "Растяжка ягодиц",
+    "aliasEn": "Supine figure-four stretch",
+    "discipline": "stretch",
+    "pattern": "hip_external_rotation",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "floor_support",
+    "spaceRequirement": "floor_body_and_leg_clear",
+    "editorial": {
+      "displayNameRu": "Четвёрка лёжа",
+      "formalNameRu": "Растяжка ягодичных лёжа «четвёрка»",
+      "aliases": ["Растяжка ягодичных лёжа «четвёрка»", "Supine figure-four stretch"],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["stretch"],
+      "difficulty": "beginner",
+      "sideMode": "per_side",
+      "focusMode": "stretch",
+      "cues": [
+        "Положи лодыжку на противоположное бедро выше колена.",
+        "Подтяни опорную ногу за бедро, оставляя голову на поверхности."
+      ],
+      "mistakes": ["Давление рукой на колено.", "Рывок за ногу."],
+      "optionalEquipment": "mat",
+      "sourceRefs": ["https://www.nasm.org/resource-center/blog/recovery/stretches-for-beginners"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": ["stretch.gluteal.seated_figure_four"],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "glutes",
+        "role": "primary"
+      },
+      {
+        "group": "hip_abductors",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "id": "stretch.adductor.seated_butterfly",
+    "familyId": "stretch.adductor",
+    "familyNameRu": "Растяжка внутренней поверхности бедра",
+    "aliasEn": "Seated butterfly stretch",
+    "discipline": "stretch",
+    "pattern": "hip_abduction",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "floor_support",
+    "spaceRequirement": "seated_leg_span_clear",
+    "editorial": {
+      "displayNameRu": "Бабочка сидя",
+      "formalNameRu": "Растяжка «бабочка» сидя",
+      "aliases": ["Растяжка «бабочка» сидя", "Seated butterfly stretch"],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["stretch"],
+      "difficulty": "beginner",
+      "sideMode": "bilateral",
+      "focusMode": "stretch",
+      "cues": [
+        "Соедини стопы сидя и выбери удобное расстояние до таза.",
+        "Дай коленям опуститься под собственным весом."
+      ],
+      "mistakes": ["Сильное давление локтями на колени.", "Рывки вниз."],
+      "optionalEquipment": "mat",
+      "sourceRefs": ["https://www.artofliving.org/us-en/yoga/poses/butterfly-pose"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": ["yoga.bound_angle.seated"],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "adductors",
+        "role": "primary"
+      }
+    ]
+  },
+  {
+    "id": "stretch.adductor.standing_side_lunge",
+    "familyId": "stretch.adductor",
+    "familyNameRu": "Растяжка внутренней поверхности бедра",
+    "aliasEn": "Standing side-lunge adductor stretch",
+    "discipline": "stretch",
+    "pattern": "hip_abduction",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "none",
+    "spaceRequirement": "standing_lateral_lunge_clear_non_slip",
+    "editorial": {
+      "displayNameRu": "Внутреннее бедро стоя",
+      "formalNameRu": "Растяжка приводящих в боковом выпаде",
+      "aliases": ["Растяжка приводящих в боковом выпаде", "Standing side-lunge adductor stretch"],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["stretch"],
+      "difficulty": "beginner",
+      "sideMode": "per_side",
+      "focusMode": "stretch",
+      "cues": [
+        "Встань широко и перенеси вес на одну согнутую ногу.",
+        "Вторую ногу оставь вытянутой, сохраняя обе стопы на поверхности."
+      ],
+      "mistakes": ["Скользящие стопы.", "Провал колена опорной ноги внутрь."],
+      "optionalEquipment": "none",
+      "sourceRefs": ["https://www.nasm.org/workout-exercise-guidance"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": ["stretch.adductor.kneeling_frog"],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "adductors",
+        "role": "primary"
+      },
+      {
+        "group": "glutes",
+        "role": "stabilizer"
+      },
+      {
+        "group": "quads",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "id": "stretch.pectoral.doorway_single_arm",
+    "familyId": "stretch.pectoral",
+    "familyNameRu": "Растяжка груди",
+    "aliasEn": "Single-arm doorway chest stretch",
+    "discipline": "stretch",
+    "pattern": "shoulder_horizontal_abduction",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "solid_doorframe",
+    "spaceRequirement": "doorway_and_standing_clear_non_slip",
+    "editorial": {
+      "displayNameRu": "Грудь в проёме",
+      "formalNameRu": "Растяжка груди у дверного проёма одной рукой",
+      "aliases": [
+        "Растяжка груди у дверного проёма одной рукой",
+        "Single-arm doorway chest stretch"
+      ],
+      "contexts": ["home", "gym"],
+      "directions": ["stretch"],
+      "difficulty": "beginner",
+      "sideMode": "per_side",
+      "focusMode": "stretch",
+      "cues": [
+        "Поставь предплечье на неподвижный дверной косяк.",
+        "Поверни корпус от опоры до мягкого натяжения в груди."
+      ],
+      "mistakes": ["Слишком высокий локоть и давление в плече.", "Резкий разворот корпуса."],
+      "optionalEquipment": "none",
+      "sourceRefs": [
+        "https://www.acefitness.org/continuing-education/certified/special-dec-2018-issue/7145/how-to-teach-your-clients-to-practice-proper-posture-in-a-modern-era/"
+      ],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": ["stretch.pectoral.wall_single_arm"],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "chest",
+        "role": "primary"
+      },
+      {
+        "group": "shoulders",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "id": "stretch.posterior_shoulder.cross_body",
+    "familyId": "stretch.posterior_shoulder",
+    "familyNameRu": "Растяжка задней части плеча",
+    "aliasEn": "Cross-body shoulder stretch",
+    "discipline": "stretch",
+    "pattern": "shoulder_horizontal_adduction",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "none",
+    "spaceRequirement": "standing_arm_span_clear",
+    "editorial": {
+      "displayNameRu": "Плечо поперёк груди",
+      "formalNameRu": "Растяжка плеча поперёк груди",
+      "aliases": ["Растяжка плеча поперёк груди", "Cross-body shoulder stretch"],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["stretch"],
+      "difficulty": "beginner",
+      "sideMode": "per_side",
+      "focusMode": "stretch",
+      "cues": [
+        "Направь руку поперёк груди и поддержи её выше локтя.",
+        "Оставь плечо опущенным, постепенно приближая руку."
+      ],
+      "mistakes": ["Сильное давление прямо на локоть.", "Поднятое к уху плечо."],
+      "optionalEquipment": "none",
+      "sourceRefs": ["https://www.nasm.org/resource-center/blog/recovery/stretches-for-beginners"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "shoulders",
+        "role": "primary"
+      },
+      {
+        "group": "back",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "id": "stretch.triceps.overhead",
+    "familyId": "stretch.triceps",
+    "familyNameRu": "Растяжка трицепса",
+    "aliasEn": "Overhead triceps stretch",
+    "discipline": "stretch",
+    "pattern": "elbow_flexion",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "none",
+    "spaceRequirement": "standing_overhead_clear",
+    "editorial": {
+      "displayNameRu": "Трицепс над головой",
+      "formalNameRu": "Растяжка трицепса над головой",
+      "aliases": ["Растяжка трицепса над головой", "Overhead triceps stretch"],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["stretch"],
+      "difficulty": "beginner",
+      "sideMode": "per_side",
+      "focusMode": "stretch",
+      "cues": [
+        "Согни поднятую руку и направь ладонь к верхней части спины.",
+        "Другой рукой мягко поддержи локоть, не запрокидывая корпус."
+      ],
+      "mistakes": ["Сильное давление на локоть.", "Прогиб поясницы."],
+      "optionalEquipment": "none",
+      "sourceRefs": [
+        "https://www.acefitness.org/resources/everyone/exercise-library/174/overhead-triceps-stretch/"
+      ],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "triceps",
+        "role": "primary"
+      },
+      {
+        "group": "shoulders",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "id": "stretch.latissimus.kneeling_bench",
+    "familyId": "stretch.latissimus",
+    "familyNameRu": "Растяжка широчайших",
+    "aliasEn": "Kneeling bench lat stretch",
+    "discipline": "stretch",
+    "pattern": "shoulder_flexion",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "secured_stable_exercise_bench",
+    "spaceRequirement": "bench_and_kneeling_clear",
+    "editorial": {
+      "displayNameRu": "Спина у скамьи",
+      "formalNameRu": "Растяжка широчайших с опорой на скамью",
+      "aliases": ["Растяжка широчайших с опорой на скамью", "Kneeling bench lat stretch"],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["stretch"],
+      "difficulty": "beginner",
+      "sideMode": "bilateral",
+      "focusMode": "stretch",
+      "cues": [
+        "Поставь локти на закреплённую скамью из положения на коленях.",
+        "Отведи таз назад, удлиняя корпус между плечами и тазом."
+      ],
+      "mistakes": ["Движущаяся скамья.", "Глубокий прогиб в пояснице."],
+      "optionalEquipment": "mat",
+      "sourceRefs": ["https://www.acefitness.org/resources/everyone/exercise-library/"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": ["stretch.latissimus.standing_wall"],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "back",
+        "role": "primary"
+      },
+      {
+        "group": "shoulders",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "id": "mobility.spinal_flexion_extension.quadruped",
+    "familyId": "mobility.spinal_flexion_extension",
+    "familyNameRu": "Сгибание и разгибание спины",
+    "aliasEn": "Cat-cow mobility",
+    "discipline": "mobility",
+    "pattern": "spinal_flexion_extension",
+    "resistanceMode": "bodyweight",
+    "metric": "reps",
+    "equipmentRequirement": "none",
+    "supportRequirement": "floor_support",
+    "spaceRequirement": "quadruped_clear",
+    "editorial": {
+      "displayNameRu": "Кошка-корова",
+      "formalNameRu": "Кошка-корова",
+      "aliases": ["Кошка-корова", "Cat-cow mobility"],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["mobility", "yoga"],
+      "difficulty": "beginner",
+      "sideMode": "bilateral",
+      "focusMode": "mobility",
+      "cues": [
+        "Встань на четвереньки с устойчивыми ладонями и коленями.",
+        "Плавно округляй и разгибай спину, не запрокидывая голову."
+      ],
+      "mistakes": ["Резкие движения в крайнюю амплитуду.", "Провал в плечах."],
+      "optionalEquipment": "mat",
+      "sourceRefs": ["https://www.artofliving.org/us-en/yoga/poses/yoga-poses"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "back",
+        "role": "primary"
+      },
+      {
+        "group": "lower_back",
+        "role": "secondary"
+      },
+      {
+        "group": "abs",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "id": "mobility.thoracic_rotation.side_lying",
+    "familyId": "mobility.thoracic_rotation",
+    "familyNameRu": "Поворот грудного отдела",
+    "aliasEn": "Side-lying open book",
+    "discipline": "mobility",
+    "pattern": "thoracic_rotation",
+    "resistanceMode": "bodyweight",
+    "metric": "reps",
+    "equipmentRequirement": "none",
+    "supportRequirement": "floor_support",
+    "spaceRequirement": "floor_body_and_arm_span_clear",
+    "editorial": {
+      "displayNameRu": "Книга",
+      "formalNameRu": "Поворот грудного отдела лёжа на боку",
+      "aliases": [
+        "Поворот грудного отдела лёжа на боку",
+        "Side-lying open book",
+        "Открытая книга",
+        "Open book"
+      ],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["mobility"],
+      "difficulty": "beginner",
+      "sideMode": "per_side",
+      "focusMode": "mobility",
+      "cues": [
+        "Ляг на бок с согнутыми ногами и ладонями перед собой.",
+        "Раскрой верхнюю руку за корпус, оставляя колени вместе на поверхности."
+      ],
+      "mistakes": ["Разворот таза вслед за рукой.", "Рывок плечом к полу."],
+      "optionalEquipment": "mat",
+      "sourceRefs": [
+        "https://www.acefitness.org/resources/pros/expert-articles/3673/injury-prevention-for-the-low-back/"
+      ],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "back",
+        "role": "primary"
+      },
+      {
+        "group": "chest",
+        "role": "secondary"
+      },
+      {
+        "group": "shoulders",
+        "role": "secondary"
+      },
+      {
+        "group": "obliques",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "id": "mobility.hip_rotation.seated_90_90",
+    "familyId": "mobility.hip_rotation",
+    "familyNameRu": "Поворот бедра",
+    "aliasEn": "Seated 90/90 hip switches",
+    "discipline": "mobility",
+    "pattern": "hip_rotation",
+    "resistanceMode": "bodyweight",
+    "metric": "reps",
+    "equipmentRequirement": "none",
+    "supportRequirement": "floor_support",
+    "spaceRequirement": "seated_leg_span_clear",
+    "editorial": {
+      "displayNameRu": "Переключения 90/90",
+      "formalNameRu": "Переключения таза 90/90 сидя",
+      "aliases": ["Переключения таза 90/90 сидя", "Seated 90/90 hip switches"],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["mobility"],
+      "difficulty": "intermediate",
+      "sideMode": "alternating",
+      "focusMode": "mobility",
+      "cues": [
+        "Сядь с согнутыми ногами и поддержи корпус руками сзади.",
+        "Плавно переводи колени с одной стороны на другую в удобной амплитуде."
+      ],
+      "mistakes": ["Попытка дожать колени к полу.", "Резкий разворот через напряжение."],
+      "optionalEquipment": "mat",
+      "sourceRefs": [
+        "https://www.acefitness.org/resources/everyone/blog/5681/3-stretches-for-opening-up-tight-hips/"
+      ],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "glutes",
+        "role": "primary"
+      },
+      {
+        "group": "hip_abductors",
+        "role": "primary"
+      },
+      {
+        "group": "adductors",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "id": "mobility.ankle_dorsiflexion.knee_to_wall",
+    "familyId": "mobility.ankle_dorsiflexion",
+    "familyNameRu": "Подвижность голеностопа",
+    "aliasEn": "Knee-to-wall ankle mobility",
+    "discipline": "mobility",
+    "pattern": "ankle_dorsiflexion",
+    "resistanceMode": "bodyweight",
+    "metric": "reps",
+    "equipmentRequirement": "none",
+    "supportRequirement": "solid_wall",
+    "spaceRequirement": "wall_and_lunge_clear_non_slip",
+    "editorial": {
+      "displayNameRu": "Колено к стене",
+      "formalNameRu": "Движение коленом к стене для голеностопа",
+      "aliases": ["Движение коленом к стене для голеностопа", "Knee-to-wall ankle mobility"],
+      "contexts": ["home", "gym"],
+      "directions": ["mobility"],
+      "difficulty": "beginner",
+      "sideMode": "per_side",
+      "focusMode": "mobility",
+      "cues": [
+        "Поставь стопу перед стеной и оставь всю подошву на поверхности.",
+        "Направь колено к стене по линии носка, не отрывая пятку."
+      ],
+      "mistakes": ["Поднимающаяся пятка.", "Завал стопы и колена внутрь."],
+      "optionalEquipment": "none",
+      "sourceRefs": ["https://www.acefitness.org/resources/everyone/exercise-library/"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "calves",
+        "role": "primary"
+      },
+      {
+        "group": "feet",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "id": "mobility.shoulder_flexion.wall_slide",
+    "familyId": "mobility.shoulder_flexion",
+    "familyNameRu": "Подъём рук",
+    "aliasEn": "Wall slide",
+    "discipline": "mobility",
+    "pattern": "shoulder_flexion",
+    "resistanceMode": "bodyweight",
+    "metric": "reps",
+    "equipmentRequirement": "none",
+    "supportRequirement": "solid_wall",
+    "spaceRequirement": "wall_and_arm_span_clear",
+    "editorial": {
+      "displayNameRu": "Скольжение по стене",
+      "formalNameRu": "Скольжение руками по стене",
+      "aliases": ["Скольжение руками по стене", "Wall slide"],
+      "contexts": ["home", "gym"],
+      "directions": ["mobility"],
+      "difficulty": "beginner",
+      "sideMode": "bilateral",
+      "focusMode": "mobility",
+      "cues": [
+        "Встань устойчиво у стены, мягко касаясь её предплечьями.",
+        "Плавно проведи руки вверх, сохраняя рёбра над тазом."
+      ],
+      "mistakes": ["Компенсация прогибом поясницы.", "Попытка силой прижать руки к стене."],
+      "optionalEquipment": "none",
+      "sourceRefs": [
+        "https://www.acefitness.org/resources/pros/expert-articles/5412/how-to-increase-upper-body-stability-and-mobility/"
+      ],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "shoulders",
+        "role": "primary"
+      },
+      {
+        "group": "back",
+        "role": "secondary"
+      },
+      {
+        "group": "abs",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "id": "mobility.wrist.quadruped_rock",
+    "familyId": "mobility.wrist",
+    "familyNameRu": "Подвижность кистей",
+    "aliasEn": "Quadruped wrist rocks",
+    "discipline": "mobility",
+    "pattern": "wrist_extension",
+    "resistanceMode": "bodyweight",
+    "metric": "reps",
+    "equipmentRequirement": "none",
+    "supportRequirement": "floor_support",
+    "spaceRequirement": "quadruped_clear",
+    "editorial": {
+      "displayNameRu": "Перекат на кистях",
+      "formalNameRu": "Перенос веса на кисти на четвереньках",
+      "aliases": ["Перенос веса на кисти на четвереньках", "Quadruped wrist rocks"],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["mobility"],
+      "difficulty": "beginner",
+      "sideMode": "bilateral",
+      "focusMode": "mobility",
+      "cues": [
+        "На четвереньках поставь ладони под плечами.",
+        "Плавно переносись чуть вперёд и назад, регулируя давление на кисти."
+      ],
+      "mistakes": ["Перенос всего веса резко вперёд.", "Отрыв основания ладони."],
+      "optionalEquipment": "mat",
+      "sourceRefs": ["https://www.acefitness.org/resources/everyone/exercise-library/"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "forearms",
+        "role": "primary"
+      },
+      {
+        "group": "shoulders",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "id": "yoga.mountain.standing",
+    "familyId": "yoga.mountain",
+    "familyNameRu": "Гора",
+    "aliasEn": "Mountain pose / Tadasana",
+    "discipline": "yoga",
+    "pattern": "standing_alignment",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "none",
+    "spaceRequirement": "standing_clear_non_slip",
+    "editorial": {
+      "displayNameRu": "Гора",
+      "formalNameRu": "Поза горы",
+      "aliases": ["Поза горы", "Mountain pose / Tadasana", "Тадасана", "Tadasana"],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["yoga"],
+      "difficulty": "beginner",
+      "sideMode": "bilateral",
+      "focusMode": "balance",
+      "cues": [
+        "Равномерно опирайся на стопы, оставляя колени мягкими.",
+        "Выстрой голову над корпусом и дыши спокойно."
+      ],
+      "mistakes": ["Вес только на пятках.", "Жёстко запертые колени."],
+      "optionalEquipment": "mat",
+      "sourceRefs": ["https://www.artofliving.org/us-en/yoga/yoga-poses/mountain-pose-tadasana"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "feet",
+        "role": "primary"
+      },
+      {
+        "group": "quads",
+        "role": "primary"
+      },
+      {
+        "group": "abs",
+        "role": "stabilizer"
+      },
+      {
+        "group": "glutes",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "id": "yoga.tree.wall_supported",
+    "familyId": "yoga.tree",
+    "familyNameRu": "Дерево",
+    "aliasEn": "Wall-supported tree pose / Vrikshasana",
+    "discipline": "yoga",
+    "pattern": "standing_balance",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "solid_wall",
+    "spaceRequirement": "wall_and_standing_clear_non_slip",
+    "editorial": {
+      "displayNameRu": "Дерево у стены",
+      "formalNameRu": "Поза дерева с опорой на стену",
+      "aliases": [
+        "Поза дерева с опорой на стену",
+        "Wall-supported tree pose / Vrikshasana",
+        "Врикшасана",
+        "Vrksasana"
+      ],
+      "contexts": ["home", "gym"],
+      "directions": ["yoga"],
+      "difficulty": "beginner",
+      "sideMode": "per_side",
+      "focusMode": "balance",
+      "cues": [
+        "Легко держись за неподвижную стену и поставь другую стопу на голень или бедро.",
+        "Сохраняй опорное колено мягким и взгляд спокойным."
+      ],
+      "mistakes": ["Давление стопой на колено.", "Попытка убрать опору до устойчивого положения."],
+      "optionalEquipment": "mat",
+      "sourceRefs": ["https://www.artofliving.org/us-en/yoga/poses/tree-pose"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "feet",
+        "role": "primary"
+      },
+      {
+        "group": "glutes",
+        "role": "primary"
+      },
+      {
+        "group": "hip_abductors",
+        "role": "secondary"
+      },
+      {
+        "group": "abs",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "id": "yoga.chair.standard",
+    "familyId": "yoga.chair",
+    "familyNameRu": "Стул",
+    "aliasEn": "Chair pose / Utkatasana",
+    "discipline": "yoga",
+    "pattern": "standing_knee_flexion",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "none",
+    "spaceRequirement": "standing_overhead_clear",
+    "editorial": {
+      "displayNameRu": "Стул",
+      "formalNameRu": "Поза стула",
+      "aliases": ["Поза стула", "Chair pose / Utkatasana", "Уткатасана", "Utkatasana"],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["yoga"],
+      "difficulty": "intermediate",
+      "sideMode": "bilateral",
+      "focusMode": "loading",
+      "cues": [
+        "Согни колени и отведи таз назад, оставаясь на всей стопе.",
+        "Вытяни руки вверх только до удобного положения плеч."
+      ],
+      "mistakes": ["Колени заваливаются внутрь.", "Глубокий прогиб поясницы."],
+      "optionalEquipment": "mat",
+      "sourceRefs": ["https://www.artofliving.org/us-en/yoga/poses/chair_pose"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "quads",
+        "role": "primary"
+      },
+      {
+        "group": "glutes",
+        "role": "secondary"
+      },
+      {
+        "group": "abs",
+        "role": "stabilizer"
+      },
+      {
+        "group": "lower_back",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "id": "yoga.warrior_one.standard",
+    "familyId": "yoga.warrior_one",
+    "familyNameRu": "Воин I",
+    "aliasEn": "Warrior I / Virabhadrasana I",
+    "discipline": "yoga",
+    "pattern": "standing_lunge",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "none",
+    "spaceRequirement": "standing_lunge_and_arm_span_clear",
+    "editorial": {
+      "displayNameRu": "Воин I",
+      "formalNameRu": "Поза воина I",
+      "aliases": [
+        "Поза воина I",
+        "Warrior I / Virabhadrasana I",
+        "Воин 1",
+        "Вирабхадрасана I",
+        "Virabhadrasana I"
+      ],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["yoga"],
+      "difficulty": "beginner",
+      "sideMode": "per_side",
+      "focusMode": "balance",
+      "cues": [
+        "Встань в устойчивый выпад с задней стопой на поверхности.",
+        "Направь корпус вперёд и подними руки без прогиба в пояснице."
+      ],
+      "mistakes": ["Потеря контакта задней стопы.", "Слишком узкая стойка."],
+      "optionalEquipment": "mat",
+      "sourceRefs": ["https://www.artofliving.org/us-en/yoga/poses/yoga-warrior-pose"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "quads",
+        "role": "primary"
+      },
+      {
+        "group": "glutes",
+        "role": "primary"
+      },
+      {
+        "group": "calves",
+        "role": "secondary"
+      },
+      {
+        "group": "hip_flexors",
+        "role": "secondary"
+      },
+      {
+        "group": "abs",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "id": "yoga.warrior_two.standard",
+    "familyId": "yoga.warrior_two",
+    "familyNameRu": "Воин II",
+    "aliasEn": "Warrior II / Virabhadrasana II",
+    "discipline": "yoga",
+    "pattern": "standing_lunge",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "none",
+    "spaceRequirement": "standing_lunge_and_arm_span_clear",
+    "editorial": {
+      "displayNameRu": "Воин II",
+      "formalNameRu": "Поза воина II",
+      "aliases": [
+        "Поза воина II",
+        "Warrior II / Virabhadrasana II",
+        "Воин 2",
+        "Вирабхадрасана II",
+        "Virabhadrasana II"
+      ],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["yoga"],
+      "difficulty": "beginner",
+      "sideMode": "per_side",
+      "focusMode": "balance",
+      "cues": [
+        "Согни переднее колено по направлению стопы и раскрой корпус в сторону.",
+        "Разведи руки, оставив плечи расслабленными."
+      ],
+      "mistakes": ["Провал переднего колена внутрь.", "Наклон корпуса на переднюю ногу."],
+      "optionalEquipment": "mat",
+      "sourceRefs": ["https://www.artofliving.org/us-en/yoga/poses/yoga-poses"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "quads",
+        "role": "primary"
+      },
+      {
+        "group": "glutes",
+        "role": "primary"
+      },
+      {
+        "group": "adductors",
+        "role": "secondary"
+      },
+      {
+        "group": "abs",
+        "role": "stabilizer"
+      },
+      {
+        "group": "hip_abductors",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "id": "yoga.triangle.standard",
+    "familyId": "yoga.triangle",
+    "familyNameRu": "Треугольник",
+    "aliasEn": "Triangle pose / Trikonasana",
+    "discipline": "yoga",
+    "pattern": "standing_lateral_extension",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "none",
+    "spaceRequirement": "standing_leg_and_arm_span_clear",
+    "editorial": {
+      "displayNameRu": "Треугольник",
+      "formalNameRu": "Поза треугольника",
+      "aliases": ["Поза треугольника", "Triangle pose / Trikonasana", "Триконасана", "Trikonasana"],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["yoga", "stretch"],
+      "difficulty": "intermediate",
+      "sideMode": "per_side",
+      "focusMode": "stretch",
+      "cues": [
+        "Из широкой стойки удлини корпус к передней ноге.",
+        "Поставь нижнюю руку на голень или подходящую опору, не добиваясь пола."
+      ],
+      "mistakes": ["Давление рукой на колено.", "Скручивание корпуса к полу."],
+      "optionalEquipment": "yoga_block:1;mat",
+      "sourceRefs": ["https://www.artofliving.org/us-en/yoga/poses/triangle-pose"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "hamstrings",
+        "role": "primary"
+      },
+      {
+        "group": "adductors",
+        "role": "primary"
+      },
+      {
+        "group": "obliques",
+        "role": "secondary"
+      },
+      {
+        "group": "back",
+        "role": "secondary"
+      },
+      {
+        "group": "glutes",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "id": "yoga.child.standard",
+    "familyId": "yoga.child",
+    "familyNameRu": "Ребёнок",
+    "aliasEn": "Child's pose / Balasana",
+    "discipline": "yoga",
+    "pattern": "kneeling_forward_fold",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "floor_support",
+    "spaceRequirement": "kneeling_body_length_clear",
+    "editorial": {
+      "displayNameRu": "Ребёнок",
+      "formalNameRu": "Поза ребёнка",
+      "aliases": ["Поза ребёнка", "Child's pose / Balasana", "Баласана", "Balasana"],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["yoga", "stretch"],
+      "difficulty": "beginner",
+      "sideMode": "bilateral",
+      "focusMode": "stretch",
+      "cues": [
+        "Сядь тазом в сторону пяток и выбери удобную ширину коленей.",
+        "Вытяни руки вперёд и мягко опусти голову на опору."
+      ],
+      "mistakes": ["Насильственное прижатие таза к пяткам.", "Напряжённая шея без опоры."],
+      "optionalEquipment": "mat;bolster",
+      "sourceRefs": ["https://www.artofliving.org/us-en/yoga/poses/child-pose-shishuasana"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "back",
+        "role": "primary"
+      },
+      {
+        "group": "glutes",
+        "role": "secondary"
+      },
+      {
+        "group": "shoulders",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "id": "yoga.downward_dog.standard",
+    "familyId": "yoga.downward_dog",
+    "familyNameRu": "Собака вниз",
+    "aliasEn": "Downward-facing dog / Adho Mukha Svanasana",
+    "discipline": "yoga",
+    "pattern": "inverted_v_support",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "floor_support",
+    "spaceRequirement": "floor_body_length_clear",
+    "editorial": {
+      "displayNameRu": "Собака вниз",
+      "formalNameRu": "Собака мордой вниз",
+      "aliases": [
+        "Собака мордой вниз",
+        "Downward-facing dog / Adho Mukha Svanasana",
+        "Адхо Мукха Шванасана",
+        "Adho Mukha Svanasana"
+      ],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["yoga", "stretch"],
+      "difficulty": "intermediate",
+      "sideMode": "bilateral",
+      "focusMode": "stretch",
+      "cues": [
+        "Из упора руками направь таз вверх и назад.",
+        "Согни колени настолько, насколько нужно для длинной спины."
+      ],
+      "mistakes": ["Принудительное прижатие пяток к полу.", "Вес только на основаниях кистей."],
+      "optionalEquipment": "mat",
+      "sourceRefs": [
+        "https://www.artofliving.org/us-en/yoga/yoga-poses/downward-facing-dog-adho-mukha-svanasana"
+      ],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "hamstrings",
+        "role": "primary"
+      },
+      {
+        "group": "calves",
+        "role": "primary"
+      },
+      {
+        "group": "back",
+        "role": "secondary"
+      },
+      {
+        "group": "shoulders",
+        "role": "secondary"
+      },
+      {
+        "group": "abs",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "id": "yoga.cobra.low",
+    "familyId": "yoga.cobra",
+    "familyNameRu": "Кобра",
+    "aliasEn": "Low cobra / Bhujangasana",
+    "discipline": "yoga",
+    "pattern": "prone_spinal_extension",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "floor_support",
+    "spaceRequirement": "floor_body_length_clear",
+    "editorial": {
+      "displayNameRu": "Низкая кобра",
+      "formalNameRu": "Низкая кобра",
+      "aliases": ["Низкая кобра", "Low cobra / Bhujangasana", "Бхуджангасана", "Bhujangasana"],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["yoga", "mobility"],
+      "difficulty": "beginner",
+      "sideMode": "bilateral",
+      "focusMode": "mobility",
+      "cues": [
+        "Лёжа на животе, оставь таз и ноги на поверхности.",
+        "Приподними грудь невысоко, не выталкивая корпус силой рук."
+      ],
+      "mistakes": ["Высокий прогиб за счёт давления руками.", "Запрокинутая голова."],
+      "optionalEquipment": "mat",
+      "sourceRefs": ["https://www.artofliving.org/us-en/yoga/poses/cobra-pose"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "back",
+        "role": "primary"
+      },
+      {
+        "group": "lower_back",
+        "role": "primary"
+      },
+      {
+        "group": "chest",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "id": "yoga.sphinx.standard",
+    "familyId": "yoga.sphinx",
+    "familyNameRu": "Сфинкс",
+    "aliasEn": "Sphinx pose / Salamba Bhujangasana",
+    "discipline": "yoga",
+    "pattern": "prone_spinal_extension",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "floor_support",
+    "spaceRequirement": "floor_body_length_clear",
+    "editorial": {
+      "displayNameRu": "Сфинкс",
+      "formalNameRu": "Поза сфинкса",
+      "aliases": [
+        "Поза сфинкса",
+        "Sphinx pose / Salamba Bhujangasana",
+        "Саламба Бхуджангасана",
+        "Salamba Bhujangasana"
+      ],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["yoga", "mobility"],
+      "difficulty": "beginner",
+      "sideMode": "bilateral",
+      "focusMode": "mobility",
+      "cues": [
+        "Лёжа на животе, поставь локти под плечами или чуть впереди.",
+        "Подними грудь, сохраняя длинную шею и спокойное положение таза."
+      ],
+      "mistakes": ["Провал в плечах.", "Сильный прогиб в пояснице."],
+      "optionalEquipment": "mat",
+      "sourceRefs": ["https://www.artofliving.org/us-en/yoga/poses/yoga-poses"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "back",
+        "role": "primary"
+      },
+      {
+        "group": "chest",
+        "role": "secondary"
+      },
+      {
+        "group": "abs",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "id": "yoga.bridge.standard",
+    "familyId": "yoga.bridge",
+    "familyNameRu": "Мост",
+    "aliasEn": "Bridge pose / Setu Bandha Sarvangasana",
+    "discipline": "yoga",
+    "pattern": "supine_hip_extension",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "floor_support",
+    "spaceRequirement": "floor_body_length_clear",
+    "editorial": {
+      "displayNameRu": "Мост",
+      "formalNameRu": "Поза моста",
+      "aliases": [
+        "Поза моста",
+        "Bridge pose / Setu Bandha Sarvangasana",
+        "Сету Бандхасана",
+        "Setu Bandha Sarvangasana"
+      ],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["yoga"],
+      "difficulty": "beginner",
+      "sideMode": "bilateral",
+      "focusMode": "loading",
+      "cues": [
+        "Лёжа с согнутыми коленями, опирайся на стопы и руки.",
+        "Плавно подними таз, сохраняя колени по линии стоп и шею неподвижной."
+      ],
+      "mistakes": ["Поворот головы в поднятом положении.", "Переразгибание поясницы."],
+      "optionalEquipment": "mat",
+      "sourceRefs": ["https://www.artofliving.org/us-en/yoga/poses/bridge-pose"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "glutes",
+        "role": "primary"
+      },
+      {
+        "group": "hamstrings",
+        "role": "secondary"
+      },
+      {
+        "group": "abs",
+        "role": "stabilizer"
+      },
+      {
+        "group": "back",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "id": "yoga.bound_angle.seated",
+    "familyId": "yoga.bound_angle",
+    "familyNameRu": "Связанный угол",
+    "aliasEn": "Bound angle pose / Baddha Konasana",
+    "discipline": "yoga",
+    "pattern": "seated_hip_abduction",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "floor_support",
+    "spaceRequirement": "seated_leg_span_clear",
+    "editorial": {
+      "displayNameRu": "Связанный угол",
+      "formalNameRu": "Поза связанного угла",
+      "aliases": [
+        "Поза связанного угла",
+        "Bound angle pose / Baddha Konasana",
+        "Баддха Конасана",
+        "Baddha Konasana",
+        "Бабочка"
+      ],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["yoga", "stretch"],
+      "difficulty": "beginner",
+      "sideMode": "bilateral",
+      "focusMode": "stretch",
+      "cues": [
+        "Сидя соедини подошвы и выбери удобное расстояние стоп от таза.",
+        "Удлини корпус вверх и дай коленям свободно опуститься."
+      ],
+      "mistakes": ["Сильное давление на колени.", "Округление спины ради более низкой позиции."],
+      "optionalEquipment": "mat;blanket",
+      "sourceRefs": ["https://www.artofliving.org/us-en/yoga/poses/butterfly-pose"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": ["stretch.adductor.seated_butterfly"],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "adductors",
+        "role": "primary"
+      }
+    ]
+  },
+  {
+    "id": "yoga.easy_seat.standard",
+    "familyId": "yoga.easy_seat",
+    "familyNameRu": "Простая поза сидя",
+    "aliasEn": "Easy pose / Sukhasana",
+    "discipline": "yoga",
+    "pattern": "seated_alignment",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "floor_support",
+    "spaceRequirement": "seated_leg_span_clear",
+    "editorial": {
+      "displayNameRu": "Просто сидя",
+      "formalNameRu": "Простая поза сидя",
+      "aliases": ["Простая поза сидя", "Easy pose / Sukhasana", "Сукхасана", "Sukhasana"],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["yoga"],
+      "difficulty": "beginner",
+      "sideMode": "none",
+      "focusMode": "relaxation",
+      "cues": [
+        "Сядь со скрещёнными голенями и при необходимости приподними таз на сложенном пледе.",
+        "Расслабь плечи и выбери положение, в котором дыхание остаётся свободным."
+      ],
+      "mistakes": ["Попытка насильно опустить колени.", "Долгое удержание неудобной позиции."],
+      "optionalEquipment": "mat;blanket",
+      "sourceRefs": ["https://www.artofliving.org/us-en/yoga/poses/yoga-poses"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": []
+  },
+  {
+    "id": "yoga.corpse.supine",
+    "familyId": "yoga.corpse",
+    "familyNameRu": "Шавасана",
+    "aliasEn": "Corpse pose / Savasana",
+    "discipline": "yoga",
+    "pattern": "supine_rest",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "floor_support",
+    "spaceRequirement": "floor_body_length_clear",
+    "editorial": {
+      "displayNameRu": "Шавасана",
+      "formalNameRu": "Шавасана",
+      "aliases": ["Шавасана", "Corpse pose / Savasana", "Савасана", "Savasana"],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["yoga"],
+      "difficulty": "beginner",
+      "sideMode": "none",
+      "focusMode": "relaxation",
+      "cues": [
+        "Ляг на удобную ровную поверхность и свободно расположи руки и ноги.",
+        "Отпусти лишнее напряжение и дыши в привычном ритме."
+      ],
+      "mistakes": ["Попытка силой управлять каждым вдохом.", "Неудобная опора головы."],
+      "optionalEquipment": "mat;blanket",
+      "sourceRefs": ["https://www.artofliving.org/us-en/yoga/poses/yoga-poses"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": []
+  },
+  {
+    "id": "stretch.hamstring.seated_chair",
+    "familyId": "stretch.hamstring",
+    "familyNameRu": "Растяжка задней поверхности бедра",
+    "aliasEn": "Seated chair hamstring stretch",
+    "discipline": "stretch",
+    "pattern": "hip_flexion",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "stable_exercise_chair",
+    "spaceRequirement": "chair_and_leg_length_clear",
+    "editorial": {
+      "displayNameRu": "Заднее бедро на стуле",
+      "formalNameRu": "Растяжка задней поверхности бедра сидя на стуле с пяткой на поверхности",
+      "aliases": [
+        "Растяжка задней поверхности бедра сидя на стуле с пяткой на поверхности",
+        "Seated chair hamstring stretch",
+        "Растяжка бицепса бедра сидя"
+      ],
+      "contexts": ["home", "gym"],
+      "directions": ["stretch"],
+      "difficulty": "beginner",
+      "sideMode": "per_side",
+      "focusMode": "stretch",
+      "cues": [
+        "Сядь ближе к краю устойчивого стула и поставь пятку одной ноги впереди.",
+        "Сохрани колено мягким и слегка наклони корпус от таза к вытянутой ноге."
+      ],
+      "mistakes": ["Стул на колёсах или шаткая опора.", "Наклон только за счёт округления спины."],
+      "optionalEquipment": "none",
+      "sourceRefs": [
+        "https://www.acefitness.org/continuing-education/certified/august-2025/8924/a-pro-s-guide-to-muscle-mechanics-the-hamstrings/"
+      ],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": ["stretch.hamstring.supine_hand_supported"],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "hamstrings",
+        "role": "primary"
+      },
+      {
+        "group": "calves",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "id": "stretch.hamstring.standing_step",
+    "familyId": "stretch.hamstring",
+    "familyNameRu": "Растяжка задней поверхности бедра",
+    "aliasEn": "Standing hamstring stretch on low step",
+    "discipline": "stretch",
+    "pattern": "hip_flexion",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "stable_exercise_step",
+    "spaceRequirement": "step_area_non_slip",
+    "editorial": {
+      "displayNameRu": "Заднее бедро на платформе",
+      "formalNameRu": "Растяжка задней поверхности бедра стоя с пяткой на низкой платформе",
+      "aliases": [
+        "Растяжка задней поверхности бедра стоя с пяткой на низкой платформе",
+        "Standing hamstring stretch on low step"
+      ],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["stretch"],
+      "difficulty": "beginner",
+      "sideMode": "per_side",
+      "focusMode": "stretch",
+      "cues": [
+        "Поставь пятку на низкую устойчивую тренировочную платформу.",
+        "Слегка согни опорную ногу и наклонись вперёд от таза."
+      ],
+      "mistakes": ["Высокая или скользкая опора.", "Раскачивание корпусом."],
+      "optionalEquipment": "none",
+      "sourceRefs": [
+        "https://www.acefitness.org/certifiednewsarticle/2910/a-detailed-guide-to-designing-activity-specific-warm-up-and-mobility-drills/"
+      ],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": ["stretch.hamstring.seated_chair"],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "hamstrings",
+        "role": "primary"
+      },
+      {
+        "group": "glutes",
+        "role": "stabilizer"
+      },
+      {
+        "group": "abs",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "id": "stretch.hamstring.supine_hand_supported",
+    "familyId": "stretch.hamstring",
+    "familyNameRu": "Растяжка задней поверхности бедра",
+    "aliasEn": "Supine hand-supported hamstring stretch",
+    "discipline": "stretch",
+    "pattern": "hip_flexion",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "floor_support",
+    "spaceRequirement": "floor_body_and_leg_clear",
+    "editorial": {
+      "displayNameRu": "Заднее бедро лёжа",
+      "formalNameRu": "Растяжка задней поверхности бедра лёжа с поддержкой бедра руками",
+      "aliases": [
+        "Растяжка задней поверхности бедра лёжа с поддержкой бедра руками",
+        "Supine hand-supported hamstring stretch"
+      ],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["stretch"],
+      "difficulty": "beginner",
+      "sideMode": "per_side",
+      "focusMode": "stretch",
+      "cues": [
+        "Лёжа на спине, поддержи поднятое бедро руками сзади.",
+        "Плавно разогни колено до комфортного натяжения."
+      ],
+      "mistakes": ["Тяга за колено.", "Подъём головы и напряжение шеи."],
+      "optionalEquipment": "mat",
+      "sourceRefs": [
+        "https://www.acefitness.org/continuing-education/certified/august-2025/8924/a-pro-s-guide-to-muscle-mechanics-the-hamstrings/"
+      ],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": ["stretch.hamstring.supine_strap"],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "hamstrings",
+        "role": "primary"
+      }
+    ]
+  },
+  {
+    "id": "stretch.quadriceps.side_lying",
+    "familyId": "stretch.quadriceps",
+    "familyNameRu": "Растяжка передней поверхности бедра",
+    "aliasEn": "Side-lying quadriceps stretch",
+    "discipline": "stretch",
+    "pattern": "knee_flexion",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "floor_support",
+    "spaceRequirement": "floor_body_and_leg_clear",
+    "editorial": {
+      "displayNameRu": "Квадрицепс лёжа на боку",
+      "formalNameRu": "Растяжка передней поверхности бедра лёжа на боку",
+      "aliases": [
+        "Растяжка передней поверхности бедра лёжа на боку",
+        "Side-lying quadriceps stretch"
+      ],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["stretch"],
+      "difficulty": "beginner",
+      "sideMode": "per_side",
+      "focusMode": "stretch",
+      "cues": [
+        "Ляг на бок и согни верхнюю ногу, взяв стопу рукой.",
+        "Оставь бёдра одно над другим, мягко направляя пятку назад."
+      ],
+      "mistakes": ["Разворот таза назад.", "Резкое подтягивание стопы."],
+      "optionalEquipment": "mat",
+      "sourceRefs": ["https://www.nasm.org/resource-center/blog/recovery/stretches-for-beginners"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": ["stretch.quadriceps.standing_supported"],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "quads",
+        "role": "primary"
+      },
+      {
+        "group": "hip_flexors",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "id": "stretch.hip_flexor.standing_split",
+    "familyId": "stretch.hip_flexor",
+    "familyNameRu": "Растяжка сгибателей бедра",
+    "aliasEn": "Standing split-stance hip flexor stretch",
+    "discipline": "stretch",
+    "pattern": "hip_extension",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "none",
+    "spaceRequirement": "standing_lunge_clear_non_slip",
+    "editorial": {
+      "displayNameRu": "Сгибатели бедра стоя",
+      "formalNameRu": "Растяжка сгибателей бедра стоя в разножке",
+      "aliases": [
+        "Растяжка сгибателей бедра стоя в разножке",
+        "Standing split-stance hip flexor stretch"
+      ],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["stretch"],
+      "difficulty": "beginner",
+      "sideMode": "per_side",
+      "focusMode": "stretch",
+      "cues": [
+        "Поставь одну ногу назад в короткую устойчивую стойку.",
+        "Слегка подожми таз и перенеси вес на переднюю ногу."
+      ],
+      "mistakes": ["Прогиб поясницы.", "Потеря равновесия при слишком узкой стойке."],
+      "optionalEquipment": "none",
+      "sourceRefs": ["https://www.nasm.org/resource-center/blog/recovery/stretches-for-beginners"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": ["stretch.hip_flexor.half_kneeling"],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "hip_flexors",
+        "role": "primary"
+      },
+      {
+        "group": "abs",
+        "role": "stabilizer"
+      },
+      {
+        "group": "glutes",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "id": "stretch.gluteal.seated_figure_four",
+    "familyId": "stretch.gluteal",
+    "familyNameRu": "Растяжка ягодиц",
+    "aliasEn": "Seated chair figure-four stretch",
+    "discipline": "stretch",
+    "pattern": "hip_external_rotation",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "stable_exercise_chair",
+    "spaceRequirement": "seated_leg_span_clear",
+    "editorial": {
+      "displayNameRu": "Четвёрка на стуле",
+      "formalNameRu": "Растяжка ягодичных сидя на стуле в положении четвёрки",
+      "aliases": [
+        "Растяжка ягодичных сидя на стуле в положении четвёрки",
+        "Seated chair figure-four stretch"
+      ],
+      "contexts": ["home", "gym"],
+      "directions": ["stretch"],
+      "difficulty": "beginner",
+      "sideMode": "per_side",
+      "focusMode": "stretch",
+      "cues": [
+        "Сядь на устойчивый тренировочный стул и положи лодыжку на другое бедро.",
+        "Чуть наклонись вперёд от таза, сохраняя длинный корпус."
+      ],
+      "mistakes": ["Давление на колено рукой.", "Стул на колёсах или шаткая опора."],
+      "optionalEquipment": "none",
+      "sourceRefs": ["https://www.nasm.org/resource-center/blog/recovery/stretches-for-beginners"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": ["stretch.gluteal.supine_figure_four"],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "glutes",
+        "role": "primary"
+      },
+      {
+        "group": "hip_abductors",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "id": "stretch.adductor.kneeling_frog",
+    "familyId": "stretch.adductor",
+    "familyNameRu": "Растяжка внутренней поверхности бедра",
+    "aliasEn": "Kneeling frog adductor stretch",
+    "discipline": "stretch",
+    "pattern": "hip_abduction",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "floor_support",
+    "spaceRequirement": "kneeling_leg_span_clear",
+    "editorial": {
+      "displayNameRu": "Лягушка",
+      "formalNameRu": "Растяжка приводящих мышц в положении лягушки на коленях",
+      "aliases": [
+        "Растяжка приводящих мышц в положении лягушки на коленях",
+        "Kneeling frog adductor stretch"
+      ],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["stretch"],
+      "difficulty": "intermediate",
+      "sideMode": "bilateral",
+      "focusMode": "stretch",
+      "cues": [
+        "На мягкой нескользкой поверхности поставь колени чуть шире таза.",
+        "Опираясь на предплечья, плавно отведи таз назад в небольшой амплитуде."
+      ],
+      "mistakes": ["Скользящие колени.", "Попытка раскрыть ноги до предела."],
+      "optionalEquipment": "mat",
+      "sourceRefs": ["https://www.nasm.org/resource-center/blog/recovery/stretches-for-beginners"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": ["stretch.adductor.standing_side_lunge"],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "adductors",
+        "role": "primary"
+      }
+    ]
+  },
+  {
+    "id": "stretch.pectoral.wall_single_arm",
+    "familyId": "stretch.pectoral",
+    "familyNameRu": "Растяжка груди",
+    "aliasEn": "Single-arm wall chest stretch",
+    "discipline": "stretch",
+    "pattern": "shoulder_horizontal_abduction",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "solid_wall",
+    "spaceRequirement": "wall_and_standing_clear_non_slip",
+    "editorial": {
+      "displayNameRu": "Грудь у стены",
+      "formalNameRu": "Растяжка грудных мышц одной рукой у стены",
+      "aliases": ["Растяжка грудных мышц одной рукой у стены", "Single-arm wall chest stretch"],
+      "contexts": ["home", "gym"],
+      "directions": ["stretch"],
+      "difficulty": "beginner",
+      "sideMode": "per_side",
+      "focusMode": "stretch",
+      "cues": [
+        "Приложи предплечье к неподвижной стене, локоть ниже или на уровне плеча.",
+        "Мягко поверни грудь от руки, сохраняя плечо спокойным."
+      ],
+      "mistakes": ["Давление корпусом на плечевой сустав.", "Резкий разворот."],
+      "optionalEquipment": "none",
+      "sourceRefs": [
+        "https://www.acefitness.org/continuing-education/certified/special-dec-2018-issue/7145/how-to-teach-your-clients-to-practice-proper-posture-in-a-modern-era/"
+      ],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": ["stretch.pectoral.doorway_single_arm"],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "chest",
+        "role": "primary"
+      },
+      {
+        "group": "shoulders",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "id": "stretch.pectoral.supine_roller",
+    "familyId": "stretch.pectoral",
+    "familyNameRu": "Растяжка груди",
+    "aliasEn": "Supine longitudinal foam-roller chest stretch",
+    "discipline": "stretch",
+    "pattern": "shoulder_horizontal_abduction",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "long_foam_roller:1",
+    "supportRequirement": "floor_support",
+    "spaceRequirement": "floor_body_and_arm_span_clear",
+    "editorial": {
+      "displayNameRu": "Грудь на ролле",
+      "formalNameRu": "Растяжка грудных мышц лёжа на длинном ролле вдоль спины",
+      "aliases": [
+        "Растяжка грудных мышц лёжа на длинном ролле вдоль спины",
+        "Supine longitudinal foam-roller chest stretch"
+      ],
+      "contexts": ["home", "gym"],
+      "directions": ["stretch"],
+      "difficulty": "beginner",
+      "sideMode": "bilateral",
+      "focusMode": "stretch",
+      "cues": [
+        "Расположи длинный ролл вдоль спины с опорой головы и таза.",
+        "Согни колени и мягко раскрой руки в стороны."
+      ],
+      "mistakes": ["Голова без опоры.", "Насильственное прижатие кистей к полу."],
+      "optionalEquipment": "mat",
+      "sourceRefs": [
+        "https://www.acefitness.org/continuing-education/certified/special-dec-2018-issue/7145/how-to-teach-your-clients-to-practice-proper-posture-in-a-modern-era/"
+      ],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": ["stretch.pectoral.wall_single_arm"],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "chest",
+        "role": "primary"
+      },
+      {
+        "group": "shoulders",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "id": "stretch.biceps.wall_straight_arm",
+    "familyId": "stretch.biceps",
+    "familyNameRu": "Растяжка бицепса",
+    "aliasEn": "Straight-arm wall biceps stretch",
+    "discipline": "stretch",
+    "pattern": "shoulder_extension",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "solid_wall",
+    "spaceRequirement": "wall_and_arm_span_clear",
+    "editorial": {
+      "displayNameRu": "Бицепс у стены",
+      "formalNameRu": "Растяжка бицепса прямой рукой у стены",
+      "aliases": ["Растяжка бицепса прямой рукой у стены", "Straight-arm wall biceps stretch"],
+      "contexts": ["home", "gym"],
+      "directions": ["stretch"],
+      "difficulty": "beginner",
+      "sideMode": "per_side",
+      "focusMode": "stretch",
+      "cues": [
+        "Приложи ладонь к стене позади корпуса, удерживая локоть мягко выпрямленным.",
+        "Небольшим разворотом корпуса найди лёгкое натяжение спереди руки."
+      ],
+      "mistakes": ["Резкий разворот с зафиксированной рукой.", "Переразгибание локтя."],
+      "optionalEquipment": "none",
+      "sourceRefs": ["https://www.acefitness.org/resources/everyone/exercise-library/"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "biceps",
+        "role": "primary"
+      },
+      {
+        "group": "chest",
+        "role": "secondary"
+      },
+      {
+        "group": "shoulders",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "id": "stretch.wrist_flexor.hand_assisted",
+    "familyId": "stretch.wrist_flexor",
+    "familyNameRu": "Растяжка сгибателей кисти",
+    "aliasEn": "Hand-assisted wrist flexor stretch",
+    "discipline": "stretch",
+    "pattern": "wrist_extension",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "none",
+    "spaceRequirement": "standing_arm_span_clear",
+    "editorial": {
+      "displayNameRu": "Сгибатели кисти",
+      "formalNameRu": "Растяжка сгибателей кисти с помощью другой руки",
+      "aliases": [
+        "Растяжка сгибателей кисти с помощью другой руки",
+        "Hand-assisted wrist flexor stretch"
+      ],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["stretch"],
+      "difficulty": "beginner",
+      "sideMode": "per_side",
+      "focusMode": "stretch",
+      "cues": [
+        "Вытяни руку ладонью вверх и мягко отведи пальцы вниз другой рукой.",
+        "Оставь плечо расслабленным и регулируй усилие натяжения."
+      ],
+      "mistakes": ["Резкое давление на пальцы.", "Жёстко запертый локоть."],
+      "optionalEquipment": "none",
+      "sourceRefs": ["https://www.nasm.org/resource-center/blog/recovery/stretches-for-beginners"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "forearms",
+        "role": "primary"
+      }
+    ]
+  },
+  {
+    "id": "stretch.wrist_extensor.hand_assisted",
+    "familyId": "stretch.wrist_extensor",
+    "familyNameRu": "Растяжка разгибателей кисти",
+    "aliasEn": "Hand-assisted wrist extensor stretch",
+    "discipline": "stretch",
+    "pattern": "wrist_flexion",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "none",
+    "spaceRequirement": "standing_arm_span_clear",
+    "editorial": {
+      "displayNameRu": "Разгибатели кисти",
+      "formalNameRu": "Растяжка разгибателей кисти с помощью другой руки",
+      "aliases": [
+        "Растяжка разгибателей кисти с помощью другой руки",
+        "Hand-assisted wrist extensor stretch"
+      ],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["stretch"],
+      "difficulty": "beginner",
+      "sideMode": "per_side",
+      "focusMode": "stretch",
+      "cues": [
+        "Вытяни руку ладонью вниз и плавно направь кисть вниз другой рукой.",
+        "Выбирай лёгкое натяжение с наружной стороны предплечья."
+      ],
+      "mistakes": ["Рывок за кисть.", "Поднятое и напряжённое плечо."],
+      "optionalEquipment": "none",
+      "sourceRefs": ["https://www.southtees.nhs.uk/resources/wrist-extensor-stretch/"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "forearms",
+        "role": "primary"
+      }
+    ]
+  },
+  {
+    "id": "stretch.neck.seated_side_tilt",
+    "familyId": "stretch.neck",
+    "familyNameRu": "Растяжка шеи",
+    "aliasEn": "Seated lateral neck stretch",
+    "discipline": "stretch",
+    "pattern": "cervical_lateral_flexion",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "stable_exercise_chair",
+    "spaceRequirement": "seated_clear",
+    "editorial": {
+      "displayNameRu": "Шея в сторону",
+      "formalNameRu": "Мягкая растяжка боковой поверхности шеи сидя",
+      "aliases": ["Мягкая растяжка боковой поверхности шеи сидя", "Seated lateral neck stretch"],
+      "contexts": ["home", "gym"],
+      "directions": ["stretch"],
+      "difficulty": "beginner",
+      "sideMode": "per_side",
+      "focusMode": "stretch",
+      "cues": [
+        "Сядь ровно и направь ухо к плечу, оставляя плечи опущенными.",
+        "Остановись на мягком натяжении без давления рукой на голову."
+      ],
+      "mistakes": ["Тяга головы рукой.", "Подъём плеча к уху."],
+      "optionalEquipment": "none",
+      "sourceRefs": ["https://www.nhs.uk/live-well/exercise/flexibility-exercises/"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "neck",
+        "role": "primary"
+      }
+    ]
+  },
+  {
+    "id": "stretch.neck.seated_diagonal",
+    "familyId": "stretch.neck",
+    "familyNameRu": "Растяжка шеи",
+    "aliasEn": "Seated diagonal neck stretch",
+    "discipline": "stretch",
+    "pattern": "cervical_flexion_rotation",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "stable_exercise_chair",
+    "spaceRequirement": "seated_clear",
+    "editorial": {
+      "displayNameRu": "Шея по диагонали",
+      "formalNameRu": "Мягкая диагональная растяжка шеи сидя",
+      "aliases": ["Мягкая диагональная растяжка шеи сидя", "Seated diagonal neck stretch"],
+      "contexts": ["home", "gym"],
+      "directions": ["stretch"],
+      "difficulty": "beginner",
+      "sideMode": "per_side",
+      "focusMode": "stretch",
+      "cues": [
+        "Сядь с расслабленными плечами и слегка поверни голову в сторону.",
+        "Плавно направь взгляд вниз по диагонали, не помогая рукой."
+      ],
+      "mistakes": ["Сильное давление рукой.", "Резкий глубокий наклон."],
+      "optionalEquipment": "none",
+      "sourceRefs": [
+        "https://elht.nhs.uk/application/files/3916/8863/2241/Neck_pain_leaflet_V2_-_2022.pdf"
+      ],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "neck",
+        "role": "primary"
+      }
+    ]
+  },
+  {
+    "id": "stretch.latissimus.standing_wall",
+    "familyId": "stretch.latissimus",
+    "familyNameRu": "Растяжка широчайших",
+    "aliasEn": "Standing wall lat stretch",
+    "discipline": "stretch",
+    "pattern": "shoulder_flexion",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "solid_wall",
+    "spaceRequirement": "wall_and_body_length_clear",
+    "editorial": {
+      "displayNameRu": "Спина у стены",
+      "formalNameRu": "Растяжка широчайших стоя с упором руками в стену",
+      "aliases": ["Растяжка широчайших стоя с упором руками в стену", "Standing wall lat stretch"],
+      "contexts": ["home", "gym"],
+      "directions": ["stretch"],
+      "difficulty": "beginner",
+      "sideMode": "bilateral",
+      "focusMode": "stretch",
+      "cues": [
+        "Упрись ладонями в неподвижную стену и отойди назад.",
+        "Отведи таз назад, вытягивая корпус между тазом и руками."
+      ],
+      "mistakes": ["Прогиб поясницы.", "Опора на скользящую поверхность."],
+      "optionalEquipment": "none",
+      "sourceRefs": [
+        "https://www.acefitness.org/continuing-education/certified/special-dec-2018-issue/7145/how-to-teach-your-clients-to-practice-proper-posture-in-a-modern-era/"
+      ],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": ["stretch.latissimus.kneeling_bench"],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "back",
+        "role": "primary"
+      },
+      {
+        "group": "shoulders",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "id": "stretch.side_body.standing",
+    "familyId": "stretch.side_body",
+    "familyNameRu": "Растяжка боковой поверхности корпуса",
+    "aliasEn": "Standing overhead side-body stretch",
+    "discipline": "stretch",
+    "pattern": "trunk_lateral_flexion",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "none",
+    "spaceRequirement": "standing_arm_span_clear",
+    "editorial": {
+      "displayNameRu": "Бок корпуса",
+      "formalNameRu": "Растяжка боковой поверхности корпуса стоя с рукой над головой",
+      "aliases": [
+        "Растяжка боковой поверхности корпуса стоя с рукой над головой",
+        "Standing overhead side-body stretch"
+      ],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["stretch"],
+      "difficulty": "beginner",
+      "sideMode": "per_side",
+      "focusMode": "stretch",
+      "cues": [
+        "Подними одну руку и плавно наклони корпус в другую сторону.",
+        "Оставь таз над стопами и удлиняй бок вверх, а не вперёд."
+      ],
+      "mistakes": ["Разворот груди к полу.", "Рывки в наклоне."],
+      "optionalEquipment": "none",
+      "sourceRefs": ["https://www.nhs.uk/live-well/exercise/flexibility-exercises/"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "obliques",
+        "role": "primary"
+      },
+      {
+        "group": "back",
+        "role": "secondary"
+      },
+      {
+        "group": "glutes",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "id": "stretch.lower_back.knees_to_chest",
+    "familyId": "stretch.lower_back",
+    "familyNameRu": "Растяжка нижней части спины",
+    "aliasEn": "Supine knees-to-chest stretch",
+    "discipline": "stretch",
+    "pattern": "lumbar_flexion",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "floor_support",
+    "spaceRequirement": "floor_body_length_clear",
+    "editorial": {
+      "displayNameRu": "Колени к груди",
+      "formalNameRu": "Растяжка нижней части спины лёжа с коленями к груди",
+      "aliases": [
+        "Растяжка нижней части спины лёжа с коленями к груди",
+        "Supine knees-to-chest stretch"
+      ],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["stretch"],
+      "difficulty": "beginner",
+      "sideMode": "bilateral",
+      "focusMode": "stretch",
+      "cues": [
+        "Лёжа на спине, обними согнутые ноги за голени или бёдра.",
+        "Плавно приблизь колени к корпусу, оставляя голову на поверхности."
+      ],
+      "mistakes": ["Рывок за голени.", "Напряжённая приподнятая голова."],
+      "optionalEquipment": "mat",
+      "sourceRefs": ["https://www.acefitness.org/resources/everyone/exercise-library/"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "lower_back",
+        "role": "primary"
+      },
+      {
+        "group": "glutes",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "id": "stretch.calf.seated_strap",
+    "familyId": "stretch.calf",
+    "familyNameRu": "Растяжка икр",
+    "aliasEn": "Seated calf stretch with strap",
+    "discipline": "stretch",
+    "pattern": "ankle_dorsiflexion",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "stretch_strap:1",
+    "supportRequirement": "floor_support",
+    "spaceRequirement": "seated_leg_span_clear",
+    "editorial": {
+      "displayNameRu": "Икры с ремнём",
+      "formalNameRu": "Растяжка икроножной мышцы сидя с ремнём",
+      "aliases": ["Растяжка икроножной мышцы сидя с ремнём", "Seated calf stretch with strap"],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["stretch"],
+      "difficulty": "beginner",
+      "sideMode": "per_side",
+      "focusMode": "stretch",
+      "cues": [
+        "Сядь с вытянутой ногой и накинь ремень на переднюю часть стопы.",
+        "Мягко направь носок к себе, сохраняя колено почти прямым."
+      ],
+      "mistakes": ["Резкое натяжение ремня.", "Поворот стопы внутрь."],
+      "optionalEquipment": "mat",
+      "sourceRefs": [
+        "https://www.acefitness.org/resources/everyone/exercise-library/214/seated-calf-stretch/"
+      ],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": ["stretch.calf.wall_straight_knee"],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "calves",
+        "role": "primary"
+      },
+      {
+        "group": "hamstrings",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "id": "mobility.shoulder_circle.standing",
+    "familyId": "mobility.shoulder_circle",
+    "familyNameRu": "Круги плечами",
+    "aliasEn": "Standing shoulder circles",
+    "discipline": "mobility",
+    "pattern": "shoulder_circumduction",
+    "resistanceMode": "bodyweight",
+    "metric": "reps",
+    "equipmentRequirement": "none",
+    "supportRequirement": "none",
+    "spaceRequirement": "standing_arm_span_clear",
+    "editorial": {
+      "displayNameRu": "Круги плечами",
+      "formalNameRu": "Контролируемые круговые движения плечами стоя",
+      "aliases": ["Контролируемые круговые движения плечами стоя", "Standing shoulder circles"],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["mobility"],
+      "difficulty": "beginner",
+      "sideMode": "bilateral",
+      "focusMode": "mobility",
+      "cues": [
+        "Встань ровно и оставь руки свободными вдоль корпуса.",
+        "Проводи плечами небольшие медленные круги в обе стороны."
+      ],
+      "mistakes": ["Рывки плечами.", "Движение всем корпусом вместо плеч."],
+      "optionalEquipment": "none",
+      "sourceRefs": ["https://www.nhs.uk/live-well/exercise/flexibility-exercises/"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "shoulders",
+        "role": "primary"
+      },
+      {
+        "group": "back",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "id": "mobility.shoulder_flexion.dowel_overhead",
+    "familyId": "mobility.shoulder_flexion",
+    "familyNameRu": "Подъём рук",
+    "aliasEn": "Dowel overhead shoulder reach",
+    "discipline": "mobility",
+    "pattern": "shoulder_flexion",
+    "resistanceMode": "bodyweight",
+    "metric": "reps",
+    "equipmentRequirement": "exercise_dowel:1",
+    "supportRequirement": "none",
+    "spaceRequirement": "standing_overhead_clear",
+    "editorial": {
+      "displayNameRu": "Подъём палки",
+      "formalNameRu": "Подъём лёгкой гимнастической палки перед собой и над головой",
+      "aliases": [
+        "Подъём лёгкой гимнастической палки перед собой и над головой",
+        "Dowel overhead shoulder reach"
+      ],
+      "contexts": ["home", "gym", "outdoor"],
+      "directions": ["mobility"],
+      "difficulty": "beginner",
+      "sideMode": "bilateral",
+      "focusMode": "mobility",
+      "cues": [
+        "Возьми лёгкую гимнастическую палку широким хватом перед собой.",
+        "Медленно подними её до удобной высоты, не уводя силой за спину."
+      ],
+      "mistakes": ["Прогиб поясницы.", "Слишком узкий хват и рывок."],
+      "optionalEquipment": "none",
+      "sourceRefs": [
+        "https://www.acefitness.org/resources/pros/expert-articles/5412/how-to-increase-upper-body-stability-and-mobility/"
+      ],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": ["mobility.shoulder_flexion.wall_slide"],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "shoulders",
+        "role": "primary"
+      },
+      {
+        "group": "back",
+        "role": "secondary"
+      },
+      {
+        "group": "abs",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "id": "mobility.hip_circle.standing",
+    "familyId": "mobility.hip_circle",
+    "familyNameRu": "Круги тазом",
+    "aliasEn": "Standing hip circles",
+    "discipline": "mobility",
+    "pattern": "hip_circumduction",
+    "resistanceMode": "bodyweight",
+    "metric": "reps",
+    "equipmentRequirement": "none",
+    "supportRequirement": "none",
+    "spaceRequirement": "standing_clear_non_slip",
+    "editorial": {
+      "displayNameRu": "Круги тазом",
+      "formalNameRu": "Контролируемые круговые движения тазом стоя",
+      "aliases": ["Контролируемые круговые движения тазом стоя", "Standing hip circles"],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["mobility"],
+      "difficulty": "beginner",
+      "sideMode": "bilateral",
+      "focusMode": "mobility",
+      "cues": [
+        "Поставь стопы устойчиво чуть шире таза.",
+        "Проводи тазом небольшие круги, не запрокидывая плечи."
+      ],
+      "mistakes": ["Большой прогиб поясницы.", "Рывки и потеря опоры."],
+      "optionalEquipment": "none",
+      "sourceRefs": [
+        "https://www.acefitness.org/continuing-education/certified/october-2024/8725/controlled-articular-rotations-shifting-mobility-into-high-gear/"
+      ],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "glutes",
+        "role": "primary"
+      },
+      {
+        "group": "hip_flexors",
+        "role": "primary"
+      },
+      {
+        "group": "adductors",
+        "role": "secondary"
+      },
+      {
+        "group": "hip_abductors",
+        "role": "secondary"
+      },
+      {
+        "group": "abs",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "id": "mobility.adductor.quadruped_rock_back",
+    "familyId": "mobility.adductor",
+    "familyNameRu": "Подвижность внутренней поверхности бедра",
+    "aliasEn": "Quadruped adductor rock-back",
+    "discipline": "mobility",
+    "pattern": "hip_abduction_flexion",
+    "resistanceMode": "bodyweight",
+    "metric": "reps",
+    "equipmentRequirement": "none",
+    "supportRequirement": "floor_support",
+    "spaceRequirement": "floor_leg_span_clear",
+    "editorial": {
+      "displayNameRu": "Перекат для бедра",
+      "formalNameRu": "Перекат назад на четвереньках с ногой в сторону для приводящих мышц",
+      "aliases": [
+        "Перекат назад на четвереньках с ногой в сторону для приводящих мышц",
+        "Quadruped adductor rock-back"
+      ],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["mobility"],
+      "difficulty": "beginner",
+      "sideMode": "per_side",
+      "focusMode": "mobility",
+      "cues": [
+        "На четвереньках вытяни одну ногу в сторону с устойчивой стопой.",
+        "Плавно отводи таз назад и возвращайся, сохраняя ровный корпус."
+      ],
+      "mistakes": ["Скользящая стопа.", "Округление поясницы вместо движения таза."],
+      "optionalEquipment": "mat",
+      "sourceRefs": [
+        "https://www.acefitness.org/resources/everyone/blog/5681/3-stretches-for-opening-up-tight-hips/"
+      ],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "adductors",
+        "role": "primary"
+      },
+      {
+        "group": "glutes",
+        "role": "secondary"
+      },
+      {
+        "group": "abs",
+        "role": "stabilizer"
+      },
+      {
+        "group": "shoulders",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "id": "mobility.ankle_circle.seated",
+    "familyId": "mobility.ankle_circle",
+    "familyNameRu": "Круги стопой",
+    "aliasEn": "Seated ankle circles",
+    "discipline": "mobility",
+    "pattern": "ankle_circumduction",
+    "resistanceMode": "bodyweight",
+    "metric": "reps",
+    "equipmentRequirement": "none",
+    "supportRequirement": "stable_exercise_chair",
+    "spaceRequirement": "seated_clear",
+    "editorial": {
+      "displayNameRu": "Круги стопой",
+      "formalNameRu": "Контролируемые круговые движения стопой сидя",
+      "aliases": ["Контролируемые круговые движения стопой сидя", "Seated ankle circles"],
+      "contexts": ["home", "gym"],
+      "directions": ["mobility"],
+      "difficulty": "beginner",
+      "sideMode": "per_side",
+      "focusMode": "mobility",
+      "cues": [
+        "Сядь устойчиво и немного разгрузи одну стопу.",
+        "Медленно описывай стопой круги, оставляя голень почти неподвижной."
+      ],
+      "mistakes": ["Движение всей ногой.", "Резкие круги в предельной амплитуде."],
+      "optionalEquipment": "none",
+      "sourceRefs": [
+        "https://leedscommunityhealthcare.nhs.uk/our-services-a-z/podiatry/foot-pain/"
+      ],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "calves",
+        "role": "primary"
+      },
+      {
+        "group": "feet",
+        "role": "primary"
+      }
+    ]
+  },
+  {
+    "id": "mobility.toes.seated_flex_extend",
+    "familyId": "mobility.toes",
+    "familyNameRu": "Подвижность пальцев стопы",
+    "aliasEn": "Seated toe flexion and extension",
+    "discipline": "mobility",
+    "pattern": "toe_flexion_extension",
+    "resistanceMode": "bodyweight",
+    "metric": "reps",
+    "equipmentRequirement": "none",
+    "supportRequirement": "stable_exercise_chair",
+    "spaceRequirement": "seated_clear",
+    "editorial": {
+      "displayNameRu": "Пальцы стопы",
+      "formalNameRu": "Сгибание и разгибание пальцев стопы сидя без нагрузки",
+      "aliases": [
+        "Сгибание и разгибание пальцев стопы сидя без нагрузки",
+        "Seated toe flexion and extension"
+      ],
+      "contexts": ["home", "gym"],
+      "directions": ["mobility"],
+      "difficulty": "beginner",
+      "sideMode": "bilateral",
+      "focusMode": "mobility",
+      "cues": [
+        "Сидя с опорой стоп, мягко согни пальцы без сильного поджимания.",
+        "Расправь пальцы и вернись в удобное положение."
+      ],
+      "mistakes": ["Судорожное сжатие пальцев.", "Давление всем весом на поджатые пальцы."],
+      "optionalEquipment": "none",
+      "sourceRefs": ["https://www.nhs.uk/live-well/exercise/sitting-exercises/"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "feet",
+        "role": "primary"
+      }
+    ]
+  },
+  {
+    "id": "mobility.wrist.standing_circle",
+    "familyId": "mobility.wrist",
+    "familyNameRu": "Подвижность кистей",
+    "aliasEn": "Unloaded wrist circles",
+    "discipline": "mobility",
+    "pattern": "wrist_circumduction",
+    "resistanceMode": "bodyweight",
+    "metric": "reps",
+    "equipmentRequirement": "none",
+    "supportRequirement": "none",
+    "spaceRequirement": "standing_arm_span_clear",
+    "editorial": {
+      "displayNameRu": "Круги кистями",
+      "formalNameRu": "Контролируемые круговые движения кистями без опоры",
+      "aliases": ["Контролируемые круговые движения кистями без опоры", "Unloaded wrist circles"],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["mobility"],
+      "difficulty": "beginner",
+      "sideMode": "bilateral",
+      "focusMode": "mobility",
+      "cues": [
+        "Подними предплечья перед собой, оставляя плечи расслабленными.",
+        "Медленно описывай кистями небольшие круги в обе стороны."
+      ],
+      "mistakes": ["Резкие вращения.", "Сильно сжатые кулаки."],
+      "optionalEquipment": "none",
+      "sourceRefs": [
+        "https://www.acefitness.org/continuing-education/certified/october-2024/8725/controlled-articular-rotations-shifting-mobility-into-high-gear/"
+      ],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "forearms",
+        "role": "primary"
+      }
+    ]
+  },
+  {
+    "id": "mobility.forearm_rotation.seated",
+    "familyId": "mobility.forearm_rotation",
+    "familyNameRu": "Поворот предплечья",
+    "aliasEn": "Seated forearm pronation and supination",
+    "discipline": "mobility",
+    "pattern": "forearm_pronation_supination",
+    "resistanceMode": "bodyweight",
+    "metric": "reps",
+    "equipmentRequirement": "none",
+    "supportRequirement": "stable_exercise_chair",
+    "spaceRequirement": "seated_clear",
+    "editorial": {
+      "displayNameRu": "Повороты ладоней",
+      "formalNameRu": "Поворот предплечий ладонями вверх и вниз сидя без нагрузки",
+      "aliases": [
+        "Поворот предплечий ладонями вверх и вниз сидя без нагрузки",
+        "Seated forearm pronation and supination"
+      ],
+      "contexts": ["home", "gym"],
+      "directions": ["mobility"],
+      "difficulty": "beginner",
+      "sideMode": "bilateral",
+      "focusMode": "mobility",
+      "cues": [
+        "Сядь устойчиво и согни локти рядом с корпусом.",
+        "Плавно разворачивай ладони вверх и вниз, не разводя локти."
+      ],
+      "mistakes": ["Движение всем плечом.", "Рывок в конце поворота."],
+      "optionalEquipment": "none",
+      "sourceRefs": [
+        "https://www.acefitness.org/continuing-education/certified/october-2024/8725/controlled-articular-rotations-shifting-mobility-into-high-gear/"
+      ],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "forearms",
+        "role": "primary"
+      }
+    ]
+  },
+  {
+    "id": "mobility.neck_rotation.seated",
+    "familyId": "mobility.neck_rotation",
+    "familyNameRu": "Поворот головы",
+    "aliasEn": "Seated cervical rotations",
+    "discipline": "mobility",
+    "pattern": "cervical_rotation",
+    "resistanceMode": "bodyweight",
+    "metric": "reps",
+    "equipmentRequirement": "none",
+    "supportRequirement": "stable_exercise_chair",
+    "spaceRequirement": "seated_clear",
+    "editorial": {
+      "displayNameRu": "Повороты головы",
+      "formalNameRu": "Мягкие повороты головы сидя",
+      "aliases": ["Мягкие повороты головы сидя", "Seated cervical rotations"],
+      "contexts": ["home", "gym"],
+      "directions": ["mobility"],
+      "difficulty": "beginner",
+      "sideMode": "alternating",
+      "focusMode": "mobility",
+      "cues": [
+        "Сядь с ровным корпусом и расслабь плечи.",
+        "Плавно поворачивай голову к одной стороне и возвращайся через центр."
+      ],
+      "mistakes": ["Резкое вращение.", "Разворот корпуса вместе с головой."],
+      "optionalEquipment": "none",
+      "sourceRefs": ["https://www.nhs.uk/live-well/exercise/flexibility-exercises/"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "neck",
+        "role": "primary"
+      }
+    ]
+  },
+  {
+    "id": "mobility.neck_side_bend.seated",
+    "familyId": "mobility.neck_side_bend",
+    "familyNameRu": "Наклон головы",
+    "aliasEn": "Seated active cervical side bends",
+    "discipline": "mobility",
+    "pattern": "cervical_lateral_flexion",
+    "resistanceMode": "bodyweight",
+    "metric": "reps",
+    "equipmentRequirement": "none",
+    "supportRequirement": "stable_exercise_chair",
+    "spaceRequirement": "seated_clear",
+    "editorial": {
+      "displayNameRu": "Наклоны головы",
+      "formalNameRu": "Мягкие боковые наклоны головы сидя без помощи рук",
+      "aliases": [
+        "Мягкие боковые наклоны головы сидя без помощи рук",
+        "Seated active cervical side bends"
+      ],
+      "contexts": ["home", "gym"],
+      "directions": ["mobility"],
+      "difficulty": "beginner",
+      "sideMode": "alternating",
+      "focusMode": "mobility",
+      "cues": [
+        "Сядь устойчиво и плавно направь ухо к одному плечу.",
+        "Верни голову в центр, не приподнимая плечи."
+      ],
+      "mistakes": ["Давление рукой на голову.", "Круговые перекаты через крайнее положение."],
+      "optionalEquipment": "none",
+      "sourceRefs": ["https://www.nhs.uk/live-well/exercise/flexibility-exercises/"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "neck",
+        "role": "primary"
+      }
+    ]
+  },
+  {
+    "id": "mobility.thoracic_extension.foam_roller",
+    "familyId": "mobility.thoracic_extension",
+    "familyNameRu": "Разгибание грудного отдела",
+    "aliasEn": "Thoracic extension over foam roller",
+    "discipline": "mobility",
+    "pattern": "thoracic_extension",
+    "resistanceMode": "bodyweight",
+    "metric": "reps",
+    "equipmentRequirement": "foam_roller:1",
+    "supportRequirement": "floor_support",
+    "spaceRequirement": "floor_body_length_clear",
+    "editorial": {
+      "displayNameRu": "Грудной отдел на ролле",
+      "formalNameRu": "Мягкое разгибание грудного отдела на поперечном ролле",
+      "aliases": [
+        "Мягкое разгибание грудного отдела на поперечном ролле",
+        "Thoracic extension over foam roller"
+      ],
+      "contexts": ["home", "gym"],
+      "directions": ["mobility"],
+      "difficulty": "beginner",
+      "sideMode": "bilateral",
+      "focusMode": "mobility",
+      "cues": [
+        "Положи ролл поперёк верхней части спины и поддержи голову руками.",
+        "Сделай небольшой контролируемый прогиб над роллом, сохраняя таз устойчивым."
+      ],
+      "mistakes": ["Ролл под поясницей или шеей.", "Запрокинутая без опоры голова."],
+      "optionalEquipment": "mat",
+      "sourceRefs": [
+        "https://www.acefitness.org/certifiednewsarticle/2910/a-detailed-guide-to-designing-activity-specific-warm-up-and-mobility-drills/"
+      ],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "back",
+        "role": "primary"
+      },
+      {
+        "group": "chest",
+        "role": "secondary"
+      },
+      {
+        "group": "abs",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "id": "mobility.pelvic_tilt.supine",
+    "familyId": "mobility.pelvic_tilt",
+    "familyNameRu": "Наклон таза",
+    "aliasEn": "Supine pelvic tilts",
+    "discipline": "mobility",
+    "pattern": "pelvic_tilt",
+    "resistanceMode": "bodyweight",
+    "metric": "reps",
+    "equipmentRequirement": "none",
+    "supportRequirement": "floor_support",
+    "spaceRequirement": "floor_body_length_clear",
+    "editorial": {
+      "displayNameRu": "Наклоны таза лёжа",
+      "formalNameRu": "Контролируемые наклоны таза лёжа на спине",
+      "aliases": ["Контролируемые наклоны таза лёжа на спине", "Supine pelvic tilts"],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["mobility"],
+      "difficulty": "beginner",
+      "sideMode": "bilateral",
+      "focusMode": "mobility",
+      "cues": [
+        "Ляг на спину с согнутыми коленями и устойчивыми стопами.",
+        "Плавно перекатывай таз, слегка меняя зазор под поясницей."
+      ],
+      "mistakes": ["Резкое вдавливание спины в поверхность.", "Толчок ногами и подъём всего таза."],
+      "optionalEquipment": "mat",
+      "sourceRefs": ["https://www.acefitness.org/resources/everyone/exercise-library/"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "lower_back",
+        "role": "primary"
+      },
+      {
+        "group": "abs",
+        "role": "secondary"
+      },
+      {
+        "group": "glutes",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "id": "mobility.half_kneeling_rock.forward_back",
+    "familyId": "mobility.half_kneeling_rock",
+    "familyNameRu": "Перекат в выпаде с колена",
+    "aliasEn": "Half-kneeling hip-flexor to hamstring rocks",
+    "discipline": "mobility",
+    "pattern": "hip_flexion_extension",
+    "resistanceMode": "bodyweight",
+    "metric": "reps",
+    "equipmentRequirement": "none",
+    "supportRequirement": "floor_support",
+    "spaceRequirement": "kneeling_lunge_clear",
+    "editorial": {
+      "displayNameRu": "Перекат в выпаде",
+      "formalNameRu": "Контролируемый перекат из выпада с колена к задней поверхности бедра",
+      "aliases": [
+        "Контролируемый перекат из выпада с колена к задней поверхности бедра",
+        "Half-kneeling hip-flexor to hamstring rocks"
+      ],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["mobility"],
+      "difficulty": "beginner",
+      "sideMode": "per_side",
+      "focusMode": "mobility",
+      "cues": [
+        "Из выпада с колена плавно перенеси таз вперёд, сохраняя корпус длинным.",
+        "Затем отведи таз назад и немного разогни переднее колено."
+      ],
+      "mistakes": ["Перекат через прогиб поясницы.", "Рывок к полностью прямой ноге."],
+      "optionalEquipment": "mat;yoga_block:2",
+      "sourceRefs": [
+        "https://www.acefitness.org/certifiednewsarticle/2910/a-detailed-guide-to-designing-activity-specific-warm-up-and-mobility-drills/"
+      ],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "hip_flexors",
+        "role": "primary"
+      },
+      {
+        "group": "hamstrings",
+        "role": "primary"
+      },
+      {
+        "group": "glutes",
+        "role": "secondary"
+      },
+      {
+        "group": "abs",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "id": "mobility.scapula.wall_glide",
+    "familyId": "mobility.scapula",
+    "familyNameRu": "Движение лопаток",
+    "aliasEn": "Wall-supported scapular protraction and retraction",
+    "discipline": "mobility",
+    "pattern": "scapular_protraction_retraction",
+    "resistanceMode": "bodyweight",
+    "metric": "reps",
+    "equipmentRequirement": "none",
+    "supportRequirement": "solid_wall",
+    "spaceRequirement": "wall_and_standing_clear_non_slip",
+    "editorial": {
+      "displayNameRu": "Лопатки у стены",
+      "formalNameRu": "Контролируемое сведение и разведение лопаток с упором ладонями в стену",
+      "aliases": [
+        "Контролируемое сведение и разведение лопаток с упором ладонями в стену",
+        "Wall-supported scapular protraction and retraction"
+      ],
+      "contexts": ["home", "gym"],
+      "directions": ["mobility"],
+      "difficulty": "beginner",
+      "sideMode": "bilateral",
+      "focusMode": "mobility",
+      "cues": [
+        "Упрись ладонями в стену перед собой, сохраняя локти почти прямыми.",
+        "Плавно отдаляй грудь от стены и приближай её, двигая лопатками."
+      ],
+      "mistakes": ["Сгибание локтей вместо движения лопаток.", "Провал поясницы."],
+      "optionalEquipment": "none",
+      "sourceRefs": [
+        "https://www.acefitness.org/resources/pros/expert-articles/5412/how-to-increase-upper-body-stability-and-mobility/"
+      ],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "back",
+        "role": "primary"
+      },
+      {
+        "group": "shoulders",
+        "role": "secondary"
+      },
+      {
+        "group": "chest",
+        "role": "secondary"
+      },
+      {
+        "group": "abs",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "id": "yoga.forward_fold.standing",
+    "familyId": "yoga.forward_fold",
+    "familyNameRu": "Наклон стоя",
+    "aliasEn": "Standing forward fold / Uttanasana",
+    "discipline": "yoga",
+    "pattern": "standing_forward_fold",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "none",
+    "spaceRequirement": "standing_forward_fold_clear_non_slip",
+    "editorial": {
+      "displayNameRu": "Наклон стоя",
+      "formalNameRu": "Поза наклона вперёд стоя с комфортным сгибанием коленей",
+      "aliases": [
+        "Поза наклона вперёд стоя с комфортным сгибанием коленей",
+        "Standing forward fold / Uttanasana",
+        "Уттанасана",
+        "Uttanasana"
+      ],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["yoga", "stretch"],
+      "difficulty": "beginner",
+      "sideMode": "bilateral",
+      "focusMode": "stretch",
+      "cues": [
+        "Слегка согни колени и наклонись вперёд от таза.",
+        "Оставь руки на голенях или на подходящей опоре, не тянув себя вниз."
+      ],
+      "mistakes": ["Рывок корпусом к полу.", "Жёстко запертые колени."],
+      "optionalEquipment": "mat;yoga_block:2",
+      "sourceRefs": ["https://www.artofliving.org/us-en/yoga/poses/yoga-poses"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "hamstrings",
+        "role": "primary"
+      },
+      {
+        "group": "calves",
+        "role": "secondary"
+      },
+      {
+        "group": "lower_back",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "id": "yoga.half_lift.standing",
+    "familyId": "yoga.half_lift",
+    "familyNameRu": "Полунаклон",
+    "aliasEn": "Standing half forward bend / Ardha Uttanasana",
+    "discipline": "yoga",
+    "pattern": "standing_half_forward_fold",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "none",
+    "spaceRequirement": "standing_forward_fold_clear_non_slip",
+    "editorial": {
+      "displayNameRu": "Полунаклон",
+      "formalNameRu": "Поза полунаклона стоя с опорой ладонями на голени",
+      "aliases": [
+        "Поза полунаклона стоя с опорой ладонями на голени",
+        "Standing half forward bend / Ardha Uttanasana",
+        "Ардха Уттанасана",
+        "Ardha Uttanasana"
+      ],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["yoga", "mobility"],
+      "difficulty": "beginner",
+      "sideMode": "bilateral",
+      "focusMode": "mobility",
+      "cues": [
+        "Из лёгкого наклона поставь ладони на голени и согни колени по необходимости.",
+        "Вытяни корпус вперёд почти до горизонтали, сохраняя длинную шею."
+      ],
+      "mistakes": ["Опора руками на коленные чашечки.", "Переразгибание поясницы."],
+      "optionalEquipment": "mat;yoga_block:2",
+      "sourceRefs": ["https://www.artofliving.org/us-en/yoga/poses/yoga-poses"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "back",
+        "role": "primary"
+      },
+      {
+        "group": "hamstrings",
+        "role": "secondary"
+      },
+      {
+        "group": "abs",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "id": "yoga.staff.seated",
+    "familyId": "yoga.staff",
+    "familyNameRu": "Посох",
+    "aliasEn": "Staff pose / Dandasana",
+    "discipline": "yoga",
+    "pattern": "seated_alignment",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "floor_support",
+    "spaceRequirement": "seated_leg_span_clear",
+    "editorial": {
+      "displayNameRu": "Посох",
+      "formalNameRu": "Поза посоха сидя",
+      "aliases": ["Поза посоха сидя", "Staff pose / Dandasana", "Дандасана", "Dandasana"],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["yoga"],
+      "difficulty": "beginner",
+      "sideMode": "bilateral",
+      "focusMode": "balance",
+      "cues": [
+        "Сядь с вытянутыми ногами, при необходимости приподняв таз на пледе.",
+        "Удлини корпус и легко опирайся ладонями рядом с тазом."
+      ],
+      "mistakes": ["Принудительное выпрямление ног с округлением спины.", "Задержка дыхания."],
+      "optionalEquipment": "mat;blanket",
+      "sourceRefs": ["https://www.yogajournal.com/poses/staff-pose/"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "abs",
+        "role": "primary"
+      },
+      {
+        "group": "lower_back",
+        "role": "primary"
+      },
+      {
+        "group": "hamstrings",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "id": "yoga.seated_forward_fold.standard",
+    "familyId": "yoga.seated_forward_fold",
+    "familyNameRu": "Наклон сидя",
+    "aliasEn": "Seated forward bend / Paschimottanasana",
+    "discipline": "yoga",
+    "pattern": "seated_forward_fold",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "floor_support",
+    "spaceRequirement": "seated_leg_span_clear",
+    "editorial": {
+      "displayNameRu": "Наклон сидя",
+      "formalNameRu": "Поза наклона вперёд сидя к обеим ногам",
+      "aliases": [
+        "Поза наклона вперёд сидя к обеим ногам",
+        "Seated forward bend / Paschimottanasana",
+        "Пашчимоттанасана",
+        "Paschimottanasana"
+      ],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["yoga", "stretch"],
+      "difficulty": "beginner",
+      "sideMode": "bilateral",
+      "focusMode": "stretch",
+      "cues": [
+        "Сядь с вытянутыми ногами и мягкими коленями.",
+        "Наклоняйся от таза, оставляя руки там, где не требуется тянуть корпус силой."
+      ],
+      "mistakes": ["Рывок руками за стопы.", "Попытка прижать голову к ногам."],
+      "optionalEquipment": "mat;stretch_strap:1;blanket",
+      "sourceRefs": ["https://www.artofliving.org/us-en/yoga/poses/yoga-poses"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "hamstrings",
+        "role": "primary"
+      },
+      {
+        "group": "calves",
+        "role": "secondary"
+      },
+      {
+        "group": "lower_back",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "id": "yoga.head_to_knee.standard",
+    "familyId": "yoga.head_to_knee",
+    "familyNameRu": "Наклон к одной ноге",
+    "aliasEn": "Head-to-knee pose / Janu Sirsasana",
+    "discipline": "yoga",
+    "pattern": "seated_single_leg_forward_fold",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "floor_support",
+    "spaceRequirement": "seated_leg_span_clear",
+    "editorial": {
+      "displayNameRu": "Наклон к ноге",
+      "formalNameRu": "Поза наклона вперёд к одной ноге",
+      "aliases": [
+        "Поза наклона вперёд к одной ноге",
+        "Head-to-knee pose / Janu Sirsasana",
+        "Джану Ширшасана",
+        "Janu Sirsasana"
+      ],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["yoga", "stretch"],
+      "difficulty": "beginner",
+      "sideMode": "per_side",
+      "focusMode": "stretch",
+      "cues": [
+        "Сядь с одной вытянутой ногой и второй согнутой в сторону.",
+        "Поверни корпус к прямой ноге и слегка наклонись от таза."
+      ],
+      "mistakes": ["Тяга себя за стопу.", "Давление на колено согнутой ноги."],
+      "optionalEquipment": "mat;stretch_strap:1;blanket",
+      "sourceRefs": ["https://www.artofliving.org/us-en/yoga/poses/yoga-poses"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": ["stretch.hamstring.seated_chair"],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "hamstrings",
+        "role": "primary"
+      },
+      {
+        "group": "calves",
+        "role": "secondary"
+      },
+      {
+        "group": "lower_back",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "id": "yoga.low_lunge.knee_down",
+    "familyId": "yoga.low_lunge",
+    "familyNameRu": "Низкий выпад",
+    "aliasEn": "Low lunge / Anjaneyasana",
+    "discipline": "yoga",
+    "pattern": "kneeling_lunge",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "floor_support",
+    "spaceRequirement": "kneeling_lunge_and_arm_span_clear",
+    "editorial": {
+      "displayNameRu": "Низкий выпад",
+      "formalNameRu": "Поза низкого выпада с задним коленом на поверхности и поднятыми руками",
+      "aliases": [
+        "Поза низкого выпада с задним коленом на поверхности и поднятыми руками",
+        "Low lunge / Anjaneyasana",
+        "Анджанеясана",
+        "Anjaneyasana"
+      ],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["yoga", "stretch"],
+      "difficulty": "beginner",
+      "sideMode": "per_side",
+      "focusMode": "stretch",
+      "cues": [
+        "Поставь заднее колено на мягкую поверхность и переднюю стопу устойчиво.",
+        "Подними корпус и руки до удобной высоты, сохраняя таз ровным и поясницу без сильного прогиба."
+      ],
+      "mistakes": ["Давление колена на жёсткий грунт.", "Прогиб вместо мягкого движения таза."],
+      "optionalEquipment": "mat;yoga_block:2",
+      "sourceRefs": ["https://www.artofliving.org/us-en/yoga/poses/yoga-poses"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": ["stretch.hip_flexor.half_kneeling"],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "hip_flexors",
+        "role": "primary"
+      },
+      {
+        "group": "quads",
+        "role": "secondary"
+      },
+      {
+        "group": "abs",
+        "role": "stabilizer"
+      },
+      {
+        "group": "glutes",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "id": "yoga.high_lunge.standard",
+    "familyId": "yoga.high_lunge",
+    "familyNameRu": "Высокий выпад",
+    "aliasEn": "High lunge / Alanasana",
+    "discipline": "yoga",
+    "pattern": "standing_lunge",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "none",
+    "spaceRequirement": "standing_lunge_and_arm_span_clear",
+    "editorial": {
+      "displayNameRu": "Высокий выпад",
+      "formalNameRu": "Поза высокого выпада с задней пяткой над поверхностью",
+      "aliases": [
+        "Поза высокого выпада с задней пяткой над поверхностью",
+        "High lunge / Alanasana",
+        "Аланасана",
+        "Alanasana"
+      ],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["yoga"],
+      "difficulty": "intermediate",
+      "sideMode": "per_side",
+      "focusMode": "balance",
+      "cues": [
+        "Поставь одну ногу назад и найди устойчивую ширину стойки.",
+        "Приподними заднюю пятку и вытягивай корпус вверх, не проваливая поясницу."
+      ],
+      "mistakes": [
+        "Узкая стойка и потеря равновесия.",
+        "Колено передней ноги заваливается внутрь."
+      ],
+      "optionalEquipment": "mat",
+      "sourceRefs": [
+        "https://www.yogajournal.com/practice/yoga-sequences/home-yoga-practice-to-awaken-your-inner-warrior/"
+      ],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "quads",
+        "role": "primary"
+      },
+      {
+        "group": "glutes",
+        "role": "primary"
+      },
+      {
+        "group": "hip_flexors",
+        "role": "secondary"
+      },
+      {
+        "group": "calves",
+        "role": "secondary"
+      },
+      {
+        "group": "abs",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "id": "yoga.side_angle.forearm_on_thigh",
+    "familyId": "yoga.side_angle",
+    "familyNameRu": "Боковой угол",
+    "aliasEn": "Extended side angle with forearm on thigh / Utthita Parsvakonasana",
+    "discipline": "yoga",
+    "pattern": "standing_lateral_extension",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "none",
+    "spaceRequirement": "standing_leg_and_arm_span_clear",
+    "editorial": {
+      "displayNameRu": "Боковой угол",
+      "formalNameRu": "Поза вытянутого бокового угла с предплечьем на бедре",
+      "aliases": [
+        "Поза вытянутого бокового угла с предплечьем на бедре",
+        "Extended side angle with forearm on thigh / Utthita Parsvakonasana",
+        "Уттхита Паршваконасана",
+        "Utthita Parsvakonasana"
+      ],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["yoga", "stretch"],
+      "difficulty": "intermediate",
+      "sideMode": "per_side",
+      "focusMode": "stretch",
+      "cues": [
+        "Из широкой стойки согни переднюю ногу и поставь предплечье на её бедро.",
+        "Удлиняй бок через верхнюю руку, оставляя грудь раскрытой в сторону."
+      ],
+      "mistakes": ["Давление прямо на колено.", "Провал плеча к уху."],
+      "optionalEquipment": "mat",
+      "sourceRefs": ["https://www.artofliving.org/us-en/yoga/poses/yoga-poses"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "obliques",
+        "role": "primary"
+      },
+      {
+        "group": "adductors",
+        "role": "primary"
+      },
+      {
+        "group": "back",
+        "role": "secondary"
+      },
+      {
+        "group": "hip_flexors",
+        "role": "secondary"
+      },
+      {
+        "group": "quads",
+        "role": "stabilizer"
+      },
+      {
+        "group": "glutes",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "id": "yoga.reverse_warrior.standard",
+    "familyId": "yoga.reverse_warrior",
+    "familyNameRu": "Обратный воин",
+    "aliasEn": "Reverse warrior / Viparita Virabhadrasana",
+    "discipline": "yoga",
+    "pattern": "standing_lateral_extension",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "none",
+    "spaceRequirement": "standing_lunge_and_arm_span_clear",
+    "editorial": {
+      "displayNameRu": "Обратный воин",
+      "formalNameRu": "Поза обратного воина",
+      "aliases": [
+        "Поза обратного воина",
+        "Reverse warrior / Viparita Virabhadrasana",
+        "Випарита Вирабхадрасана",
+        "Viparita Virabhadrasana"
+      ],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["yoga", "stretch"],
+      "difficulty": "intermediate",
+      "sideMode": "per_side",
+      "focusMode": "stretch",
+      "cues": [
+        "Из воина II оставь переднее колено согнутым и подними переднюю руку вверх.",
+        "Удлиняй бок, слегка опираясь другой рукой на заднюю ногу."
+      ],
+      "mistakes": ["Сильный прогиб поясницы.", "Опора всем весом на заднее колено."],
+      "optionalEquipment": "mat",
+      "sourceRefs": [
+        "https://www.yogajournal.com/practice/yoga-sequences/home-yoga-practice-to-awaken-your-inner-warrior/"
+      ],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "obliques",
+        "role": "primary"
+      },
+      {
+        "group": "back",
+        "role": "primary"
+      },
+      {
+        "group": "quads",
+        "role": "stabilizer"
+      },
+      {
+        "group": "glutes",
+        "role": "stabilizer"
+      },
+      {
+        "group": "abs",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "id": "yoga.reclined_twist.bent_knees",
+    "familyId": "yoga.reclined_twist",
+    "familyNameRu": "Скрутка лёжа",
+    "aliasEn": "Reclined bent-knee spinal twist / Jathara Parivartanasana",
+    "discipline": "yoga",
+    "pattern": "supine_trunk_rotation",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "floor_support",
+    "spaceRequirement": "floor_body_and_arm_span_clear",
+    "editorial": {
+      "displayNameRu": "Скрутка лёжа",
+      "formalNameRu": "Мягкая скрутка лёжа с согнутыми коленями",
+      "aliases": [
+        "Мягкая скрутка лёжа с согнутыми коленями",
+        "Reclined bent-knee spinal twist / Jathara Parivartanasana",
+        "Джатхара Паривартанасана",
+        "Jathara Parivartanasana"
+      ],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["yoga", "mobility"],
+      "difficulty": "beginner",
+      "sideMode": "per_side",
+      "focusMode": "mobility",
+      "cues": [
+        "Ляг на спину и согни ноги, оставив руки в удобном раскрытом положении.",
+        "Плавно направь колени в сторону без принуждения плеча к полу."
+      ],
+      "mistakes": ["Рывок коленями вниз.", "Насильственная фиксация плеча."],
+      "optionalEquipment": "mat;blanket",
+      "sourceRefs": ["https://www.artofliving.org/us-en/yoga/poses/yoga-poses"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "back",
+        "role": "primary"
+      },
+      {
+        "group": "obliques",
+        "role": "secondary"
+      },
+      {
+        "group": "glutes",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "id": "yoga.happy_baby.standard",
+    "familyId": "yoga.happy_baby",
+    "familyNameRu": "Счастливый ребёнок",
+    "aliasEn": "Happy baby pose / Ananda Balasana",
+    "discipline": "yoga",
+    "pattern": "supine_hip_flexion_abduction",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "floor_support",
+    "spaceRequirement": "floor_body_and_leg_clear",
+    "editorial": {
+      "displayNameRu": "Счастливый ребёнок",
+      "formalNameRu": "Поза счастливого ребёнка лёжа",
+      "aliases": [
+        "Поза счастливого ребёнка лёжа",
+        "Happy baby pose / Ananda Balasana",
+        "Ананда Баласана",
+        "Ananda Balasana"
+      ],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["yoga", "stretch"],
+      "difficulty": "beginner",
+      "sideMode": "bilateral",
+      "focusMode": "stretch",
+      "cues": [
+        "Лёжа на спине, разведи согнутые колени и возьми ноги за голени или стопы.",
+        "Оставь голову и таз на поверхности, не подтягивая ноги силой."
+      ],
+      "mistakes": ["Сильная тяга за стопы.", "Округление корпуса с отрывом таза."],
+      "optionalEquipment": "mat",
+      "sourceRefs": ["https://www.yogajournal.com/poses/happy-baby-pose?scope=anon"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "adductors",
+        "role": "primary"
+      },
+      {
+        "group": "glutes",
+        "role": "primary"
+      }
+    ]
+  },
+  {
+    "id": "yoga.legs_up_wall.standard",
+    "familyId": "yoga.legs_up_wall",
+    "familyNameRu": "Ноги у стены",
+    "aliasEn": "Legs up the wall / Viparita Karani",
+    "discipline": "yoga",
+    "pattern": "supine_rest",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "solid_wall;floor_support",
+    "spaceRequirement": "wall_and_floor_body_length_clear",
+    "editorial": {
+      "displayNameRu": "Ноги у стены",
+      "formalNameRu": "Поза отдыха лёжа с ногами у стены",
+      "aliases": [
+        "Поза отдыха лёжа с ногами у стены",
+        "Legs up the wall / Viparita Karani",
+        "Випарита Карани",
+        "Viparita Karani"
+      ],
+      "contexts": ["home", "gym"],
+      "directions": ["yoga"],
+      "difficulty": "beginner",
+      "sideMode": "none",
+      "focusMode": "relaxation",
+      "cues": [
+        "Ляг рядом с неподвижной стеной и расположи на ней ноги в удобной высоте.",
+        "Отрегулируй расстояние таза от стены, чтобы не тянуть ноги и спину."
+      ],
+      "mistakes": ["Насильственное прижатие таза к стене.", "Неудобная опора головы."],
+      "optionalEquipment": "mat;blanket",
+      "sourceRefs": ["https://www.artofliving.org/us-en/yoga/poses/yoga-poses"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": []
+  },
+  {
+    "id": "yoga.puppy.standard",
+    "familyId": "yoga.puppy",
+    "familyNameRu": "Щенок",
+    "aliasEn": "Extended puppy pose / Uttana Shishosana",
+    "discipline": "yoga",
+    "pattern": "kneeling_shoulder_flexion",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "floor_support",
+    "spaceRequirement": "kneeling_body_length_clear",
+    "editorial": {
+      "displayNameRu": "Щенок",
+      "formalNameRu": "Поза вытянутого щенка на коленях",
+      "aliases": [
+        "Поза вытянутого щенка на коленях",
+        "Extended puppy pose / Uttana Shishosana",
+        "Уттана Шишосана",
+        "Uttana Shishosana"
+      ],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["yoga", "stretch"],
+      "difficulty": "beginner",
+      "sideMode": "bilateral",
+      "focusMode": "stretch",
+      "cues": [
+        "Из положения на четвереньках проведи руки вперёд, оставляя таз над коленями.",
+        "Мягко опусти грудь и поддержи голову на подходящей опоре."
+      ],
+      "mistakes": ["Принудительное продавливание плеч.", "Глубокий прогиб поясницы."],
+      "optionalEquipment": "mat;yoga_block:1",
+      "sourceRefs": ["https://www.yogajournal.com/poses/extended-puppy-pose/?scope=anon"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "back",
+        "role": "primary"
+      },
+      {
+        "group": "shoulders",
+        "role": "primary"
+      },
+      {
+        "group": "chest",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "id": "yoga.easy_twist.seated",
+    "familyId": "yoga.easy_twist",
+    "familyNameRu": "Скрутка сидя",
+    "aliasEn": "Seated easy-pose twist / Parivrtta Sukhasana",
+    "discipline": "yoga",
+    "pattern": "seated_trunk_rotation",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "floor_support",
+    "spaceRequirement": "seated_leg_and_arm_span_clear",
+    "editorial": {
+      "displayNameRu": "Скрутка сидя",
+      "formalNameRu": "Мягкая скрутка в простой позе сидя",
+      "aliases": [
+        "Мягкая скрутка в простой позе сидя",
+        "Seated easy-pose twist / Parivrtta Sukhasana",
+        "Паривритта Сукхасана",
+        "Parivrtta Sukhasana"
+      ],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["yoga", "mobility"],
+      "difficulty": "beginner",
+      "sideMode": "per_side",
+      "focusMode": "mobility",
+      "cues": [
+        "Сядь устойчиво со скрещёнными голенями и удлини корпус.",
+        "Мягко поверни грудь в сторону, используя руки только как лёгкую опору."
+      ],
+      "mistakes": ["Тяга рукой за колено ради глубокого разворота.", "Сутулая спина."],
+      "optionalEquipment": "mat;blanket",
+      "sourceRefs": ["https://www.artofliving.org/us-en/yoga/poses/yoga-poses"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "back",
+        "role": "primary"
+      },
+      {
+        "group": "obliques",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "id": "yoga.locust.low",
+    "familyId": "yoga.locust",
+    "familyNameRu": "Саранча",
+    "aliasEn": "Low locust pose / Salabhasana",
+    "discipline": "yoga",
+    "pattern": "prone_spinal_extension",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "floor_support",
+    "spaceRequirement": "floor_body_length_clear",
+    "editorial": {
+      "displayNameRu": "Низкая саранча",
+      "formalNameRu": "Невысокая поза саранчи лёжа на животе",
+      "aliases": [
+        "Невысокая поза саранчи лёжа на животе",
+        "Low locust pose / Salabhasana",
+        "Шалабхасана",
+        "Salabhasana"
+      ],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["yoga"],
+      "difficulty": "intermediate",
+      "sideMode": "bilateral",
+      "focusMode": "loading",
+      "cues": [
+        "Лёжа на животе, удлини ноги и направь макушку вперёд.",
+        "Невысоко приподними грудь и ноги, сохраняя шею продолжением корпуса."
+      ],
+      "mistakes": ["Запрокидывание головы.", "Резкий высокий прогиб."],
+      "optionalEquipment": "mat",
+      "sourceRefs": ["https://www.yogajournal.com/poses/locust-pose?scope=anon"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "back",
+        "role": "primary"
+      },
+      {
+        "group": "lower_back",
+        "role": "primary"
+      },
+      {
+        "group": "glutes",
+        "role": "secondary"
+      },
+      {
+        "group": "hamstrings",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "id": "yoga.gate.kneeling",
+    "familyId": "yoga.gate",
+    "familyNameRu": "Ворота",
+    "aliasEn": "Gate pose / Parighasana",
+    "discipline": "yoga",
+    "pattern": "kneeling_lateral_extension",
+    "resistanceMode": "bodyweight",
+    "metric": "time",
+    "equipmentRequirement": "none",
+    "supportRequirement": "floor_support",
+    "spaceRequirement": "kneeling_leg_and_arm_span_clear",
+    "editorial": {
+      "displayNameRu": "Ворота",
+      "formalNameRu": "Поза ворот с одной ногой в сторону из положения на колене",
+      "aliases": [
+        "Поза ворот с одной ногой в сторону из положения на колене",
+        "Gate pose / Parighasana",
+        "Паригхасана",
+        "Parighasana"
+      ],
+      "contexts": ["home", "gym", "outdoor", "workout_park"],
+      "directions": ["yoga", "stretch"],
+      "difficulty": "beginner",
+      "sideMode": "per_side",
+      "focusMode": "stretch",
+      "cues": [
+        "Встань на одно колено и отведи вторую ногу в сторону с устойчивой стопой.",
+        "Удлиняй верхнюю руку над головой и плавно наклоняйся к прямой ноге."
+      ],
+      "mistakes": ["Скользящая стопа.", "Давление нижней рукой на колено."],
+      "optionalEquipment": "mat",
+      "sourceRefs": ["https://www.yogajournal.com/video/gate-pose-cues/"],
+      "reviewStatus": "pending_expert_review",
+      "relations": {
+        "alternatives": [],
+        "regressions": [],
+        "progressions": [],
+        "status": "draft"
+      }
+    },
+    "muscles": [
+      {
+        "group": "obliques",
+        "role": "primary"
+      },
+      {
+        "group": "adductors",
+        "role": "secondary"
+      },
+      {
+        "group": "back",
+        "role": "secondary"
+      },
+      {
+        "group": "glutes",
+        "role": "stabilizer"
+      }
+    ]
+  }
+]

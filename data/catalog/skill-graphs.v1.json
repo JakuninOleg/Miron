@@ -1,0 +1,2072 @@
+[
+  {
+    "code": "calisthenics.hanging_core",
+    "nameRu": "Подъёмы ног: контроль корпуса",
+    "revision": 1,
+    "status": "draft",
+    "reviewStatus": "pending_expert_review",
+    "sourceRefs": [
+      "https://www.crossfit.com/essentials/crossfit-mastering-gymnastics",
+      "https://gmb.io/l-sit/"
+    ],
+    "nodes": [
+      {
+        "id": "hollow_tuck",
+        "variantId": "strength.hollow.tuck_hold",
+        "skillGroup": "calisthenics.hanging_core",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "hollow",
+        "variantId": "strength.hollow.full_hold",
+        "skillGroup": "calisthenics.hanging_core",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "knees",
+        "variantId": "strength.hanging_knee_raise.fixed_bar",
+        "skillGroup": "calisthenics.hanging_core",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "straight_legs",
+        "variantId": "strength.hanging_leg_raise.straight_legs",
+        "skillGroup": "calisthenics.hanging_core",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "toes",
+        "variantId": "strength.hanging_leg_raise.strict_toes_to_bar",
+        "skillGroup": "calisthenics.hanging_core",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Оценить контроль тяги, таза, хвата и возвращения ног без киппинга. Конкретная высота и амплитуда требуют проверки.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "parallel_legs",
+        "variantId": "strength.leg_raise.parallel_bars",
+        "skillGroup": "calisthenics.hanging_core",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "hollow_tuck",
+        "to": "hollow",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/crossfit-mastering-gymnastics",
+          "https://gmb.io/l-sit/"
+        ]
+      },
+      {
+        "from": "hollow",
+        "to": "straight_legs",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/crossfit-mastering-gymnastics",
+          "https://gmb.io/l-sit/"
+        ]
+      },
+      {
+        "from": "knees",
+        "to": "straight_legs",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/crossfit-mastering-gymnastics",
+          "https://gmb.io/l-sit/"
+        ]
+      },
+      {
+        "from": "straight_legs",
+        "to": "toes",
+        "kind": "prerequisite",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/crossfit-mastering-gymnastics",
+          "https://gmb.io/l-sit/"
+        ]
+      },
+      {
+        "from": "hollow",
+        "to": "parallel_legs",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/crossfit-mastering-gymnastics",
+          "https://gmb.io/l-sit/"
+        ]
+      }
+    ]
+  },
+  {
+    "code": "calisthenics.pulling_control",
+    "nameRu": "Подтягивания: высота и перенос нагрузки",
+    "revision": 1,
+    "status": "draft",
+    "reviewStatus": "pending_expert_review",
+    "sourceRefs": [
+      "https://gmb.io/rings/",
+      "https://www.crossfit.com/essentials/crossfit-bar-muscle-up-rx"
+    ],
+    "nodes": [
+      {
+        "id": "hang",
+        "variantId": "strength.dead_hang.passive_bar",
+        "skillGroup": "calisthenics.pulling_control",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "active",
+        "variantId": "strength.dead_hang.active_bar",
+        "skillGroup": "calisthenics.pulling_control",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "scapular",
+        "variantId": "strength.scapular_pull_up.fixed_bar",
+        "skillGroup": "calisthenics.pulling_control",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "basic",
+        "variantId": "strength.pull_up.fixed_bar",
+        "skillGroup": "calisthenics.pulling_control",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "hold",
+        "variantId": "strength.pull_up.chin_over_bar_hold",
+        "skillGroup": "calisthenics.pulling_control",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "chest",
+        "variantId": "strength.pull_up.strict_chest_to_bar",
+        "skillGroup": "calisthenics.pulling_control",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "explosive",
+        "variantId": "strength.pull_up.explosive_bar",
+        "skillGroup": "calisthenics.pulling_control",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "archer",
+        "variantId": "strength.pull_up.archer_bar",
+        "skillGroup": "calisthenics.pulling_control",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Перенос к одной руке требует отдельной оценки обеих сторон. Граф не предписывает переход после фиксированного числа обычных подтягиваний.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "commando",
+        "variantId": "strength.pull_up.commando_bar",
+        "skillGroup": "calisthenics.pulling_control",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "row",
+        "variantId": "strength.inverted_row.gymnastic_rings",
+        "skillGroup": "calisthenics.pulling_control",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "row_elevated",
+        "variantId": "strength.inverted_row.rings_feet_elevated",
+        "skillGroup": "calisthenics.pulling_control",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "rings",
+        "variantId": "strength.pull_up.gymnastic_rings",
+        "skillGroup": "calisthenics.pulling_control",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "hang",
+        "to": "active",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://gmb.io/rings/",
+          "https://www.crossfit.com/essentials/crossfit-bar-muscle-up-rx"
+        ]
+      },
+      {
+        "from": "active",
+        "to": "scapular",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://gmb.io/rings/",
+          "https://www.crossfit.com/essentials/crossfit-bar-muscle-up-rx"
+        ]
+      },
+      {
+        "from": "scapular",
+        "to": "basic",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://gmb.io/rings/",
+          "https://www.crossfit.com/essentials/crossfit-bar-muscle-up-rx"
+        ]
+      },
+      {
+        "from": "hold",
+        "to": "basic",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://gmb.io/rings/",
+          "https://www.crossfit.com/essentials/crossfit-bar-muscle-up-rx"
+        ]
+      },
+      {
+        "from": "basic",
+        "to": "chest",
+        "kind": "prerequisite",
+        "sourceRefs": [
+          "https://gmb.io/rings/",
+          "https://www.crossfit.com/essentials/crossfit-bar-muscle-up-rx"
+        ]
+      },
+      {
+        "from": "basic",
+        "to": "explosive",
+        "kind": "prerequisite",
+        "sourceRefs": [
+          "https://gmb.io/rings/",
+          "https://www.crossfit.com/essentials/crossfit-bar-muscle-up-rx"
+        ]
+      },
+      {
+        "from": "basic",
+        "to": "archer",
+        "kind": "prerequisite",
+        "sourceRefs": [
+          "https://gmb.io/rings/",
+          "https://www.crossfit.com/essentials/crossfit-bar-muscle-up-rx"
+        ]
+      },
+      {
+        "from": "basic",
+        "to": "commando",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://gmb.io/rings/",
+          "https://www.crossfit.com/essentials/crossfit-bar-muscle-up-rx"
+        ]
+      },
+      {
+        "from": "row",
+        "to": "row_elevated",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://gmb.io/rings/",
+          "https://www.crossfit.com/essentials/crossfit-bar-muscle-up-rx"
+        ]
+      },
+      {
+        "from": "row",
+        "to": "rings",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://gmb.io/rings/",
+          "https://www.crossfit.com/essentials/crossfit-bar-muscle-up-rx"
+        ]
+      }
+    ]
+  },
+  {
+    "code": "calisthenics.pushing_control",
+    "nameRu": "Отжимания: перенос и быстрый жим",
+    "revision": 1,
+    "status": "draft",
+    "reviewStatus": "pending_expert_review",
+    "sourceRefs": [
+      "https://gmb.io/push-up/",
+      "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+    ],
+    "nodes": [
+      {
+        "id": "scapular",
+        "variantId": "strength.scapular_push_up.floor",
+        "skillGroup": "calisthenics.pushing_control",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "basic",
+        "variantId": "strength.push_up.floor",
+        "skillGroup": "calisthenics.pushing_control",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "archer",
+        "variantId": "strength.push_up.archer",
+        "skillGroup": "calisthenics.pushing_control",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Для лучника проверить контроль обеих сторон и опорного плеча; нет универсального количества обычных отжиманий для допуска.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "explosive",
+        "variantId": "strength.push_up.explosive",
+        "skillGroup": "calisthenics.pushing_control",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Оценить качество отрыва и обратного контакта ладоней. Не назначать по одному текстовому запросу пользователя.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "rings_incline",
+        "variantId": "strength.push_up.rings_incline",
+        "skillGroup": "calisthenics.pushing_control",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "rings",
+        "variantId": "strength.push_up.gymnastic_rings",
+        "skillGroup": "calisthenics.pushing_control",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "scapular",
+        "to": "basic",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://gmb.io/push-up/",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "basic",
+        "to": "archer",
+        "kind": "prerequisite",
+        "sourceRefs": [
+          "https://gmb.io/push-up/",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "basic",
+        "to": "explosive",
+        "kind": "prerequisite",
+        "sourceRefs": [
+          "https://gmb.io/push-up/",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "rings_incline",
+        "to": "rings",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://gmb.io/push-up/",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      }
+    ]
+  },
+  {
+    "code": "calisthenics.l_sit",
+    "nameRu": "Уголок: опора и компрессия",
+    "revision": 1,
+    "status": "draft",
+    "reviewStatus": "pending_expert_review",
+    "sourceRefs": [
+      "https://gmb.io/l-sit/",
+      "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+    ],
+    "nodes": [
+      {
+        "id": "support",
+        "variantId": "strength.support_hold.parallel_bars",
+        "skillGroup": "calisthenics.l_sit",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "single_raise",
+        "variantId": "strength.compression_raise.seated_single_leg",
+        "skillGroup": "calisthenics.l_sit",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "double_raise",
+        "variantId": "strength.compression_raise.seated_double_leg",
+        "skillGroup": "calisthenics.l_sit",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "tuck",
+        "variantId": "strength.l_sit.tuck_parallettes",
+        "skillGroup": "calisthenics.l_sit",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "one_leg",
+        "variantId": "strength.l_sit.one_leg_parallettes",
+        "skillGroup": "calisthenics.l_sit",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Удержание записывается отдельно для каждой стороны. Переход не определяется одним суммарным временем.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "parallettes",
+        "variantId": "strength.l_sit.full_parallettes",
+        "skillGroup": "calisthenics.l_sit",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "floor",
+        "variantId": "strength.l_sit.full_floor",
+        "skillGroup": "calisthenics.l_sit",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "ring_support",
+        "variantId": "strength.support_hold.gymnastic_rings",
+        "skillGroup": "calisthenics.l_sit",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "ring_tuck",
+        "variantId": "strength.l_sit.tuck_rings",
+        "skillGroup": "calisthenics.l_sit",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "rings",
+        "variantId": "strength.l_sit.full_rings",
+        "skillGroup": "calisthenics.l_sit",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "pull_up",
+        "variantId": "strength.pull_up.l_sit_bar",
+        "skillGroup": "calisthenics.l_sit",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Помимо формы уголка требуется отдельная оценка строгой тяги. Уголок сам по себе не доказывает готовность к подтягиванию.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "basic_pull",
+        "variantId": "strength.pull_up.fixed_bar",
+        "skillGroup": "calisthenics.l_sit",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "support",
+        "to": "tuck",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://gmb.io/l-sit/",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "single_raise",
+        "to": "tuck",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://gmb.io/l-sit/",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "double_raise",
+        "to": "parallettes",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://gmb.io/l-sit/",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "tuck",
+        "to": "one_leg",
+        "kind": "prerequisite",
+        "sourceRefs": [
+          "https://gmb.io/l-sit/",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "one_leg",
+        "to": "parallettes",
+        "kind": "prerequisite",
+        "sourceRefs": [
+          "https://gmb.io/l-sit/",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "parallettes",
+        "to": "floor",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://gmb.io/l-sit/",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "ring_support",
+        "to": "ring_tuck",
+        "kind": "prerequisite",
+        "sourceRefs": [
+          "https://gmb.io/l-sit/",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "ring_tuck",
+        "to": "rings",
+        "kind": "prerequisite",
+        "sourceRefs": [
+          "https://gmb.io/l-sit/",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "parallettes",
+        "to": "pull_up",
+        "kind": "prerequisite",
+        "sourceRefs": [
+          "https://gmb.io/l-sit/",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "basic_pull",
+        "to": "pull_up",
+        "kind": "prerequisite",
+        "sourceRefs": [
+          "https://gmb.io/l-sit/",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      }
+    ]
+  },
+  {
+    "code": "calisthenics.handstand_wall_path",
+    "nameRu": "Стойка: вход, баланс и путь через стену",
+    "revision": 1,
+    "status": "draft",
+    "reviewStatus": "pending_expert_review",
+    "sourceRefs": ["https://gmb.io/handstand/", "https://gmb.io/handstand-push-up/"],
+    "nodes": [
+      {
+        "id": "l_support",
+        "variantId": "strength.handstand.elevated_l_support",
+        "skillGroup": "calisthenics.handstand_wall_path",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "wall_walk",
+        "variantId": "strength.wall_walk.standard",
+        "skillGroup": "calisthenics.handstand_wall_path",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "chest",
+        "variantId": "strength.handstand.chest_to_wall_hold",
+        "skillGroup": "calisthenics.handstand_wall_path",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "wall_entry",
+        "variantId": "strength.handstand.wall_kick_up",
+        "skillGroup": "calisthenics.handstand_wall_path",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "back",
+        "variantId": "strength.handstand.back_to_wall_hold",
+        "skillGroup": "calisthenics.handstand_wall_path",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "float",
+        "variantId": "strength.handstand.wall_float",
+        "skillGroup": "calisthenics.handstand_wall_path",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "free_entry",
+        "variantId": "strength.handstand.freestanding_kick_up",
+        "skillGroup": "calisthenics.handstand_wall_path",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Обязательно отдельно оценить освоенный способ выхода и пригодность пространства. Наличие wall float не заменяет эту оценку.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "free",
+        "variantId": "strength.handstand.freestanding_hold",
+        "skillGroup": "calisthenics.handstand_wall_path",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Это один редакционный путь через стену, а не универсальная обязательная последовательность для всех способов обучения.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "pike",
+        "variantId": "strength.pike_push_up.floor",
+        "skillGroup": "calisthenics.handstand_wall_path",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "pike_high",
+        "variantId": "strength.pike_push_up.feet_elevated",
+        "skillGroup": "calisthenics.handstand_wall_path",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "negative",
+        "variantId": "strength.handstand_push_up.wall_eccentric",
+        "skillGroup": "calisthenics.handstand_wall_path",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "press",
+        "variantId": "strength.handstand_push_up.strict_wall",
+        "skillGroup": "calisthenics.handstand_wall_path",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Оценить управляемое опускание и обратный жим отдельно. Запись негатива не подтверждает способность подняться обратно.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "l_support",
+        "to": "wall_walk",
+        "kind": "preparation",
+        "sourceRefs": ["https://gmb.io/handstand/", "https://gmb.io/handstand-push-up/"]
+      },
+      {
+        "from": "wall_walk",
+        "to": "chest",
+        "kind": "prerequisite",
+        "sourceRefs": ["https://gmb.io/handstand/", "https://gmb.io/handstand-push-up/"]
+      },
+      {
+        "from": "wall_entry",
+        "to": "back",
+        "kind": "prerequisite",
+        "sourceRefs": ["https://gmb.io/handstand/", "https://gmb.io/handstand-push-up/"]
+      },
+      {
+        "from": "chest",
+        "to": "float",
+        "kind": "prerequisite",
+        "sourceRefs": ["https://gmb.io/handstand/", "https://gmb.io/handstand-push-up/"]
+      },
+      {
+        "from": "float",
+        "to": "free_entry",
+        "kind": "preparation",
+        "sourceRefs": ["https://gmb.io/handstand/", "https://gmb.io/handstand-push-up/"]
+      },
+      {
+        "from": "wall_entry",
+        "to": "free_entry",
+        "kind": "preparation",
+        "sourceRefs": ["https://gmb.io/handstand/", "https://gmb.io/handstand-push-up/"]
+      },
+      {
+        "from": "float",
+        "to": "free",
+        "kind": "prerequisite",
+        "sourceRefs": ["https://gmb.io/handstand/", "https://gmb.io/handstand-push-up/"]
+      },
+      {
+        "from": "free_entry",
+        "to": "free",
+        "kind": "prerequisite",
+        "sourceRefs": ["https://gmb.io/handstand/", "https://gmb.io/handstand-push-up/"]
+      },
+      {
+        "from": "pike",
+        "to": "pike_high",
+        "kind": "preparation",
+        "sourceRefs": ["https://gmb.io/handstand/", "https://gmb.io/handstand-push-up/"]
+      },
+      {
+        "from": "pike_high",
+        "to": "negative",
+        "kind": "preparation",
+        "sourceRefs": ["https://gmb.io/handstand/", "https://gmb.io/handstand-push-up/"]
+      },
+      {
+        "from": "back",
+        "to": "negative",
+        "kind": "prerequisite",
+        "sourceRefs": ["https://gmb.io/handstand/", "https://gmb.io/handstand-push-up/"]
+      },
+      {
+        "from": "negative",
+        "to": "press",
+        "kind": "prerequisite",
+        "sourceRefs": ["https://gmb.io/handstand/", "https://gmb.io/handstand-push-up/"]
+      },
+      {
+        "from": "pike_high",
+        "to": "press",
+        "kind": "prerequisite",
+        "sourceRefs": ["https://gmb.io/handstand/", "https://gmb.io/handstand-push-up/"]
+      }
+    ]
+  },
+  {
+    "code": "calisthenics.planche",
+    "nameRu": "Планш: прямые руки и наклон",
+    "revision": 1,
+    "status": "draft",
+    "reviewStatus": "pending_expert_review",
+    "sourceRefs": ["https://gmb.io/planche/"],
+    "nodes": [
+      {
+        "id": "plank",
+        "variantId": "strength.plank.high",
+        "skillGroup": "calisthenics.planche",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "scapular",
+        "variantId": "strength.scapular_push_up.floor",
+        "skillGroup": "calisthenics.planche",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "lean",
+        "variantId": "strength.planche_lean.floor",
+        "skillGroup": "calisthenics.planche",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "pseudo_push",
+        "variantId": "strength.push_up.pseudo_planche",
+        "skillGroup": "calisthenics.planche",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "tuck",
+        "variantId": "strength.planche.tuck_parallettes",
+        "skillGroup": "calisthenics.planche",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Удержание с прямыми руками и без опоры ног оценивается отдельно. Псевдопланш-отжимания не являются автоматическим подтверждением готовности.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "plank",
+        "to": "lean",
+        "kind": "preparation",
+        "sourceRefs": ["https://gmb.io/planche/"]
+      },
+      {
+        "from": "scapular",
+        "to": "lean",
+        "kind": "preparation",
+        "sourceRefs": ["https://gmb.io/planche/"]
+      },
+      {
+        "from": "lean",
+        "to": "pseudo_push",
+        "kind": "preparation",
+        "sourceRefs": ["https://gmb.io/planche/"]
+      },
+      {
+        "from": "lean",
+        "to": "tuck",
+        "kind": "prerequisite",
+        "sourceRefs": ["https://gmb.io/planche/"]
+      },
+      {
+        "from": "pseudo_push",
+        "to": "tuck",
+        "kind": "preparation",
+        "sourceRefs": ["https://gmb.io/planche/"]
+      }
+    ]
+  },
+  {
+    "code": "calisthenics.front_lever",
+    "nameRu": "Передний вис: рычаг и контроль опускания",
+    "revision": 1,
+    "status": "draft",
+    "reviewStatus": "pending_expert_review",
+    "sourceRefs": ["https://gmb.io/levers/"],
+    "nodes": [
+      {
+        "id": "tuck_negative",
+        "variantId": "strength.front_lever.tuck_eccentric",
+        "skillGroup": "calisthenics.front_lever",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "tuck",
+        "variantId": "strength.front_lever.tuck_hold",
+        "skillGroup": "calisthenics.front_lever",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "open_negative",
+        "variantId": "strength.front_lever.open_tuck_eccentric",
+        "skillGroup": "calisthenics.front_lever",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "open",
+        "variantId": "strength.front_lever.open_tuck_hold",
+        "skillGroup": "calisthenics.front_lever",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "straddle_negative",
+        "variantId": "strength.front_lever.straddle_eccentric",
+        "skillGroup": "calisthenics.front_lever",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "straddle",
+        "variantId": "strength.front_lever.straddle_hold",
+        "skillGroup": "calisthenics.front_lever",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "full_negative",
+        "variantId": "strength.front_lever.full_eccentric",
+        "skillGroup": "calisthenics.front_lever",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "full",
+        "variantId": "strength.front_lever.full_hold",
+        "skillGroup": "calisthenics.front_lever",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Граф описывает выбранную методическую ветку. Удержание и негатив — разные результаты; дозировки и числовые переходы не утверждены.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "tuck_negative",
+        "to": "tuck",
+        "kind": "prerequisite",
+        "sourceRefs": ["https://gmb.io/levers/"]
+      },
+      {
+        "from": "tuck",
+        "to": "open_negative",
+        "kind": "preparation",
+        "sourceRefs": ["https://gmb.io/levers/"]
+      },
+      {
+        "from": "open_negative",
+        "to": "open",
+        "kind": "prerequisite",
+        "sourceRefs": ["https://gmb.io/levers/"]
+      },
+      {
+        "from": "open",
+        "to": "straddle_negative",
+        "kind": "preparation",
+        "sourceRefs": ["https://gmb.io/levers/"]
+      },
+      {
+        "from": "straddle_negative",
+        "to": "straddle",
+        "kind": "prerequisite",
+        "sourceRefs": ["https://gmb.io/levers/"]
+      },
+      {
+        "from": "straddle",
+        "to": "full_negative",
+        "kind": "preparation",
+        "sourceRefs": ["https://gmb.io/levers/"]
+      },
+      {
+        "from": "full_negative",
+        "to": "full",
+        "kind": "prerequisite",
+        "sourceRefs": ["https://gmb.io/levers/"]
+      }
+    ]
+  },
+  {
+    "code": "calisthenics.back_lever_rotation",
+    "nameRu": "Задний вис и освоение поворота на кольцах",
+    "revision": 1,
+    "status": "draft",
+    "reviewStatus": "pending_expert_review",
+    "sourceRefs": [
+      "https://gmb.io/levers/",
+      "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+    ],
+    "nodes": [
+      {
+        "id": "supported_rotation",
+        "variantId": "strength.skin_the_cat.feet_supported_rings",
+        "skillGroup": "calisthenics.back_lever_rotation",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "rotation",
+        "variantId": "strength.skin_the_cat.strict_rings",
+        "skillGroup": "calisthenics.back_lever_rotation",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Проверить управляемую амплитуду плеч и выход. Источник-портал по кольцам не подтверждает индивидуальный допуск; требуется отдельная методическая проверка.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "tuck",
+        "variantId": "strength.back_lever.tuck_hold",
+        "skillGroup": "calisthenics.back_lever_rotation",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "open",
+        "variantId": "strength.back_lever.open_tuck_hold",
+        "skillGroup": "calisthenics.back_lever_rotation",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Ветка заднего виса независима от front lever. Skin the cat не закреплён как универсальный обязательный prerequisite.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "supported_rotation",
+        "to": "rotation",
+        "kind": "prerequisite",
+        "sourceRefs": [
+          "https://gmb.io/levers/",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "rotation",
+        "to": "tuck",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://gmb.io/levers/",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "tuck",
+        "to": "open",
+        "kind": "prerequisite",
+        "sourceRefs": [
+          "https://gmb.io/levers/",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      }
+    ]
+  },
+  {
+    "code": "calisthenics.ring_muscle_up",
+    "nameRu": "Выход на кольцах: тяга, хват, переход и жим",
+    "revision": 1,
+    "status": "draft",
+    "reviewStatus": "pending_expert_review",
+    "sourceRefs": [
+      "https://www.crossfit.com/essentials/crossfit-ring-training-part-3",
+      "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+    ],
+    "nodes": [
+      {
+        "id": "foot_support",
+        "variantId": "strength.support_hold.rings_feet_supported",
+        "skillGroup": "calisthenics.ring_muscle_up",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "support",
+        "variantId": "strength.support_hold.gymnastic_rings",
+        "skillGroup": "calisthenics.ring_muscle_up",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "foot_dip",
+        "variantId": "strength.dip.rings_feet_supported",
+        "skillGroup": "calisthenics.ring_muscle_up",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "dip",
+        "variantId": "strength.dip.strict_rings",
+        "skillGroup": "calisthenics.ring_muscle_up",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "grip",
+        "variantId": "strength.false_grip_hang.feet_supported_rings",
+        "skillGroup": "calisthenics.ring_muscle_up",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "row",
+        "variantId": "strength.inverted_row.false_grip_rings",
+        "skillGroup": "calisthenics.ring_muscle_up",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "pull",
+        "variantId": "strength.pull_up.false_grip_rings",
+        "skillGroup": "calisthenics.ring_muscle_up",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "transition",
+        "variantId": "strength.muscle_up_transition.low_rings",
+        "skillGroup": "calisthenics.ring_muscle_up",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "low",
+        "variantId": "strength.muscle_up.feet_supported_low_rings",
+        "skillGroup": "calisthenics.ring_muscle_up",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "band",
+        "variantId": "strength.muscle_up.band_assisted_rings",
+        "skillGroup": "calisthenics.ring_muscle_up",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "strict",
+        "variantId": "strength.muscle_up.strict_rings",
+        "skillGroup": "calisthenics.ring_muscle_up",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Кандидат предусматривает несколько независимых компонентов: устойчивый упор, строгая тяга с ложным хватом, контролируемый жим и освоенный переход. Методист подтверждает критерии каждого.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "foot_support",
+        "to": "support",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-3",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "foot_dip",
+        "to": "dip",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-3",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "grip",
+        "to": "row",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-3",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "row",
+        "to": "pull",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-3",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "row",
+        "to": "transition",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-3",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "foot_dip",
+        "to": "transition",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-3",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "transition",
+        "to": "low",
+        "kind": "prerequisite",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-3",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "low",
+        "to": "band",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-3",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "support",
+        "to": "strict",
+        "kind": "prerequisite",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-3",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "dip",
+        "to": "strict",
+        "kind": "prerequisite",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-3",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "pull",
+        "to": "strict",
+        "kind": "prerequisite",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-3",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "transition",
+        "to": "strict",
+        "kind": "prerequisite",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-3",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "band",
+        "to": "strict",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-3",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      }
+    ]
+  },
+  {
+    "code": "calisthenics.bar_muscle_up",
+    "nameRu": "Выход на турнике: высокая тяга, переход и упор",
+    "revision": 1,
+    "status": "draft",
+    "reviewStatus": "pending_expert_review",
+    "sourceRefs": [
+      "https://www.crossfit.com/essentials/the-strict-bar-muscle-up",
+      "https://www.crossfit.com/essentials/crossfit-bar-muscle-up-rx"
+    ],
+    "nodes": [
+      {
+        "id": "pull",
+        "variantId": "strength.pull_up.fixed_bar",
+        "skillGroup": "calisthenics.bar_muscle_up",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "chest",
+        "variantId": "strength.pull_up.strict_chest_to_bar",
+        "skillGroup": "calisthenics.bar_muscle_up",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "explosive",
+        "variantId": "strength.pull_up.explosive_bar",
+        "skillGroup": "calisthenics.bar_muscle_up",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "dip",
+        "variantId": "strength.dip.straight_bar",
+        "skillGroup": "calisthenics.bar_muscle_up",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "transition",
+        "variantId": "strength.muscle_up_transition.low_bar",
+        "skillGroup": "calisthenics.bar_muscle_up",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "band",
+        "variantId": "strength.muscle_up.band_assisted_bar",
+        "skillGroup": "calisthenics.bar_muscle_up",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "strict",
+        "variantId": "strength.muscle_up.strict_bar",
+        "skillGroup": "calisthenics.bar_muscle_up",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Оценить достаточную высоту строгой тяги, согласованный переход обеими руками и жим над перекладиной. Не переносить критерии ring muscle-up автоматически.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "pull",
+        "to": "chest",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/the-strict-bar-muscle-up",
+          "https://www.crossfit.com/essentials/crossfit-bar-muscle-up-rx"
+        ]
+      },
+      {
+        "from": "pull",
+        "to": "explosive",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/the-strict-bar-muscle-up",
+          "https://www.crossfit.com/essentials/crossfit-bar-muscle-up-rx"
+        ]
+      },
+      {
+        "from": "transition",
+        "to": "band",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/the-strict-bar-muscle-up",
+          "https://www.crossfit.com/essentials/crossfit-bar-muscle-up-rx"
+        ]
+      },
+      {
+        "from": "chest",
+        "to": "strict",
+        "kind": "prerequisite",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/the-strict-bar-muscle-up",
+          "https://www.crossfit.com/essentials/crossfit-bar-muscle-up-rx"
+        ]
+      },
+      {
+        "from": "dip",
+        "to": "strict",
+        "kind": "prerequisite",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/the-strict-bar-muscle-up",
+          "https://www.crossfit.com/essentials/crossfit-bar-muscle-up-rx"
+        ]
+      },
+      {
+        "from": "transition",
+        "to": "strict",
+        "kind": "prerequisite",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/the-strict-bar-muscle-up",
+          "https://www.crossfit.com/essentials/crossfit-bar-muscle-up-rx"
+        ]
+      },
+      {
+        "from": "explosive",
+        "to": "strict",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/the-strict-bar-muscle-up",
+          "https://www.crossfit.com/essentials/crossfit-bar-muscle-up-rx"
+        ]
+      },
+      {
+        "from": "band",
+        "to": "strict",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/the-strict-bar-muscle-up",
+          "https://www.crossfit.com/essentials/crossfit-bar-muscle-up-rx"
+        ]
+      }
+    ]
+  },
+  {
+    "code": "calisthenics.pistol",
+    "nameRu": "Пистолет: варианты освоения",
+    "revision": 1,
+    "status": "draft",
+    "reviewStatus": "pending_expert_review",
+    "sourceRefs": ["https://gmb.io/pistol/"],
+    "nodes": [
+      {
+        "id": "supported",
+        "variantId": "strength.pistol_squat.hand_supported",
+        "skillGroup": "calisthenics.pistol",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "box",
+        "variantId": "strength.pistol_squat.to_box",
+        "skillGroup": "calisthenics.pistol",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "negative",
+        "variantId": "strength.pistol_squat.eccentric",
+        "skillGroup": "calisthenics.pistol",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "full",
+        "variantId": "strength.pistol_squat.full",
+        "skillGroup": "calisthenics.pistol",
+        "prerequisiteMode": "any",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Опора, платформа и негатив — альтернативные редакционные ветки, а не три обязательных этапа. Независимо от ветки оценить обе стороны, равновесие и контролируемую амплитуду.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "supported",
+        "to": "negative",
+        "kind": "preparation",
+        "sourceRefs": ["https://gmb.io/pistol/"]
+      },
+      {
+        "from": "box",
+        "to": "negative",
+        "kind": "preparation",
+        "sourceRefs": ["https://gmb.io/pistol/"]
+      },
+      {
+        "from": "supported",
+        "to": "full",
+        "kind": "prerequisite",
+        "sourceRefs": ["https://gmb.io/pistol/"]
+      },
+      {
+        "from": "box",
+        "to": "full",
+        "kind": "prerequisite",
+        "sourceRefs": ["https://gmb.io/pistol/"]
+      },
+      {
+        "from": "negative",
+        "to": "full",
+        "kind": "prerequisite",
+        "sourceRefs": ["https://gmb.io/pistol/"]
+      }
+    ]
+  },
+  {
+    "code": "calisthenics.shrimp",
+    "nameRu": "Креветка: опора и контроль колена",
+    "revision": 1,
+    "status": "draft",
+    "reviewStatus": "pending_expert_review",
+    "sourceRefs": ["https://gmb.io/unilateral-leg-training/"],
+    "nodes": [
+      {
+        "id": "supported",
+        "variantId": "strength.shrimp_squat.hand_supported",
+        "skillGroup": "calisthenics.shrimp",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "padded",
+        "variantId": "strength.shrimp_squat.to_padded_support",
+        "skillGroup": "calisthenics.shrimp",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "full",
+        "variantId": "strength.shrimp_squat.full",
+        "skillGroup": "calisthenics.shrimp",
+        "prerequisiteMode": "any",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Опора рукой и мягкая опора под коленом — варианты освоения. Проверить обе стороны и устойчивость выбранной опоры; нет автоматического перехода по повторениям.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "supported",
+        "to": "full",
+        "kind": "prerequisite",
+        "sourceRefs": ["https://gmb.io/unilateral-leg-training/"]
+      },
+      {
+        "from": "padded",
+        "to": "full",
+        "kind": "prerequisite",
+        "sourceRefs": ["https://gmb.io/unilateral-leg-training/"]
+      }
+    ]
+  },
+  {
+    "code": "calisthenics.knee_control",
+    "nameRu": "Nordic и отдельная практика обратного Nordic",
+    "revision": 1,
+    "status": "draft",
+    "reviewStatus": "pending_expert_review",
+    "sourceRefs": [
+      "https://www.youtube.com/watch?v=443ERGrFDf8",
+      "https://e3rehab.com/reversenordic/"
+    ],
+    "nodes": [
+      {
+        "id": "band",
+        "variantId": "strength.nordic_curl.band_assisted",
+        "skillGroup": "calisthenics.knee_control",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "negative",
+        "variantId": "strength.nordic_curl.eccentric",
+        "skillGroup": "calisthenics.knee_control",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Стрелки — редакционные кандидаты. Выполнение упражнения и количество XP не означают автоматический допуск.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "full",
+        "variantId": "strength.nordic_curl.full",
+        "skillGroup": "calisthenics.knee_control",
+        "prerequisiteMode": "any",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Помощь резинки и негатив — кандидаты альтернативных веток. Методист отдельно оценивает возврат без помощи; успешный негатив его не доказывает.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      },
+      {
+        "id": "reverse",
+        "variantId": "strength.reverse_nordic.bodyweight",
+        "skillGroup": "calisthenics.knee_control",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Самостоятельный узел оценки разгибания колена. Это другое движение и мышечный акцент: из Nordic не следует готовность к reverse Nordic. Связь намеренно не добавлена.",
+          "Нужна отдельная оценка текущей готовности; автоматическое открытие навыка не реализовано."
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "band",
+        "to": "full",
+        "kind": "prerequisite",
+        "sourceRefs": [
+          "https://www.youtube.com/watch?v=443ERGrFDf8",
+          "https://e3rehab.com/reversenordic/"
+        ]
+      },
+      {
+        "from": "negative",
+        "to": "full",
+        "kind": "prerequisite",
+        "sourceRefs": [
+          "https://www.youtube.com/watch?v=443ERGrFDf8",
+          "https://e3rehab.com/reversenordic/"
+        ]
+      }
+    ]
+  },
+  {
+    "code": "strength.technique_review",
+    "nameRu": "Техника силовых: фронтальный присед и жим одной ногой",
+    "revision": 1,
+    "status": "draft",
+    "reviewStatus": "pending_expert_review",
+    "sourceRefs": [
+      "https://blog.nasm.org/sports-performance/front-squat-back-squat-choose",
+      "https://www.nasm.org/resource-center/exercise-library/single-leg-press"
+    ],
+    "nodes": [
+      {
+        "id": "goblet",
+        "variantId": "strength.squat.goblet_dumbbell",
+        "skillGroup": "strength.technique_review",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Проверка методистом требуется независимо от наличия подготовительных карточек; утверждённых числовых критериев нет.",
+          "Подготовительный кандидат для контроля приседа; не обязательный навык и не замена проверки фронтального положения штанги.",
+          "Узел является редакционным черновиком, а не разрешением на назначение упражнения."
+        ]
+      },
+      {
+        "id": "front_squat",
+        "variantId": "strength.squat.barbell_front",
+        "skillGroup": "strength.technique_review",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Проверка методистом требуется независимо от наличия подготовительных карточек; утверждённых числовых критериев нет.",
+          "Отдельно оценить фронтальное положение грифа, управление корпусом, стойку/страховочные упоры и контролируемую амплитуду.",
+          "Узел является редакционным черновиком, а не разрешением на назначение упражнения."
+        ]
+      },
+      {
+        "id": "leg_press",
+        "variantId": "strength.leg_press.machine",
+        "skillGroup": "strength.technique_review",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Проверка методистом требуется независимо от наличия подготовительных карточек; утверждённых числовых критериев нет.",
+          "Подготовительный кандидат для настройки и контроля платформы. Двусторонний результат не доказывает одностороннюю готовность.",
+          "Узел является редакционным черновиком, а не разрешением на назначение упражнения."
+        ]
+      },
+      {
+        "id": "single_leg_press",
+        "variantId": "strength.leg_press.single_leg_machine",
+        "skillGroup": "strength.technique_review",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Проверка методистом требуется независимо от наличия подготовительных карточек; утверждённых числовых критериев нет.",
+          "Оценить совместимость конкретного тренажёра с односторонним исполнением, устойчивость таза и фактическую нагрузку каждой стороны.",
+          "Узел является редакционным черновиком, а не разрешением на назначение упражнения."
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "goblet",
+        "to": "front_squat",
+        "kind": "preparation",
+        "sourceRefs": ["https://blog.nasm.org/sports-performance/front-squat-back-squat-choose"]
+      },
+      {
+        "from": "leg_press",
+        "to": "single_leg_press",
+        "kind": "preparation",
+        "sourceRefs": ["https://www.nasm.org/resource-center/exercise-library/single-leg-press"]
+      }
+    ]
+  }
+]

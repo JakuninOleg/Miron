@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1120" role="img" aria-label="MIRON — предпросмотр логотипа v1"><title>MIRON — предпросмотр логотипа v1</title>
+<rect width="1600" height="720" fill="#17181B"/>
+<rect y="720" width="1600" height="400" fill="#F8F7F5"/>
+<g transform="translate(650 42) scale(1.25)"><g>
+  <path fill="#F8F7F5" d="M42 184V77C42 54 65 44 82 60L163 135L139 151L75 99V184Q75 192 67 192H50Q42 192 42 184Z"/>
+  <path fill="#F27EA8" d="M127 146L151 123L222 60C236 47 250 47 259 59L164 150C151 164 139 158 127 146Z"/>
+  <path fill="#F27EA8" d="M234 91L267 60V184Q267 192 259 192H242Q234 192 234 184Z"/>
+  <path fill="#C6507B" d="M127 146L151 123L164 135L151 148Q140 157 127 146Z"/>
+  </g></g>
+<g transform="translate(330 360) scale(1.67)"><defs><mask id="o-main" maskUnits="userSpaceOnUse" x="320" y="0" width="105" height="100"><rect x="320" width="105" height="100" fill="white"/><path d="M330 89L416 3" stroke="black" stroke-width="9"/></mask></defs>
+ <g fill="none" stroke="#F8F7F5" stroke-width="11" stroke-linecap="butt" stroke-linejoin="miter">
+ <path stroke="none" fill="#F8F7F5" d="M16 85V9H25L59 41L93 9H102V85H91V26L59 56L27 26V85Z"/>
+ <path d="M158 9V85"/>
+ <path d="M218 9H260C287 9 287 47 260 47H239L270 81"/>
+ <circle cx="373" cy="47" r="38" mask="url(#o-main)"/>
+ <path stroke="none" fill="#F8F7F5" d="M465 85V9H476L534 68V9H545V85H534L476 26V85Z"/>
+ </g></g>
+<g fill="#F8F7F5" font-family="Arial, sans-serif" font-size="19" letter-spacing="3"><text x="70" y="66">MIRON / ЛОГОТИП</text><text x="70" y="668">ЗНАК M</text><text x="740" y="668">СЛОВЕСНЫЙ ЛОГОТИП</text></g>
+<g transform="translate(160 751) scale(.9)"><g>
+  <path fill="#17181B" d="M42 184V77C42 54 65 44 82 60L163 135L139 151L75 99V184Q75 192 67 192H50Q42 192 42 184Z"/>
+  <path fill="#F27EA8" d="M127 146L151 123L222 60C236 47 250 47 259 59L164 150C151 164 139 158 127 146Z"/>
+  <path fill="#F27EA8" d="M234 91L267 60V184Q267 192 259 192H242Q234 192 234 184Z"/>
+  <path fill="#C6507B" d="M127 146L151 123L164 135L151 148Q140 157 127 146Z"/>
+  </g></g>
+<g transform="translate(76 960) scale(.72)"><defs><mask id="o-light" maskUnits="userSpaceOnUse" x="320" y="0" width="105" height="100"><rect x="320" width="105" height="100" fill="white"/><path d="M330 89L416 3" stroke="black" stroke-width="9"/></mask></defs>
+ <g fill="none" stroke="#17181B" stroke-width="11" stroke-linecap="butt" stroke-linejoin="miter">
+ <path stroke="none" fill="#17181B" d="M16 85V9H25L59 41L93 9H102V85H91V26L59 56L27 26V85Z"/>
+ <path d="M158 9V85"/>
+ <path d="M218 9H260C287 9 287 47 260 47H239L270 81"/>
+ <circle cx="373" cy="47" r="38" mask="url(#o-light)"/>
+ <path stroke="none" fill="#17181B" d="M465 85V9H476L534 68V9H545V85H534L476 26V85Z"/>
+ </g></g>
+<rect x="600" y="780" width="210" height="210" rx="44" fill="#17181B"/>
+<g transform="translate(604 794) scale(.65)"><g>
+  <path fill="#F8F7F5" d="M42 184V77C42 54 65 44 82 60L163 135L139 151L75 99V184Q75 192 67 192H50Q42 192 42 184Z"/>
+  <path fill="#F27EA8" d="M127 146L151 123L222 60C236 47 250 47 259 59L164 150C151 164 139 158 127 146Z"/>
+  <path fill="#F27EA8" d="M234 91L267 60V184Q267 192 259 192H242Q234 192 234 184Z"/>
+  <path fill="#C6507B" d="M127 146L151 123L164 135L151 148Q140 157 127 146Z"/>
+  </g></g>
+<rect x="900" y="780" width="210" height="210" rx="44" fill="#F27EA8"/>
+<g transform="translate(904 794) scale(.65)"><g>
+  <path fill="#17181B" d="M42 184V77C42 54 65 44 82 60L163 135L139 151L75 99V184Q75 192 67 192H50Q42 192 42 184Z"/>
+  <path fill="#17181B" d="M127 146L151 123L222 60C236 47 250 47 259 59L164 150C151 164 139 158 127 146Z"/>
+  <path fill="#17181B" d="M234 91L267 60V184Q267 192 259 192H242Q234 192 234 184Z"/>
+  
+  </g></g>
+<g transform="translate(1220 790) scale(.85)"><g>
+  <path fill="#17181B" d="M42 184V77C42 54 65 44 82 60L163 135L139 151L75 99V184Q75 192 67 192H50Q42 192 42 184Z"/>
+  <path fill="#17181B" d="M127 146L151 123L222 60C236 47 250 47 259 59L164 150C151 164 139 158 127 146Z"/>
+  <path fill="#17181B" d="M234 91L267 60V184Q267 192 259 192H242Q234 192 234 184Z"/>
+  
+  </g></g>
+<g fill="#17181B" font-family="Arial, sans-serif" font-size="17"><text x="105" y="1068">Светлый фон</text><text x="608" y="1068">Иконка приложения</text><text x="927" y="1068">Одноцветный знак</text><text x="1260" y="1068">Монохром</text></g>
+</svg>

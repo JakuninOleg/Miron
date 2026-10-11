@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 563 98" role="img" aria-label="MIRON — словесный логотип для светлого фона"><title>MIRON — словесный логотип для светлого фона</title><defs><mask id="o-cut" maskUnits="userSpaceOnUse" x="320" y="0" width="105" height="100"><rect x="320" width="105" height="100" fill="white"/><path d="M330 89L416 3" stroke="black" stroke-width="9"/></mask></defs>
+ <g fill="none" stroke="#17181B" stroke-width="11" stroke-linecap="butt" stroke-linejoin="miter">
+ <path stroke="none" fill="#17181B" d="M16 85V9H25L59 41L93 9H102V85H91V26L59 56L27 26V85Z"/>
+ <path d="M158 9V85"/>
+ <path d="M218 9H260C287 9 287 47 260 47H239L270 81"/>
+ <circle cx="373" cy="47" r="38" mask="url(#o-cut)"/>
+ <path stroke="none" fill="#17181B" d="M465 85V9H476L534 68V9H545V85H534L476 26V85Z"/>
+ </g></svg>

@@ -1,0 +1,45 @@
+.card {
+  width: 100%;
+  margin: 22px 0;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  text-align: left;
+}
+.heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.heading h2 {
+  margin: 0;
+  font-size: 18px;
+}
+.value {
+  color: var(--orange);
+  font-size: 24px;
+}
+:global([data-theme="rose"]) .value {
+  color: var(--rose);
+}
+.help {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 10px 0;
+}
+.method {
+  margin-top: 16px;
+}
+.method summary {
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 13px;
+}
+@media (max-width: 420px) {
+  .card {
+    padding: 15px;
+  }
+}

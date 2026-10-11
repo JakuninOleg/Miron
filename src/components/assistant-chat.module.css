@@ -1,0 +1,79 @@
+.notice {
+  margin: 10px 0;
+  padding: 12px 14px;
+  border: 1px solid var(--dash-line, var(--line));
+  border-radius: 12px;
+  background: var(--dash-surface, var(--surface));
+  color: var(--dash-text, var(--text));
+  font-size: 13px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.note {
+  margin: 10px 2px;
+  color: var(--dash-muted, var(--muted));
+  font-size: 12px;
+  line-height: 1.6;
+}
+.actionButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  margin-top: 10px;
+  padding: 10px 15px;
+  border: 1px solid var(--dash-line, var(--line)) !important;
+  border-radius: 10px;
+  color: var(--dash-accent-text, var(--accent)) !important;
+  background: var(--dash-raised, var(--raised)) !important;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+}
+.actionButton:focus-visible {
+  outline: 2px solid var(--dash-accent, var(--accent));
+  outline-offset: 3px;
+}
+.actionButton:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+.actions {
+  display: grid;
+  gap: 10px;
+  margin-top: 10px;
+}
+.proposal {
+  padding: 12px 14px;
+  border: 1px solid var(--dash-line, var(--line));
+  border-radius: 12px;
+  background: var(--dash-surface, var(--surface));
+  font-size: 13px;
+  line-height: 1.6;
+}
+.proposal h4 {
+  font: inherit;
+  font-weight: 700;
+}
+.proposal p {
+  margin: 6px 0;
+}
+.confirmationControls {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.contextLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-size: 13px;
+}
+@media (max-width: 480px) {
+  .actionButton {
+    width: 100%;
+  }
+}

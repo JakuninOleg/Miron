@@ -1,0 +1,756 @@
+.screen {
+  --accent: #ff765e;
+  --button-start: #ff805f;
+  --button-end: #ff715f;
+  height: 100svh;
+  height: 100dvh;
+  padding-block: env(safe-area-inset-top, 0px) env(safe-area-inset-bottom, 0px);
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  background: #080e0f;
+  color: #f7f6f3;
+  font-family: Manrope, sans-serif;
+  overflow: clip;
+}
+.scene {
+  position: relative;
+  isolation: isolate;
+  min-height: 0;
+  padding: clamp(22px, 4dvh, 58px) 4.9% clamp(10px, 2dvh, 30px);
+  display: grid;
+  grid-template-columns: 27% minmax(0, 1fr) 19%;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  column-gap: 2%;
+  animation: sceneEnter 340ms cubic-bezier(0.22, 0.7, 0.2, 1) both;
+}
+.screen[data-direction="back"] .scene {
+  animation-name: sceneBack;
+}
+.screen[data-companion="lika"] {
+  --accent: #ef73a7;
+  --button-start: #ff82b7;
+  --button-end: #f568a4;
+}
+.screen[data-companion="lika"] .bubble {
+  left: 62%;
+  top: 5%;
+  width: 15%;
+  transform: rotate(-4deg);
+}
+.screen[data-companion="lika"] .wallNote {
+  left: 71%;
+  top: 26%;
+  font-size: clamp(18px, 1.35vw, 27px);
+}
+.screen[data-companion="lika"] .kneeNote {
+  left: 33%;
+  bottom: 9%;
+}
+.artStage {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+}
+.picture {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+.art {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 28%;
+}
+.shade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, #080e0ff2, #080e0fd9 24%, #080e0f00 48%, #080e0f00 76%, #080e0f85),
+    linear-gradient(0deg, #080e0fa8, transparent 22%);
+}
+.intro {
+  grid-column: 1;
+  grid-row: 1;
+  position: relative;
+}
+.eyebrow {
+  margin: 0 0 8px;
+  font-size: clamp(11px, 1vw, 18px);
+  letter-spacing: 0.24em;
+}
+.title {
+  margin: 0;
+  color: var(--accent);
+  font-family: "Roboto Condensed", sans-serif;
+  font-weight: 900;
+  font-size: clamp(76px, min(9vw, 15dvh), 182px);
+  line-height: 0.94;
+  letter-spacing: -0.035em;
+  width: fit-content;
+}
+.title:focus {
+  outline: none;
+}
+.title:after {
+  content: "";
+  display: block;
+  height: 0.035em;
+  background: var(--accent);
+  clip-path: polygon(0 66%, 72% 0, 100% 16%, 78% 76%, 5% 100%);
+  transform: rotate(-1deg);
+  transform-origin: left;
+  animation: inkReveal 420ms 120ms ease-out both;
+}
+.character {
+  font-family: "Roboto Condensed", sans-serif;
+  font-weight: 900;
+  font-size: clamp(19px, min(1.9vw, 3.5dvh), 35px);
+  line-height: 1.12;
+  margin: 8px 0 0;
+}
+.description {
+  color: #b7bec0;
+  font-size: clamp(13px, min(1.1vw, 2dvh), 21px);
+  line-height: 1.5;
+  margin: clamp(16px, 2.5dvh, 30px) 0 0;
+  max-width: 38ch;
+}
+.benefits {
+  grid-column: 1;
+  grid-row: 2;
+  list-style: none;
+  padding: 0;
+  margin: clamp(16px, 2.5dvh, 36px) 0;
+  display: grid;
+  gap: clamp(10px, 1.6dvh, 24px);
+}
+.benefits li {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 1.2vw, 22px);
+}
+.benefitIcon {
+  width: clamp(38px, 3.2vw, 62px);
+  height: clamp(38px, 3.2vw, 62px);
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  color: var(--accent);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.benefitIcon svg {
+  width: 52%;
+  height: 52%;
+  stroke-width: 2.3;
+}
+.benefits h2 {
+  margin: 0;
+  font-family: Manrope, sans-serif;
+  font-size: clamp(12px, 1vw, 19px);
+  font-weight: 700;
+  line-height: 1.25;
+}
+.benefits p {
+  margin: 5px 0 0;
+  font-size: clamp(11px, 0.88vw, 17px);
+  color: #b7bec0;
+  line-height: 1.4;
+}
+.actions {
+  grid-row: 3;
+  grid-column: 1;
+  align-self: start;
+}
+.next {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  width: 100%;
+  height: clamp(48px, 7dvh, 72px);
+  border: 0;
+  border-radius: 7px;
+  background: linear-gradient(110deg, var(--button-start), var(--button-end));
+  color: #101718;
+  font-weight: 800;
+  font-size: clamp(15px, 1.3vw, 23px);
+  cursor: pointer;
+  transition:
+    filter 160ms,
+    transform 160ms;
+}
+.next svg {
+  width: 28px;
+  height: 28px;
+}
+.next:hover {
+  filter: brightness(1.08);
+}
+.next:active {
+  transform: scale(0.98);
+}
+.next:disabled,
+.back:disabled {
+  cursor: default;
+}
+.next:focus-visible,
+.back:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 5px;
+}
+.actionFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: clamp(8px, 2dvh, 28px);
+}
+.back {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  background: transparent;
+  border: none;
+  color: #bdc4c6;
+  padding: 8px 4px;
+  min-height: 44px;
+  font-size: clamp(14px, 1.1vw, 20px);
+  cursor: pointer;
+}
+.back svg {
+  width: 26px;
+  height: 26px;
+}
+.tagline {
+  display: none;
+}
+.bubble {
+  position: absolute;
+  top: 6%;
+  left: 33.5%;
+  width: 17%;
+  padding: clamp(13px, 1.4vw, 28px);
+  color: #151b1c;
+  font-weight: 700;
+  font-size: clamp(13px, 1.15vw, 23px);
+  line-height: 1.32;
+  transform: rotate(-5deg);
+  isolation: isolate;
+}
+.bubble svg {
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 120%;
+  overflow: visible;
+  fill: #f3f0e9;
+  stroke: #111616;
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+.bubble p {
+  margin: 0;
+}
+.speaker {
+  position: absolute;
+  left: 6%;
+  top: -20px;
+  padding: 4px 10px;
+  background: #080c0c;
+  color: var(--accent);
+  border-radius: 4px;
+  font:
+    900 clamp(18px, 1.6vw, 29px)/1 "Roboto Condensed",
+    sans-serif;
+  transform: rotate(-4deg);
+}
+.wallNote {
+  position: absolute;
+  left: 69%;
+  top: 22%;
+  font:
+    clamp(18px, 2.5vw, 42px)/1.1 Neucha,
+    cursive;
+  color: #b5bab9;
+  opacity: 0.64;
+  transform: rotate(-12deg);
+}
+.wallNote span,
+.kneeNote span {
+  display: block;
+  text-align: center;
+  margin-top: 9px;
+}
+.kneeNote {
+  position: absolute;
+  left: 39%;
+  bottom: 9%;
+  font:
+    clamp(15px, 1.7vw, 30px)/1.15 Neucha,
+    cursive;
+  color: #bfc3c3;
+  transform: rotate(-12deg);
+  opacity: 0.72;
+}
+.sideStory {
+  grid-row: 1 / -1;
+  grid-column: 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 0;
+  gap: clamp(10px, 1.7dvh, 25px);
+}
+.panels {
+  display: grid;
+  gap: clamp(8px, 1.3dvh, 18px);
+  margin: 0 2%;
+}
+.comicFrame {
+  position: relative;
+  aspect-ratio: 2.05;
+  border: 2px solid #b6b6af;
+  overflow: hidden;
+  box-shadow: 3px 4px 0 #080e0f;
+  transform: rotate(-5deg);
+}
+.comicFrame:nth-child(2) {
+  transform: rotate(3deg);
+}
+.comicFrame:nth-child(3) {
+  transform: rotate(-3deg);
+}
+.panelArt {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.quote {
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  gap: 0 8px;
+  margin: 0;
+  padding: clamp(12px, 1.3vw, 23px);
+  border: 1px solid #7b8381;
+  border-radius: 4px;
+  background: #080e0fa8;
+}
+.quote > span {
+  color: var(--accent);
+  font:
+    900 44px/1 "Roboto Condensed",
+    sans-serif;
+}
+.quote p {
+  margin: 0;
+  color: #bdc4c4;
+  font-size: clamp(12px, 1vw, 19px);
+  line-height: 1.5;
+}
+.quote cite {
+  grid-column: 2;
+  justify-self: end;
+  color: var(--accent);
+  font:
+    26px Neucha,
+    cursive;
+  transform: rotate(-9deg);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.together {
+  font-family: Neucha, cursive;
+  color: #c4c8c7;
+  transform: rotate(-4deg);
+  font-size: clamp(14px, 1.2vw, 23px);
+}
+.together p {
+  margin: 0 0 10px;
+  font-size: 1.25em;
+}
+.together ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+.together li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.together svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+.sideTagline {
+  font-size: clamp(9px, 0.8vw, 14px);
+  color: #8d989a;
+  margin: 0;
+  text-align: right;
+}
+@keyframes sceneEnter {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes sceneBack {
+  from {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes inkReveal {
+  from {
+    transform: rotate(-1deg) scaleX(0);
+  }
+  to {
+    transform: rotate(-1deg) scaleX(1);
+  }
+}
+@media (min-aspect-ratio: 1/1) and (max-width: 1100px) {
+  .scene {
+    grid-template-columns: 34% minmax(0, 1fr);
+    padding-top: 3dvh;
+  }
+  .sideStory {
+    display: none;
+  }
+  .bubble {
+    left: 40%;
+    width: 19%;
+  }
+  .wallNote {
+    left: 78%;
+  }
+  .screen[data-companion="lika"] .bubble {
+    left: 72%;
+    width: 22%;
+  }
+}
+@media (max-aspect-ratio: 1/1) {
+  .screen {
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+  .scene {
+    padding: 0;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    column-gap: 0;
+  }
+  .intro {
+    grid-column: 1;
+    grid-row: 1;
+    padding: 2dvh 6% 0;
+    background: #080e0f;
+  }
+  .eyebrow {
+    font-size: clamp(10px, 2.7vw, 17px);
+    margin-bottom: 6px;
+  }
+  .title {
+    font-size: clamp(64px, min(23vw, 10.8dvh), 145px);
+  }
+  .character {
+    font-size: clamp(17px, 4.7vw, 29px);
+    line-height: 1.12;
+    margin-top: 6px;
+  }
+  .description {
+    font-size: clamp(13px, min(3.6vw, 1.85dvh), 23px);
+    line-height: 1.4;
+    margin-top: 12px;
+    max-width: 38ch;
+  }
+  .artStage {
+    position: relative;
+    grid-column: 1;
+    grid-row: 2;
+    z-index: 0;
+    min-height: 0;
+  }
+  .art {
+    object-position: center 30%;
+  }
+  .shade {
+    background:
+      linear-gradient(90deg, #080e0f9c, #080e0f00 55%),
+      linear-gradient(0deg, #080e0fbd, transparent 26%, transparent 92%, #080e0f);
+  }
+  .bubble {
+    top: 6%;
+    left: 5%;
+    width: 49%;
+    font-size: clamp(12px, 3.4vw, 22px);
+    line-height: 1.28;
+    padding: clamp(12px, 3.7vw, 23px);
+    transform: rotate(-4deg);
+  }
+  .screen[data-companion="lika"] .bubble {
+    left: 5%;
+    top: 6%;
+    width: 45%;
+  }
+  .screen[data-companion="lika"] .bubble svg {
+    transform: scaleX(-1);
+  }
+  .screen[data-companion="lika"] .art {
+    object-position: center 20%;
+  }
+  .screen[data-companion="lika"] .character {
+    font-size: clamp(16px, 4.4vw, 28px);
+  }
+  .speaker {
+    top: -15px;
+    font-size: clamp(16px, 4.5vw, 28px);
+    padding: 3px 8px;
+  }
+  .benefits {
+    grid-column: 1;
+    grid-row: 2;
+    align-self: end;
+    z-index: 1;
+    position: relative;
+    width: 47%;
+    margin: 0 0 5% 6%;
+    gap: clamp(10px, 1.8dvh, 23px);
+    pointer-events: none;
+  }
+  .benefits li {
+    gap: 9px;
+  }
+  .benefitIcon {
+    width: clamp(30px, 8.2vw, 48px);
+    height: clamp(30px, 8.2vw, 48px);
+    border-width: 1.5px;
+  }
+  .benefits h2 {
+    font-size: clamp(11px, 3vw, 18px);
+    line-height: 1.25;
+    text-shadow: 0 1px 8px #080e0f;
+  }
+  .benefits p {
+    display: none;
+  }
+  .actions {
+    grid-column: 1;
+    grid-row: 3;
+    align-self: stretch;
+    margin: 0 6%;
+    padding-top: 4px;
+  }
+  .next {
+    height: clamp(46px, 6.8dvh, 76px);
+    font-size: clamp(16px, 4.7vw, 27px);
+    border-radius: 9px;
+  }
+  .next svg {
+    width: 30px;
+    height: 30px;
+  }
+  .actionFooter {
+    margin-top: 4px;
+    padding-bottom: 3px;
+    min-height: 48px;
+  }
+  .back {
+    font-size: clamp(13px, 3.6vw, 22px);
+    gap: 8px;
+  }
+  .back svg {
+    width: 22px;
+    height: 22px;
+  }
+  .tagline {
+    display: block;
+    font-size: clamp(8px, 2.1vw, 13px);
+    letter-spacing: 0.06em;
+    color: #9da7ad;
+  }
+  .wallNote {
+    display: none;
+  }
+  .screen[data-companion="lika"] .wallNote {
+    display: none;
+  }
+  .kneeNote,
+  .sideStory {
+    display: none;
+  }
+}
+@media (max-aspect-ratio: 1/1) and (max-height: 700px) {
+  .intro {
+    padding-top: 6px;
+  }
+  .title {
+    font-size: clamp(60px, 10.5dvh, 74px);
+  }
+  .character {
+    font-size: 17px;
+  }
+  .screen[data-companion="lika"] .character {
+    font-size: 15px;
+  }
+  .description {
+    display: none;
+  }
+  .benefits {
+    width: 44%;
+    gap: 9px;
+    margin-bottom: 5%;
+  }
+  .benefits h2 {
+    font-size: 11px;
+  }
+  .benefitIcon {
+    width: 28px;
+    height: 28px;
+  }
+  .wallNote {
+    display: none;
+  }
+}
+@media (max-aspect-ratio: 1/1) and (min-width: 600px) {
+  .intro {
+    padding-inline: 8%;
+  }
+  .title {
+    font-size: clamp(100px, 11dvh, 170px);
+  }
+  .character {
+    font-size: clamp(26px, 3.4vw, 36px);
+  }
+  .description {
+    max-width: 45ch;
+  }
+  .benefits {
+    width: 36%;
+    margin-left: 8%;
+    margin-bottom: 7%;
+    gap: 24px;
+  }
+  .benefits h2 {
+    font-size: clamp(18px, 2.1vw, 24px);
+  }
+  .benefits p {
+    display: block;
+    font-size: clamp(15px, 1.8vw, 21px);
+  }
+  .benefitIcon {
+    width: 52px;
+    height: 52px;
+  }
+  .bubble {
+    width: 36%;
+    left: 9%;
+    font-size: clamp(19px, 2.3vw, 27px);
+    padding: 22px;
+  }
+  .screen[data-companion="lika"] .bubble {
+    width: 34%;
+    left: 9%;
+  }
+  .actions {
+    margin-inline: 8%;
+  }
+}
+@media (min-aspect-ratio: 1/1) and (max-height: 650px) {
+  .sideStory,
+  .wallNote,
+  .kneeNote {
+    display: none;
+  }
+  .scene {
+    padding: 14px 5% 8px;
+    grid-template-columns: 36% 1fr;
+  }
+  .title {
+    font-size: clamp(44px, 13dvh, 78px);
+  }
+  .eyebrow {
+    font-size: 10px;
+    margin-bottom: 4px;
+  }
+  .character {
+    font-size: 15px;
+    margin-top: 3px;
+  }
+  .description {
+    display: none;
+  }
+  .benefits {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 14px 0;
+  }
+  .benefits li {
+    gap: 6px;
+  }
+  .benefits h2 {
+    font-size: 10px;
+  }
+  .benefits p {
+    display: none;
+  }
+  .benefitIcon {
+    width: 28px;
+    height: 28px;
+    border-width: 1.5px;
+  }
+  .next {
+    height: 44px;
+    font-size: 14px;
+    gap: 10px;
+  }
+  .actionFooter {
+    margin-top: 0;
+  }
+  .back {
+    padding-block: 2px;
+    font-size: 12px;
+  }
+  .bubble {
+    left: 41%;
+    width: 20%;
+    font-size: 11px;
+    padding: 10px;
+  }
+  .screen[data-companion="lika"] .bubble {
+    left: 73%;
+    width: 22%;
+  }
+  .screen[data-companion="lika"] .wallNote,
+  .screen[data-companion="lika"] .kneeNote {
+    display: none;
+  }
+  .speaker {
+    font-size: 16px;
+    top: -13px;
+    padding: 3px 7px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scene,
+  .screen[data-direction="back"] .scene,
+  .title:after {
+    animation: none;
+  }
+  .next {
+    transition: none;
+  }
+}

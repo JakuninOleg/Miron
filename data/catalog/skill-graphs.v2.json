@@ -1,0 +1,1262 @@
+[
+  {
+    "code": "calisthenics.l_sit",
+    "nameRu": "Уголок: опора и компрессия",
+    "revision": 2,
+    "status": "draft",
+    "reviewStatus": "pending_expert_review",
+    "sourceRefs": [
+      "https://gmb.io/l-sit/",
+      "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+    ],
+    "nodes": [
+      {
+        "id": "support",
+        "variantId": "strength.support_hold.parallel_bars",
+        "skillGroup": "calisthenics.l_sit",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Подготовительный компонент навыка; отдельный предварительный skill gate не требуется. Упор готовит положение плеч для L-sit. На устойчивых брусьях это изолированная силовая позиция, без подъёма ног в самостоятельный уголок.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "single_raise",
+        "variantId": "strength.compression_raise.seated_single_leg",
+        "skillGroup": "calisthenics.l_sit",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Подготовительный компонент навыка; отдельный предварительный skill gate не требуется. Подготовка компрессии для L-sit. Работа одной ногой сидя является доступным силовым компонентом, а не неподдерживаемым удержанием тела.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "double_raise",
+        "variantId": "strength.compression_raise.seated_double_leg",
+        "skillGroup": "calisthenics.l_sit",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Подготовительный компонент навыка; отдельный предварительный skill gate не требуется. Подготовка компрессии для полного L-sit. Подъём двух ног сидя усложняет силовой компонент, но не требует предварительного освоения самого уголка.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "tuck",
+        "variantId": "strength.l_sit.tuck_parallettes",
+        "skillGroup": "calisthenics.l_sit",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Обе стопы удерживаются без опоры: это форма самого L-sit. Требует освоенного упора и координации подъёма таза с удержанием группировки.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "one_leg",
+        "variantId": "strength.l_sit.one_leg_parallettes",
+        "skillGroup": "calisthenics.l_sit",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Разгибание одной ноги выполняется из неподдерживаемой группировки. Нужна освоенная форма уголка, сохраняемая при изменении рычага и стороны.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "parallettes",
+        "variantId": "strength.l_sit.full_parallettes",
+        "skillGroup": "calisthenics.l_sit",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Полный уголок сочетает неподдерживаемый упор и компрессию обеих прямых ног. Предварительная практика формы необходима помимо общей силы.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "floor",
+        "variantId": "strength.l_sit.full_floor",
+        "skillGroup": "calisthenics.l_sit",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Полный L-sit на ладонях требует освоенного неподдерживаемого упора и компрессии. Паралетсы могут помогать подготовке, но не являются обязательным единственным путём.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "ring_support",
+        "variantId": "strength.support_hold.gymnastic_rings",
+        "skillGroup": "calisthenics.l_sit",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Подготовительный компонент навыка; отдельный предварительный skill gate не требуется. Базовый упор готовит L-sit и выход на кольцах. Самостоятельное удержание колец — силовая основа; сложного перехода или инверсии нет.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "ring_tuck",
+        "variantId": "strength.l_sit.tuck_rings",
+        "skillGroup": "calisthenics.l_sit",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Удержание группировки соединяет ring support с неподдерживаемым L-sit. Требует предварительно освоенного контроля колец и формы, а не только изометрической силы.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "rings",
+        "variantId": "strength.l_sit.full_rings",
+        "skillGroup": "calisthenics.l_sit",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Полный уголок сохраняется одновременно с контролем колец. До него проверяются освоенный упор и более доступная форма неподдерживаемого уголка.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "pull_up",
+        "variantId": "strength.pull_up.l_sit_bar",
+        "skillGroup": "calisthenics.l_sit",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Совмещает тягу с самостоятельным удержанием прямых ног в L-sit. Требует уже освоенного уголка в висе и его сохранения при движении.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "basic_pull",
+        "variantId": "strength.pull_up.fixed_bar",
+        "skillGroup": "calisthenics.l_sit",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Общая силовая подготовка в выбранном пути; узел графа не превращает обычное упражнение в самостоятельный навык.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "support",
+        "to": "tuck",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://gmb.io/l-sit/",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "single_raise",
+        "to": "tuck",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://gmb.io/l-sit/",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "double_raise",
+        "to": "parallettes",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://gmb.io/l-sit/",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "tuck",
+        "to": "one_leg",
+        "kind": "prerequisite",
+        "sourceRefs": [
+          "https://gmb.io/l-sit/",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "one_leg",
+        "to": "parallettes",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://gmb.io/l-sit/",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "parallettes",
+        "to": "floor",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://gmb.io/l-sit/",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "ring_support",
+        "to": "ring_tuck",
+        "kind": "prerequisite",
+        "sourceRefs": [
+          "https://gmb.io/l-sit/",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "ring_tuck",
+        "to": "rings",
+        "kind": "prerequisite",
+        "sourceRefs": [
+          "https://gmb.io/l-sit/",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "parallettes",
+        "to": "pull_up",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://gmb.io/l-sit/",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "basic_pull",
+        "to": "pull_up",
+        "kind": "prerequisite",
+        "sourceRefs": [
+          "https://gmb.io/l-sit/",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      }
+    ]
+  },
+  {
+    "code": "calisthenics.handstand_wall_path",
+    "nameRu": "Стойка: вход, баланс и путь через стену",
+    "revision": 2,
+    "status": "draft",
+    "reviewStatus": "pending_expert_review",
+    "sourceRefs": ["https://gmb.io/handstand/", "https://gmb.io/handstand-push-up/"],
+    "nodes": [
+      {
+        "id": "l_support",
+        "variantId": "strength.handstand.elevated_l_support",
+        "skillGroup": "calisthenics.handstand_wall_path",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Подготовительный компонент навыка; отдельный предварительный skill gate не требуется. Подготовка опоры на руки к стойке. Устойчиво поддерживаемые ноги отделяют этот компонент от входа, выхода и свободного баланса полной стойки.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "wall_walk",
+        "variantId": "strength.wall_walk.standard",
+        "skillGroup": "calisthenics.handstand_wall_path",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Перемещение по стене приводит тело в реальную инверсию. Требует заранее освоенного контроля опоры на руки и способа управляемого возвращения вниз.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "chest",
+        "variantId": "strength.handstand.chest_to_wall_hold",
+        "skillGroup": "calisthenics.handstand_wall_path",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Полная перевёрнутая позиция требует освоенного входа и выхода, даже при опоре стены. Физическая сила сама по себе не подтверждает эти компоненты.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "wall_entry",
+        "variantId": "strength.handstand.wall_kick_up",
+        "skillGroup": "calisthenics.handstand_wall_path",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Маховый вход в полную инверсию — самостоятельный компонент стойки. Нужна предварительная практика опоры, ориентации и выхода, а не только сила плеч.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "back",
+        "variantId": "strength.handstand.back_to_wall_hold",
+        "skillGroup": "calisthenics.handstand_wall_path",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Удержание полной инверсии после входа у стены. До назначения проверяются навыки входа, ориентации тела и контролируемого выхода.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "float",
+        "variantId": "strength.handstand.wall_float",
+        "skillGroup": "calisthenics.handstand_wall_path",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Отрыв стоп от стены переносит задачу к свободному балансу. Требуются освоенная стойка у стены и управляемый выход из потери равновесия.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "free_entry",
+        "variantId": "strength.handstand.freestanding_kick_up",
+        "skillGroup": "calisthenics.handstand_wall_path",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Вход без стены требует дозирования маха и освоенного способа выхода. Это конкретный навык баланса и ориентации в инверсии.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "free",
+        "variantId": "strength.handstand.freestanding_hold",
+        "skillGroup": "calisthenics.handstand_wall_path",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Свободная стойка требует уже освоенных входа, инверсии и выхода. Допуск подтверждает моторный контроль положения, а не количество повторов силовых упражнений.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "pike",
+        "variantId": "strength.pike_push_up.floor",
+        "skillGroup": "calisthenics.handstand_wall_path",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Подготовительный компонент навыка; отдельный предварительный skill gate не требуется. Силовая подготовка жима для handstand push-up с ногами на полу. Стойку и свободный баланс предварительно осваивать не требуется.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "pike_high",
+        "variantId": "strength.pike_push_up.feet_elevated",
+        "skillGroup": "calisthenics.handstand_wall_path",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Подготовительный компонент навыка; отдельный предварительный skill gate не требуется. Подготовка вертикального жима к handstand push-up. Высокая устойчивая опора ног усложняет нагрузку, но не создаёт свободной стойки на руках.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "negative",
+        "variantId": "strength.handstand_push_up.wall_eccentric",
+        "skillGroup": "calisthenics.handstand_wall_path",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Опускание начинается из полной стойки. Требует освоенного контроля инверсии и выхода; слово «негатив» не заменяет этих предварительных навыков.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "press",
+        "variantId": "strength.handstand_push_up.strict_wall",
+        "skillGroup": "calisthenics.handstand_wall_path",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Жим выполняется внутри полной инверсии. До движения нужны освоенное удержание стойки у стены и контроль опускания/выхода, отдельно от силового pike.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "l_support",
+        "to": "wall_walk",
+        "kind": "preparation",
+        "sourceRefs": ["https://gmb.io/handstand/", "https://gmb.io/handstand-push-up/"]
+      },
+      {
+        "from": "wall_walk",
+        "to": "chest",
+        "kind": "preparation",
+        "sourceRefs": ["https://gmb.io/handstand/", "https://gmb.io/handstand-push-up/"]
+      },
+      {
+        "from": "wall_entry",
+        "to": "back",
+        "kind": "preparation",
+        "sourceRefs": ["https://gmb.io/handstand/", "https://gmb.io/handstand-push-up/"]
+      },
+      {
+        "from": "chest",
+        "to": "float",
+        "kind": "prerequisite",
+        "sourceRefs": ["https://gmb.io/handstand/", "https://gmb.io/handstand-push-up/"]
+      },
+      {
+        "from": "float",
+        "to": "free_entry",
+        "kind": "preparation",
+        "sourceRefs": ["https://gmb.io/handstand/", "https://gmb.io/handstand-push-up/"]
+      },
+      {
+        "from": "wall_entry",
+        "to": "free_entry",
+        "kind": "preparation",
+        "sourceRefs": ["https://gmb.io/handstand/", "https://gmb.io/handstand-push-up/"]
+      },
+      {
+        "from": "float",
+        "to": "free",
+        "kind": "preparation",
+        "sourceRefs": ["https://gmb.io/handstand/", "https://gmb.io/handstand-push-up/"]
+      },
+      {
+        "from": "free_entry",
+        "to": "free",
+        "kind": "prerequisite",
+        "sourceRefs": ["https://gmb.io/handstand/", "https://gmb.io/handstand-push-up/"]
+      },
+      {
+        "from": "pike",
+        "to": "pike_high",
+        "kind": "preparation",
+        "sourceRefs": ["https://gmb.io/handstand/", "https://gmb.io/handstand-push-up/"]
+      },
+      {
+        "from": "pike_high",
+        "to": "negative",
+        "kind": "preparation",
+        "sourceRefs": ["https://gmb.io/handstand/", "https://gmb.io/handstand-push-up/"]
+      },
+      {
+        "from": "back",
+        "to": "negative",
+        "kind": "prerequisite",
+        "sourceRefs": ["https://gmb.io/handstand/", "https://gmb.io/handstand-push-up/"]
+      },
+      {
+        "from": "negative",
+        "to": "press",
+        "kind": "preparation",
+        "sourceRefs": ["https://gmb.io/handstand/", "https://gmb.io/handstand-push-up/"]
+      },
+      {
+        "from": "pike_high",
+        "to": "press",
+        "kind": "preparation",
+        "sourceRefs": ["https://gmb.io/handstand/", "https://gmb.io/handstand-push-up/"]
+      }
+    ]
+  },
+  {
+    "code": "calisthenics.planche",
+    "nameRu": "Планш: прямые руки и наклон",
+    "revision": 2,
+    "status": "draft",
+    "reviewStatus": "pending_expert_review",
+    "sourceRefs": ["https://gmb.io/planche/"],
+    "nodes": [
+      {
+        "id": "plank",
+        "variantId": "strength.plank.high",
+        "skillGroup": "calisthenics.planche",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Общая силовая подготовка в выбранном пути; узел графа не превращает обычное упражнение в самостоятельный навык.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "scapular",
+        "variantId": "strength.scapular_push_up.floor",
+        "skillGroup": "calisthenics.planche",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Подготовительный компонент навыка; отдельный предварительный skill gate не требуется. Подготовка контроля лопаток для planche в действующем графе. Движение на полу с опорой ног остаётся доступным силовым компонентом.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "lean",
+        "variantId": "strength.planche_lean.floor",
+        "skillGroup": "calisthenics.planche",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Подготовительный компонент навыка; отдельный предварительный skill gate не требуется. Подготовка пряморукой нагрузки для planche. При наклоне стопы остаются опорой; освоенный безопорный планш не нужен для начала компонента.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "pseudo_push",
+        "variantId": "strength.push_up.pseudo_planche",
+        "skillGroup": "calisthenics.planche",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Подготовительный компонент навыка; отдельный предварительный skill gate не требуется. Жим с передним наклоном готовит силу для planche. Ноги остаются опорой; это силовая подготовка, а не уже освоенный безопорный планш.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "tuck",
+        "variantId": "strength.planche.tuck_parallettes",
+        "skillGroup": "calisthenics.planche",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Группировка уже удерживается без опоры ног. Нужны предварительно освоенные пряморукий наклон, положение плеч и управляемое возвращение стоп на опору.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "plank",
+        "to": "lean",
+        "kind": "preparation",
+        "sourceRefs": ["https://gmb.io/planche/"]
+      },
+      {
+        "from": "scapular",
+        "to": "lean",
+        "kind": "preparation",
+        "sourceRefs": ["https://gmb.io/planche/"]
+      },
+      {
+        "from": "lean",
+        "to": "pseudo_push",
+        "kind": "preparation",
+        "sourceRefs": ["https://gmb.io/planche/"]
+      },
+      {
+        "from": "lean",
+        "to": "tuck",
+        "kind": "prerequisite",
+        "sourceRefs": ["https://gmb.io/planche/"]
+      },
+      {
+        "from": "pseudo_push",
+        "to": "tuck",
+        "kind": "preparation",
+        "sourceRefs": ["https://gmb.io/planche/"]
+      }
+    ]
+  },
+  {
+    "code": "calisthenics.front_lever",
+    "nameRu": "Передний вис: рычаг и контроль опускания",
+    "revision": 2,
+    "status": "draft",
+    "reviewStatus": "pending_expert_review",
+    "sourceRefs": ["https://gmb.io/levers/"],
+    "nodes": [
+      {
+        "id": "tuck_negative",
+        "variantId": "strength.front_lever.tuck_eccentric",
+        "skillGroup": "calisthenics.front_lever",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Опускание проходит через горизонтальный рычаг. Требует предварительно освоенных входа в вис и контроля плеч; негатив не становится обычной тягой.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "tuck",
+        "variantId": "strength.front_lever.tuck_hold",
+        "skillGroup": "calisthenics.front_lever",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Горизонтальное удержание тела на прямых руках — начальная форма рычага. Нужны освоенные вход, положение плеч и управляемый возврат.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "open_negative",
+        "variantId": "strength.front_lever.open_tuck_eccentric",
+        "skillGroup": "calisthenics.front_lever",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Негатив с открытой группировкой требует освоенного контроля горизонтальной формы при движении. Это практика рычага, а не только эксцентрической силы.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "open",
+        "variantId": "strength.front_lever.open_tuck_hold",
+        "skillGroup": "calisthenics.front_lever",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Открытая группировка удлиняет рычаг в уже освоенной горизонтальной форме. Нужны сохранение формы и управляемый выход из позиции.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "straddle_negative",
+        "variantId": "strength.front_lever.straddle_eccentric",
+        "skillGroup": "calisthenics.front_lever",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Опускание с разведёнными ногами сохраняет навык входа и управления рычагом. Предварительная форма должна быть освоена, независимо от уровня силы.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "straddle",
+        "variantId": "strength.front_lever.straddle_hold",
+        "skillGroup": "calisthenics.front_lever",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Разведённые прямые ноги меняют форму горизонтального рычага. Требуется ранее освоенный контроль корпуса, плеч и возврата в доступной форме.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "full_negative",
+        "variantId": "strength.front_lever.full_eccentric",
+        "skillGroup": "calisthenics.front_lever",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Полный негатив требует освоенного входа и управления прямым телом в рычаге. Эксцентрический режим не отменяет предварительный моторный контроль.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "full",
+        "variantId": "strength.front_lever.full_hold",
+        "skillGroup": "calisthenics.front_lever",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Полный передний рычаг требует освоенной пряморукой горизонтальной формы всего тела и выхода. Advanced здесь сопровождает конкретный навык, а не определяет gate.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "tuck_negative",
+        "to": "tuck",
+        "kind": "preparation",
+        "sourceRefs": ["https://gmb.io/levers/"]
+      },
+      {
+        "from": "tuck",
+        "to": "open_negative",
+        "kind": "preparation",
+        "sourceRefs": ["https://gmb.io/levers/"]
+      },
+      {
+        "from": "open_negative",
+        "to": "open",
+        "kind": "preparation",
+        "sourceRefs": ["https://gmb.io/levers/"]
+      },
+      {
+        "from": "open",
+        "to": "straddle_negative",
+        "kind": "preparation",
+        "sourceRefs": ["https://gmb.io/levers/"]
+      },
+      {
+        "from": "straddle_negative",
+        "to": "straddle",
+        "kind": "preparation",
+        "sourceRefs": ["https://gmb.io/levers/"]
+      },
+      {
+        "from": "straddle",
+        "to": "full_negative",
+        "kind": "preparation",
+        "sourceRefs": ["https://gmb.io/levers/"]
+      },
+      {
+        "from": "full_negative",
+        "to": "full",
+        "kind": "preparation",
+        "sourceRefs": ["https://gmb.io/levers/"]
+      }
+    ]
+  },
+  {
+    "code": "calisthenics.back_lever_rotation",
+    "nameRu": "Задний вис и освоение поворота на кольцах",
+    "revision": 2,
+    "status": "draft",
+    "reviewStatus": "pending_expert_review",
+    "sourceRefs": [
+      "https://gmb.io/levers/",
+      "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+    ],
+    "nodes": [
+      {
+        "id": "supported_rotation",
+        "variantId": "strength.skin_the_cat.feet_supported_rings",
+        "skillGroup": "calisthenics.back_lever_rotation",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Опора ног облегчает нагрузку, но движение сохраняет инверсию и вращение через руки. Требуются предварительно освоенные проход и обратный выход.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "rotation",
+        "variantId": "strength.skin_the_cat.strict_rings",
+        "skillGroup": "calisthenics.back_lever_rotation",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Свободное вращение проходит через перевёрнутый вис и возврат. Перед назначением проверяется освоенный контролируемый проход на доступной опоре.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "tuck",
+        "variantId": "strength.back_lever.tuck_hold",
+        "skillGroup": "calisthenics.back_lever_rotation",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Задний рычаг начинается из освоенной перевёрнутой позиции. Нужны контроль вращения/входа и возврат; это самостоятельная гимнастическая форма.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "open",
+        "variantId": "strength.back_lever.open_tuck_hold",
+        "skillGroup": "calisthenics.back_lever_rotation",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Открытая группировка усложняет уже освоенный задний рычаг. Требуются контроль формы, вход и управляемый возврат; одной силовой сложности недостаточно.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "supported_rotation",
+        "to": "rotation",
+        "kind": "prerequisite",
+        "sourceRefs": [
+          "https://gmb.io/levers/",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "rotation",
+        "to": "tuck",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://gmb.io/levers/",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "tuck",
+        "to": "open",
+        "kind": "prerequisite",
+        "sourceRefs": [
+          "https://gmb.io/levers/",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      }
+    ]
+  },
+  {
+    "code": "calisthenics.ring_muscle_up",
+    "nameRu": "Выход на кольцах: тяга, хват, переход и жим",
+    "revision": 2,
+    "status": "draft",
+    "reviewStatus": "pending_expert_review",
+    "sourceRefs": [
+      "https://www.crossfit.com/essentials/crossfit-ring-training-part-3",
+      "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+    ],
+    "nodes": [
+      {
+        "id": "foot_support",
+        "variantId": "strength.support_hold.rings_feet_supported",
+        "skillGroup": "calisthenics.ring_muscle_up",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Подготовительный компонент навыка; отдельный предварительный skill gate не требуется. Облегчённый упор готовит завершение выхода на кольцах. Освоение базовой позиции с опорой ног не требует предварительного полного навыка.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "support",
+        "variantId": "strength.support_hold.gymnastic_rings",
+        "skillGroup": "calisthenics.ring_muscle_up",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Подготовительный компонент навыка; отдельный предварительный skill gate не требуется. Базовый упор готовит L-sit и выход на кольцах. Самостоятельное удержание колец — силовая основа; сложного перехода или инверсии нет.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "foot_dip",
+        "variantId": "strength.dip.rings_feet_supported",
+        "skillGroup": "calisthenics.ring_muscle_up",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Подготовительный компонент навыка; отдельный предварительный skill gate не требуется. Облегчённая силовая подготовка жимовой части выхода на кольцах. Опора ног позволяет учить dip отдельно от полного навыкового выхода.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "dip",
+        "variantId": "strength.dip.strict_rings",
+        "skillGroup": "calisthenics.ring_muscle_up",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Подготовительный компонент навыка; отдельный предварительный skill gate не требуется. Подготовка жимовой части выхода на кольцах. Кольца повышают требования к силе и контролю упора; отдельного перехода или инверсии здесь нет.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "grip",
+        "variantId": "strength.false_grip_hang.feet_supported_rings",
+        "skillGroup": "calisthenics.ring_muscle_up",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Подготовительный компонент навыка; отдельный предварительный skill gate не требуется. Практика ложного хвата для выхода на кольцах с опорой ног. Изолированное обучение хвату не требует заранее освоенного полного выхода.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "row",
+        "variantId": "strength.inverted_row.false_grip_rings",
+        "skillGroup": "calisthenics.ring_muscle_up",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Подготовительный компонент навыка; отдельный предварительный skill gate не требуется. Горизонтальная тяга учит удерживать ложный хват перед выходом на кольцах. Опора ног оставляет изолированную подготовку, без полного выхода над опорой.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "pull",
+        "variantId": "strength.pull_up.false_grip_rings",
+        "skillGroup": "calisthenics.ring_muscle_up",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Подготовительный компонент навыка; отдельный предварительный skill gate не требуется. Подготовка тяги в ложном хвате к выходу на кольцах. Осваивается компонент, без перехода над кольцами; нестандартный хват сам по себе не означает skill gate.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "transition",
+        "variantId": "strength.muscle_up_transition.low_rings",
+        "skillGroup": "calisthenics.ring_muscle_up",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Подготовительный компонент навыка; отдельный предварительный skill gate не требуется. Изолированная практика перехода для ring muscle-up на низкой опоре. Ноги разгружают движение; компонент можно учить до полного объединённого выхода.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "low",
+        "variantId": "strength.muscle_up.feet_supported_low_rings",
+        "skillGroup": "calisthenics.ring_muscle_up",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Облегчённый полный выход всё равно объединяет хват, тягу, переход и упор. До него нужны отдельно освоенные компоненты, хотя ноги снижают нагрузку.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "band",
+        "variantId": "strength.muscle_up.band_assisted_rings",
+        "skillGroup": "calisthenics.ring_muscle_up",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Резинка помогает нагрузке, но не выполняет переход через кольца за пользователя. Требуются предварительно освоенные хват, переход и упор.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "strict",
+        "variantId": "strength.muscle_up.strict_rings",
+        "skillGroup": "calisthenics.ring_muscle_up",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Строгий выход объединяет тягу, ложный хват, переход и dip. Предварительно освоенные компоненты обязательны; достаточная сила подтягивания не доказывает владение переходом.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "foot_support",
+        "to": "support",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-3",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "foot_dip",
+        "to": "dip",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-3",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "grip",
+        "to": "row",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-3",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "row",
+        "to": "pull",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-3",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "row",
+        "to": "transition",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-3",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "foot_dip",
+        "to": "transition",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-3",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "transition",
+        "to": "low",
+        "kind": "prerequisite",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-3",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "low",
+        "to": "band",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-3",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "support",
+        "to": "strict",
+        "kind": "prerequisite",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-3",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "dip",
+        "to": "strict",
+        "kind": "prerequisite",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-3",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "pull",
+        "to": "strict",
+        "kind": "prerequisite",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-3",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "transition",
+        "to": "strict",
+        "kind": "prerequisite",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-3",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      },
+      {
+        "from": "band",
+        "to": "strict",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-3",
+          "https://www.crossfit.com/essentials/crossfit-ring-training-part-2"
+        ]
+      }
+    ]
+  },
+  {
+    "code": "calisthenics.bar_muscle_up",
+    "nameRu": "Выход на турнике: высокая тяга, переход и упор",
+    "revision": 2,
+    "status": "draft",
+    "reviewStatus": "pending_expert_review",
+    "sourceRefs": [
+      "https://www.crossfit.com/essentials/the-strict-bar-muscle-up",
+      "https://www.crossfit.com/essentials/crossfit-bar-muscle-up-rx"
+    ],
+    "nodes": [
+      {
+        "id": "pull",
+        "variantId": "strength.pull_up.fixed_bar",
+        "skillGroup": "calisthenics.bar_muscle_up",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Общая силовая подготовка в выбранном пути; узел графа не превращает обычное упражнение в самостоятельный навык.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "chest",
+        "variantId": "strength.pull_up.strict_chest_to_bar",
+        "skillGroup": "calisthenics.bar_muscle_up",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Подготовительный компонент навыка; отдельный предварительный skill gate не требуется. Высокая строгая тяга готовит компонент выхода на турнике. Более высокая точка не превращает само подтягивание в навык перехода над перекладиной.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "explosive",
+        "variantId": "strength.pull_up.explosive_bar",
+        "skillGroup": "calisthenics.bar_muscle_up",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Подготовительный компонент навыка; отдельный предварительный skill gate не требуется. Быстрая высокая тяга — подготовительный силовой компонент выхода на турнике. Взрывной характер и advanced не требуют отдельного освоенного гимнастического элемента.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "dip",
+        "variantId": "strength.dip.straight_bar",
+        "skillGroup": "calisthenics.bar_muscle_up",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Подготовительный компонент навыка; отдельный предварительный skill gate не требуется. Готовит верхнюю жимовую часть выхода на турнике. Обычный dip на фиксированной опоре является силовым компонентом, а не навыком перехода.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "transition",
+        "variantId": "strength.muscle_up_transition.low_bar",
+        "skillGroup": "calisthenics.bar_muscle_up",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Подготовительный компонент навыка; отдельный предварительный skill gate не требуется. Низкая перекладина позволяет отдельно учить переход для bar muscle-up. Это подготовительный компонент до полного выхода, без необходимости заранее владеть им.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "band",
+        "variantId": "strength.muscle_up.band_assisted_bar",
+        "skillGroup": "calisthenics.bar_muscle_up",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Помощь резинки уменьшает силовую нагрузку, сохраняя переход над фиксированной перекладиной. Нужна ранее освоенная координация перехода и упора.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      },
+      {
+        "id": "strict",
+        "variantId": "strength.muscle_up.strict_bar",
+        "skillGroup": "calisthenics.bar_muscle_up",
+        "prerequisiteMode": "all",
+        "assessment": "manual_coach_review",
+        "assessmentNotes": [
+          "Методист должен проверить технику, условия применения и критерий готовности. Критерий ещё не утверждён.",
+          "Полный строгий выход требует освоенного перехода над фиксированной перекладиной и последующего упора. Высокое подтягивание само по себе не подтверждает этот навык.",
+          "Стрелки — редакционные кандидаты выбранного пути. Выполнение упражнения, XP и сложность advanced не означают автоматический допуск."
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "pull",
+        "to": "chest",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/the-strict-bar-muscle-up",
+          "https://www.crossfit.com/essentials/crossfit-bar-muscle-up-rx"
+        ]
+      },
+      {
+        "from": "pull",
+        "to": "explosive",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/the-strict-bar-muscle-up",
+          "https://www.crossfit.com/essentials/crossfit-bar-muscle-up-rx"
+        ]
+      },
+      {
+        "from": "transition",
+        "to": "band",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/the-strict-bar-muscle-up",
+          "https://www.crossfit.com/essentials/crossfit-bar-muscle-up-rx"
+        ]
+      },
+      {
+        "from": "chest",
+        "to": "strict",
+        "kind": "prerequisite",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/the-strict-bar-muscle-up",
+          "https://www.crossfit.com/essentials/crossfit-bar-muscle-up-rx"
+        ]
+      },
+      {
+        "from": "dip",
+        "to": "strict",
+        "kind": "prerequisite",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/the-strict-bar-muscle-up",
+          "https://www.crossfit.com/essentials/crossfit-bar-muscle-up-rx"
+        ]
+      },
+      {
+        "from": "transition",
+        "to": "strict",
+        "kind": "prerequisite",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/the-strict-bar-muscle-up",
+          "https://www.crossfit.com/essentials/crossfit-bar-muscle-up-rx"
+        ]
+      },
+      {
+        "from": "explosive",
+        "to": "strict",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/the-strict-bar-muscle-up",
+          "https://www.crossfit.com/essentials/crossfit-bar-muscle-up-rx"
+        ]
+      },
+      {
+        "from": "band",
+        "to": "strict",
+        "kind": "preparation",
+        "sourceRefs": [
+          "https://www.crossfit.com/essentials/the-strict-bar-muscle-up",
+          "https://www.crossfit.com/essentials/crossfit-bar-muscle-up-rx"
+        ]
+      }
+    ]
+  }
+]

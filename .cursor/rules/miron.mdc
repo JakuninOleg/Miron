@@ -1,0 +1,5 @@
+---
+description: MIRON product and engineering constraints
+alwaysApply: true
+---
+Follow AGENTS.md. Read src/shared/contracts.ts. Respect task file ownership. MIRON is a Russian fitness companion with Max/Lika, not a generic fitness diary. Strict TypeScript, server authorization, parameterized queries, bounded AI requests, idempotent commands, account-isolated offline storage. Do not modify shared contracts or package.json without root coordination. Do not connect paid AI or publish draft exercise content. Provide concise verifiable results.

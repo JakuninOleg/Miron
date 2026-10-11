@@ -1,0 +1,5 @@
+# Python 3.11; direct dependencies pinned after official PyPI verification.
+# PyAV 16.1 retains CPython 3.11 Windows wheels (19.x requires Python 3.12).
+faster-whisper==1.2.1
+av==16.1.0
+numpy==2.4.6

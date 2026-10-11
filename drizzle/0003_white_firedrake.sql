@@ -1,0 +1,4 @@
+ALTER TABLE "equipment_profiles" DROP CONSTRAINT "equipment_profiles_place_check";--> statement-breakpoint
+ALTER TABLE "profiles" DROP CONSTRAINT "profiles_settings_check";--> statement-breakpoint
+ALTER TABLE "equipment_profiles" ADD CONSTRAINT "equipment_profiles_place_check" CHECK ("equipment_profiles"."place" in ('home','gym','outdoor','workout_park','other'));--> statement-breakpoint
+ALTER TABLE "profiles" ADD CONSTRAINT "profiles_settings_check" CHECK ("profiles"."theme" in ('dark','rose') and "profiles"."goal" in ('habit','strength','energy') and "profiles"."discipline" in ('strength','calisthenics','mobility','yoga') and "profiles"."location" in ('home','gym','outdoor','workout_park'));
