@@ -631,6 +631,8 @@ export function MironProvider({ children }: { children: React.ReactNode }) {
     if (assistantHistoryRef.current) return assistantHistoryRef.current;
     const owner = stateRef.current.key;
     if (!owner.startsWith("user:") || closedRef.current || sendingRef.current) return;
+    if (!stateRef.current.profile.onboardingCompleted || !stateRef.current.profile.adultConfirmed)
+      return;
     if (!navigator.onLine) return;
     const task = (async () => {
       setAssistantLoading(true);
@@ -703,9 +705,27 @@ export function MironProvider({ children }: { children: React.ReactNode }) {
   }, [commitAssistant, enqueue, detachAssistantOwner]);
 
   useEffect(() => {
-    if (isReady && isOnline && !isDemo && !isSending && state.key.startsWith("user:"))
+    if (
+      isReady &&
+      isOnline &&
+      !isDemo &&
+      !isSending &&
+      state.key.startsWith("user:") &&
+      state.profile.onboardingCompleted &&
+      state.profile.adultConfirmed
+    )
       void refreshAssistant();
-  }, [isReady, isOnline, isDemo, isSending, state.key, state.profile.companion, refreshAssistant]);
+  }, [
+    isReady,
+    isOnline,
+    isDemo,
+    isSending,
+    state.key,
+    state.profile.companion,
+    state.profile.onboardingCompleted,
+    state.profile.adultConfirmed,
+    refreshAssistant,
+  ]);
 
   const sendAssistantOperation = useCallback(
     async (pending: PendingAssistantOperation) => {

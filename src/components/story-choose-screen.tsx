@@ -88,9 +88,11 @@ export function StoryChooseScreen({
             Выбери, с кем хочешь начать.
             <span className={styles.descriptionFull}>
               {" "}
-              Макс и Лика всегда рядом — переключиться можно в любой момент.
+              Макс и Лика всегда рядом — сменить напарника можно между тренировками.
             </span>
-            <span className={styles.descriptionShort}>Переключиться можно в любой момент.</span>
+            <span className={styles.descriptionShort}>
+              Сменить напарника можно между тренировками.
+            </span>
           </p>
           <p className={styles.handNote} aria-hidden="true">
             Твой темп.

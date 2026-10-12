@@ -211,6 +211,8 @@ describe("bounded beta assistant orchestration", () => {
     expect(provider).toHaveBeenCalledTimes(4);
     expect(executeTool).toHaveBeenCalledTimes(1);
     expect(provider.mock.calls[2][0].toolsAllowed).toBe(false);
+    expect(provider.mock.calls[2][0].tools).toBeUndefined();
+    expect(provider.mock.calls[2][0].messages.at(-1)?.role).toBe("system");
     expect(provider.mock.calls[3][0].tools).toBeUndefined();
   });
 
@@ -223,6 +225,41 @@ describe("bounded beta assistant orchestration", () => {
     const { options, executeTool } = setup([reply(allowed), reply("", [call]), reply("", [call])]);
     await expect(runAssistantEngine(options)).rejects.toMatchObject({ code: "AI_TOOL_LIMIT" });
     expect(executeTool).toHaveBeenCalledTimes(1);
+  });
+
+  it("blocks a claimed prepared workout without a real tool proposal", async () => {
+    const { options, provider } = setup([
+      reply(allowed),
+      reply("Черновик одного занятия готов для просмотра. Открой его в подборе."),
+      reply(reviewed),
+    ]);
+    await expect(runAssistantEngine(options)).rejects.toMatchObject({ code: "AI_REPLY_BLOCKED" });
+    expect(provider).toHaveBeenCalledTimes(2);
+  });
+
+  it("allows an honest not-prepared reply", async () => {
+    const { options } = setup([
+      reply(allowed),
+      reply("Черновик пока не готов. Где хочется заниматься?"),
+      reply(reviewed),
+    ]);
+    expect((await runAssistantEngine(options)).text).toContain("пока не готов");
+  });
+
+  it("requests the classified preview tool and returns its actual proposal", async () => {
+    const call = {
+      id: "preview1",
+      type: "function" as const,
+      function: { name: "preview_workout", arguments: "{}" },
+    };
+    const { options, provider } = setup([
+      reply(JSON.stringify({ ...JSON.parse(allowed), requestedAction: "preview_workout" })),
+      reply("", [call]),
+      reply("Черновик готов для просмотра в подборе."),
+      reply(reviewed),
+    ]);
+    expect((await runAssistantEngine(options)).action).toEqual({ id: "proposal" });
+    expect(provider.mock.calls[1][0].requiredTool).toBe("preview_workout");
   });
 
   it("keeps recent medical text out of provider context", async () => {

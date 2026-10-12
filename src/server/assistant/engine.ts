@@ -28,7 +28,13 @@ export type EngineTrace =
   | {
       stage: "draft_gate";
       decision: "allow" | "block";
-      reason: "valid" | "empty" | "too_long" | "forbidden_content" | "gender_placeholder";
+      reason:
+        | "valid"
+        | "empty"
+        | "too_long"
+        | "forbidden_content"
+        | "gender_placeholder"
+        | "missing_workout_proposal";
     }
   | {
       stage: "review";
@@ -171,6 +177,9 @@ export async function runAssistantEngine<Action>(
     messages,
     maxTokens: 768,
     tools: options.tools,
+    ...(parsedScope.data.requestedAction === "discuss"
+      ? {}
+      : { requiredTool: parsedScope.data.requestedAction }),
     signal: options.signal,
   });
   record(generated.usage);
@@ -181,6 +190,7 @@ export async function runAssistantEngine<Action>(
   });
   let finalReply = generated;
   let action: Action | undefined;
+  let workoutPreviewPrepared = false;
   const receipts: unknown[] = [];
   if (generated.toolCalls.length) {
     if (
@@ -194,6 +204,15 @@ export async function runAssistantEngine<Action>(
         throw new DomainError("AI_TIMEOUT", 504, "Напарник не успел ответить. Попробуй позже.");
       let outcome: ToolOutcome<Action>;
       try {
+        if (
+          parsedScope.data.requestedAction !== "discuss" &&
+          call.function.name !== parsedScope.data.requestedAction
+        )
+          throw new DomainError(
+            "AI_TOOL_FORBIDDEN",
+            422,
+            "Для этого запроса нужно другое действие.",
+          );
         outcome = await options.executeTool(call);
       } catch (error) {
         // Authoritative access failures must terminate the whole request.
@@ -221,14 +240,21 @@ export async function runAssistantEngine<Action>(
         if (action)
           throw new DomainError("AI_AMBIGUOUS_ACTION", 422, "Предложи по одному изменению за раз.");
         action = outcome.action;
+        if (call.function.name === "preview_workout") workoutPreviewPrepared = true;
       }
       receipts.push({ name: call.function.name, result: outcome.evidence });
       messages.push({ role: "tool", tool_call_id: call.id, content: serialized });
     }
     finalReply = await options.provider({
-      messages,
+      messages: [
+        ...messages,
+        {
+          role: "system",
+          content:
+            "Разрешённый шаг инструментов завершён. Теперь дай только короткий текст по полученным результатам, без новых вызовов инструментов. Если есть черновик, пригласи открыть его для просмотра; кнопка будет добавлена приложением. Если данных не хватает, задай один вопрос или предложи нужный экран, не заявляй выполненное действие.",
+        },
+      ],
       maxTokens: 768,
-      tools: options.tools,
       toolsAllowed: false,
       signal: options.signal,
     });
@@ -237,6 +263,11 @@ export async function runAssistantEngine<Action>(
       throw new DomainError("AI_TOOL_LIMIT", 502, "Ответ напарника пока недоступен.");
   }
   const text = finalReply.content.trim();
+  const claimsPreparedWorkout = Array.from(
+    text.matchAll(
+      /(?:черновик|план|тренировк[а-яё]*)[^.!?\n]{0,70}(?:готов[а-яё]*|подготовлен[а-яё]*|собран[а-яё]*)|(?:подготовил[а]?|собрал[а]?)[^.!?\n]{0,40}(?:черновик|план|тренировк)/gi,
+    ),
+  ).some(([claim]) => !/(?:^|\s)не\s+(?:готов|подготовлен|собран|подготовил|собрал)/i.test(claim));
   const draftReason = !text
     ? "empty"
     : text.length > maxOutputCharacters
@@ -245,7 +276,9 @@ export async function runAssistantEngine<Action>(
         ? "gender_placeholder"
         : /<\/?(?:think|analysis)>|sk-pv-|```(?:javascript|python|typescript|sql)/i.test(text)
           ? "forbidden_content"
-          : "valid";
+          : claimsPreparedWorkout && !workoutPreviewPrepared
+            ? "missing_workout_proposal"
+            : "valid";
   trace({
     stage: "draft_gate",
     decision: draftReason === "valid" ? "allow" : "block",
@@ -255,7 +288,9 @@ export async function runAssistantEngine<Action>(
     throw new DomainError(
       "AI_REPLY_BLOCKED",
       502,
-      "Не удалось подготовить подходящий ответ. Сформулируй вопрос иначе.",
+      draftReason === "missing_workout_proposal"
+        ? "Черновик пока не подготовлен. Открой подбор или уточни условия занятия."
+        : "Не удалось подготовить подходящий ответ. Сформулируй вопрос иначе.",
     );
   const reviewer = await options.provider({
     messages: [

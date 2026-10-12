@@ -27,6 +27,7 @@ export interface ProviderRequest {
   json?: boolean;
   tools?: ProviderTool[];
   toolsAllowed?: boolean;
+  requiredTool?: "preview_workout" | "preview_energy";
   signal: AbortSignal;
 }
 export interface ProviderUsage {
@@ -107,10 +108,12 @@ export const callProvider: Provider = async (request) => {
     temperature: request.json ? 0 : 0.3,
     max_tokens: request.maxTokens,
     ...(request.json ? { response_format: { type: "json_object" } } : {}),
-    ...(request.tools?.length
+    ...(request.toolsAllowed !== false && request.tools?.length
       ? {
           tools: request.tools,
-          tool_choice: request.toolsAllowed === false ? "none" : "auto",
+          tool_choice: request.requiredTool
+            ? { type: "function", function: { name: request.requiredTool } }
+            : "auto",
           parallel_tool_calls: false,
         }
       : {}),

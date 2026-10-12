@@ -65,6 +65,63 @@ async function fixture(
   ).toBeVisible();
 }
 
+test("first acquaintance loads chat only after the server confirms completion", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  let completed = false;
+  const historyReadiness: boolean[] = [];
+  await page.route("**/api/auth/get-session", (route) =>
+    route.fulfill({ json: { user: { id: owner } } }),
+  );
+  await page.route("**/api/profile", (route) =>
+    route.fulfill({
+      json: {
+        ...account,
+        profile: { ...account.profile, adultConfirmed: completed, onboardingCompleted: completed },
+      },
+    }),
+  );
+  await page.route("**/api/workouts/current", (route) =>
+    route.fulfill({ json: { workout: null } }),
+  );
+  await page.route("**/api/onboarding", async (route) => {
+    expect(route.request().postDataJSON().adultConfirmed).toBe(true);
+    completed = true;
+    await route.fulfill({ json: account });
+  });
+  await page.route("**/api/assistant", async (route) => {
+    historyReadiness.push(completed);
+    await route.fulfill({
+      status: completed ? 200 : 403,
+      json: completed
+        ? { enabled: true, messages: [] }
+        : { error: { code: "ADULT_CONFIRMATION_REQUIRED", message: "Заверши знакомство." } },
+    });
+  });
+  await page.goto("/onboarding");
+  for (const name of ["Давай знакомиться", "Круто, дальше", "Давай дальше", "Дальше"]) {
+    await expect(page.locator('[aria-label="История знакомства"]')).toHaveAttribute(
+      "aria-busy",
+      "false",
+    );
+    await page.getByRole("button", { name, exact: true }).click();
+  }
+  await page.getByRole("button", { name: /^МАКС Энергия/ }).click();
+  await page.getByRole("button", { name: "Начать с Максом", exact: true }).click();
+  await expect(page.getByRole("heading", { name: /^ГОТОВО/ })).toBeVisible();
+  expect(historyReadiness).toEqual([]);
+  await page.getByRole("checkbox", { name: "Мне уже исполнилось 18 лет" }).check();
+  await page.getByRole("button", { name: "Погнали", exact: true }).click();
+  await expect(page).toHaveURL(/\/dashboard$/);
+  await expect(
+    page.getByText("ИИ · beta. Напарник видит подтверждённый план и записанные результаты."),
+  ).toBeVisible();
+  expect(historyReadiness.length).toBeGreaterThan(0);
+  expect(historyReadiness.every(Boolean)).toBe(true);
+  await expect(page.getByRole("button", { name: "Повторить загрузку чата" })).toHaveCount(0);
+});
+
 test("a lost response retries the same operation after reload and shares one turn with dashboard", async ({
   page,
 }) => {

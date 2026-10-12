@@ -16,6 +16,46 @@ const request = () => ({
 });
 
 describe("PlusVibe beta adapter", () => {
+  it("omits callable definitions after the permitted tool batch", async () => {
+    vi.stubEnv("PLUSVIBE_API_KEY", "synthetic-provider-secret");
+    const fetcher = vi.fn().mockResolvedValue(Response.json(body));
+    vi.stubGlobal("fetch", fetcher);
+    await callProvider({
+      ...request(),
+      toolsAllowed: false,
+      tools: [
+        {
+          type: "function",
+          function: { name: "read_profile", description: "Test tool", parameters: {} },
+        },
+      ],
+    });
+    const payload = JSON.parse((fetcher.mock.calls[0][1] as RequestInit).body as string);
+    expect(payload.tools).toBeUndefined();
+    expect(payload.tool_choice).toBeUndefined();
+  });
+
+  it("sends the explicit read-only preview choice", async () => {
+    vi.stubEnv("PLUSVIBE_API_KEY", "synthetic-provider-secret");
+    const fetcher = vi.fn().mockResolvedValue(Response.json(body));
+    vi.stubGlobal("fetch", fetcher);
+    await callProvider({
+      ...request(),
+      requiredTool: "preview_workout",
+      tools: [
+        {
+          type: "function",
+          function: { name: "preview_workout", description: "Test preview", parameters: {} },
+        },
+      ],
+    });
+    const payload = JSON.parse((fetcher.mock.calls[0][1] as RequestInit).body as string);
+    expect(payload.tool_choice).toEqual({
+      type: "function",
+      function: { name: "preview_workout" },
+    });
+  });
+
   it("pins endpoint/model, bounds output and returns only public reply/usage", async () => {
     vi.stubEnv("PLUSVIBE_API_KEY", "synthetic-provider-secret");
     const fetcher = vi
