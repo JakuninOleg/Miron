@@ -1,10 +1,14 @@
 import { build } from "esbuild";
-import { mkdir } from "node:fs/promises";
+import { cp, mkdir } from "node:fs/promises";
 import { spawnSync } from "node:child_process";
 
 await mkdir(".deploy", { recursive: true });
 await build({
-  entryPoints: { migrate: "scripts/db-migrate.ts", seed: "scripts/db-seed.ts" },
+  entryPoints: {
+    migrate: "scripts/db-migrate.ts",
+    seed: "scripts/db-seed.ts",
+    media: "scripts/deploy/upload-media.ts",
+  },
   outdir: ".deploy",
   outExtension: { ".js": ".cjs" },
   platform: "node",
@@ -20,3 +24,7 @@ const result = spawnSync(process.execPath, ["node_modules/next/dist/bin/next", "
   windowsHide: true,
 });
 process.exitCode = result.status ?? 1;
+if (process.exitCode === 0) {
+  await cp("public", ".next/standalone/public", { recursive: true });
+  await cp(".next/static", ".next/standalone/.next/static", { recursive: true });
+}

@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { runAssistantEngine, type EngineOptions } from "./engine";
-import { GENERATOR_POLICY } from "./policy";
+import { GENERATOR_POLICY, GENERATOR_OUTPUT_STYLE } from "./policy";
 import type { Provider, ProviderReply } from "./provider";
 
 const allowed = JSON.stringify({
@@ -50,7 +50,56 @@ describe("bounded beta assistant orchestration", () => {
     expect(result.useful).toBe(true);
     expect(result.usage.calls).toBe(3);
     expect(provider.mock.calls[1][0].messages[0].content).toContain(GENERATOR_POLICY);
+    expect(provider.mock.calls[1][0].messages[0].content?.endsWith(GENERATOR_OUTPUT_STYLE)).toBe(
+      true,
+    );
     expect(provider.mock.calls[2][0].json).toBe(true);
+  });
+
+  it("traces a blocked neutral-language draft using only metadata", async () => {
+    const onTrace = vi.fn();
+    const privateText = "Мой приватный запрос про занятие";
+    const { options } = setup([reply(allowed), reply("Сколько времени ты готов(а) уделять?")], {
+      text: privateText,
+      profile: { privateValue: "Private profile marker" },
+      onTrace,
+    });
+    await expect(runAssistantEngine(options)).rejects.toMatchObject({ code: "AI_REPLY_BLOCKED" });
+    expect(onTrace).toHaveBeenLastCalledWith({
+      stage: "draft_gate",
+      decision: "block",
+      reason: "gender_placeholder",
+    });
+    const events = JSON.stringify(onTrace.mock.calls);
+    expect(events).not.toContain(privateText);
+    expect(events).not.toContain("Private profile marker");
+    expect(events).not.toContain("готов(а)");
+  });
+
+  it("keeps the review reason for synthetic diagnostics and ignores broken observers", async () => {
+    const onTrace = vi.fn();
+    const blocked = setup(
+      [
+        reply(allowed),
+        reply("Выбирай новый вес самостоятельно по ощущениям."),
+        reply('{"decision":"block","reasonCode":"unsafe_advice"}'),
+      ],
+      { onTrace },
+    );
+    await expect(runAssistantEngine(blocked.options)).rejects.toMatchObject({
+      code: "AI_REPLY_BLOCKED",
+    });
+    expect(onTrace).toHaveBeenLastCalledWith({
+      stage: "review",
+      decision: "block",
+      reasonCode: "unsafe_advice",
+    });
+    const valid = setup([reply(allowed), reply("Где хочется заниматься?"), reply(reviewed)], {
+      onTrace: () => {
+        throw new Error("Observer failed");
+      },
+    });
+    expect((await runAssistantEngine(valid.options)).text).toBe("Где хочется заниматься?");
   });
 
   it("responds to urgent pain locally without provider, quota or tools", async () => {

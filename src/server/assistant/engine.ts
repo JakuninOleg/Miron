@@ -4,11 +4,14 @@ import { buildCompanionPrompt } from "./prompts";
 import {
   CLASSIFIER_PROMPT,
   GENERATOR_POLICY,
+  GENERATOR_OUTPUT_STYLE,
   REVIEWER_PROMPT,
   preparedSafety,
   reviewerSchema,
   scopeBoundary,
   scopeSchema,
+  type Scope,
+  type ReviewVerdict,
 } from "./policy";
 import type { Provider, ProviderMessage, ProviderTool, ProviderUsage, ToolCall } from "./provider";
 
@@ -16,6 +19,22 @@ export interface ToolOutcome<Action> {
   evidence: unknown;
   action?: Action;
 }
+// Diagnostic metadata only: never include messages, drafts, profile values or tool arguments.
+export type EngineTrace =
+  | { stage: "prepared"; reason: "local_safety" | "scope_boundary" }
+  | { stage: "scope"; route: Scope["route"]; trainingSafety: Scope["trainingSafety"] }
+  | { stage: "generation"; toolCount: number; outputCharacters: number }
+  | { stage: "tool_result"; resultBytes: number; hasAction: boolean }
+  | {
+      stage: "draft_gate";
+      decision: "allow" | "block";
+      reason: "valid" | "empty" | "too_long" | "forbidden_content" | "gender_placeholder";
+    }
+  | {
+      stage: "review";
+      decision: "allow" | "block" | "invalid";
+      reasonCode: ReviewVerdict["reasonCode"] | "invalid_schema";
+    };
 export interface EngineOptions<Action> {
   text: string;
   companion: CompanionId;
@@ -26,6 +45,7 @@ export interface EngineOptions<Action> {
   tools: ProviderTool[];
   executeTool: (call: ToolCall) => Promise<ToolOutcome<Action>>;
   onUsage?: (usage: EngineResult<Action>["usage"]) => void;
+  onTrace?: (event: EngineTrace) => void;
 }
 export interface EngineResult<Action> {
   text: string;
@@ -54,6 +74,14 @@ function parseJson(text: string): unknown {
 export async function runAssistantEngine<Action>(
   options: EngineOptions<Action>,
 ): Promise<EngineResult<Action>> {
+  const trace = (event: EngineTrace) => {
+    // Observability cannot change a turn's outcome or expose failed callback details.
+    try {
+      options.onTrace?.(event);
+    } catch {
+      /* optional diagnostics */
+    }
+  };
   const usage: EngineResult<Action>["usage"] = {
     calls: 0,
     promptTokens: 0,
@@ -81,7 +109,10 @@ export async function runAssistantEngine<Action>(
     usage,
   });
   const safety = preparedSafety(options.text);
-  if (safety) return prepared(safety);
+  if (safety) {
+    trace({ stage: "prepared", reason: "local_safety" });
+    return prepared(safety);
+  }
   // No raw medical/safety turn is replayed into the provider's conversation.
   const history = options.history
     .filter((message) => !preparedSafety(message.text))
@@ -109,13 +140,21 @@ export async function runAssistantEngine<Action>(
   const parsedScope = scopeSchema.safeParse(parseJson(scopeReply.content));
   if (!parsedScope.success)
     throw new DomainError("AI_POLICY_UNAVAILABLE", 502, "Ответ напарника пока недоступен.");
+  trace({
+    stage: "scope",
+    route: parsedScope.data.route,
+    trainingSafety: parsedScope.data.trainingSafety,
+  });
   const boundary = scopeBoundary(parsedScope.data);
-  if (boundary) return prepared(boundary);
+  if (boundary) {
+    trace({ stage: "prepared", reason: "scope_boundary" });
+    return prepared(boundary);
+  }
 
   const messages: ProviderMessage[] = [
     {
       role: "system",
-      content: `${GENERATOR_POLICY}\n\n${buildCompanionPrompt(options.companion)}`,
+      content: `${GENERATOR_POLICY}\n\n${buildCompanionPrompt(options.companion)}\n\n${GENERATOR_OUTPUT_STYLE}`,
     },
     {
       role: "user",
@@ -135,6 +174,11 @@ export async function runAssistantEngine<Action>(
     signal: options.signal,
   });
   record(generated.usage);
+  trace({
+    stage: "generation",
+    toolCount: generated.toolCalls.length,
+    outputCharacters: generated.content.length,
+  });
   let finalReply = generated;
   let action: Action | undefined;
   const receipts: unknown[] = [];
@@ -162,6 +206,11 @@ export async function runAssistantEngine<Action>(
         };
       }
       const serialized = JSON.stringify(outcome.evidence);
+      trace({
+        stage: "tool_result",
+        resultBytes: Buffer.byteLength(serialized),
+        hasAction: Boolean(outcome.action),
+      });
       if (Buffer.byteLength(serialized) > maxToolResultBytes)
         throw new DomainError(
           "AI_CONTEXT_TOO_LARGE",
@@ -188,11 +237,21 @@ export async function runAssistantEngine<Action>(
       throw new DomainError("AI_TOOL_LIMIT", 502, "Ответ напарника пока недоступен.");
   }
   const text = finalReply.content.trim();
-  if (
-    !text ||
-    text.length > maxOutputCharacters ||
-    /<\/?(?:think|analysis)>|sk-pv-|```(?:javascript|python|typescript|sql)|\(а\)/i.test(text)
-  )
+  const draftReason = !text
+    ? "empty"
+    : text.length > maxOutputCharacters
+      ? "too_long"
+      : /\(а\)/i.test(text)
+        ? "gender_placeholder"
+        : /<\/?(?:think|analysis)>|sk-pv-|```(?:javascript|python|typescript|sql)/i.test(text)
+          ? "forbidden_content"
+          : "valid";
+  trace({
+    stage: "draft_gate",
+    decision: draftReason === "valid" ? "allow" : "block",
+    reason: draftReason,
+  });
+  if (draftReason !== "valid")
     throw new DomainError(
       "AI_REPLY_BLOCKED",
       502,
@@ -220,6 +279,11 @@ export async function runAssistantEngine<Action>(
   });
   record(reviewer.usage);
   const verdict = reviewerSchema.safeParse(parseJson(reviewer.content));
+  trace({
+    stage: "review",
+    decision: !reviewer.toolCalls.length && verdict.success ? verdict.data.decision : "invalid",
+    reasonCode: verdict.success ? verdict.data.reasonCode : "invalid_schema",
+  });
   if (reviewer.toolCalls.length || !verdict.success || verdict.data.decision !== "allow")
     throw new DomainError(
       "AI_REPLY_BLOCKED",

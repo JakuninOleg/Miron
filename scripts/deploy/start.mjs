@@ -1,4 +1,5 @@
 import { spawn } from "node:child_process";
+import { existsSync } from "node:fs";
 
 function run(args) {
   return new Promise((resolve, reject) => {
@@ -13,10 +14,13 @@ function run(args) {
 // A failed migration must never start an application against a partial schema.
 await run([".deploy/migrate.cjs"]);
 if (process.env.SEED_BETA_CATALOG === "true") await run([".deploy/seed.cjs"]);
+if (process.env.UPLOAD_PUBLIC_MEDIA === "true") await run([".deploy/media.cjs"]);
 const standalone = process.env.MIRON_STANDALONE === "true";
 const args = standalone
   ? ["server.js"]
-  : ["node_modules/next/dist/bin/next", "start", "--hostname", "0.0.0.0"];
+  : existsSync(".next/standalone/server.js")
+    ? [".next/standalone/server.js"]
+    : ["node_modules/next/dist/bin/next", "start", "--hostname", "0.0.0.0"];
 const app = spawn(process.execPath, args, {
   stdio: "inherit",
   windowsHide: true,

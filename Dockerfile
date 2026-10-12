@@ -19,6 +19,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/drizzle ./drizzle
 COPY --from=builder --chown=nextjs:nodejs /app/data/catalog ./data/catalog
 COPY --from=builder --chown=nextjs:nodejs /app/.deploy ./.deploy
 COPY --from=builder --chown=nextjs:nodejs /app/scripts/deploy/start.mjs ./scripts/deploy/start.mjs
+COPY --from=builder --chown=nextjs:nodejs /app/scripts/deploy/timeweb-ca.crt ./scripts/deploy/timeweb-ca.crt
 USER nextjs
 EXPOSE 3000
 CMD ["node", "scripts/deploy/start.mjs"]

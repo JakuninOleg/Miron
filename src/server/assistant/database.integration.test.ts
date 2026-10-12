@@ -16,6 +16,7 @@ import {
   variants,
   workouts,
   workoutSteps,
+  workoutPlannerPrograms,
   xpEvents,
 } from "../db/schema";
 import { initializeAccount } from "../domain/profile";
@@ -25,6 +26,9 @@ import { applyWorkoutCommand } from "../domain/workouts";
 import { admitAssistantTurn, attachAssistantReservation, finishAssistantTurn } from "./repository";
 import { confirmAssistantAction, getAssistantHistory, sendAssistantMessage } from "./service";
 import { reserveAiReply } from "../domain/trial";
+import { saveBuilderInventory } from "../domain/workout-builder";
+import { readAssistantProfile } from "./context";
+import { executeAssistantTool } from "./tools";
 import type { Provider, ProviderReply } from "./provider";
 
 if (existsSync(".env.local")) process.loadEnvFile(".env.local");
@@ -58,7 +62,7 @@ function providerFixture(
 describe.runIf(enabled)(
   "PostgreSQL beta assistant owner isolation, operations and confirmed energy",
   () => {
-    const owners = Array.from({ length: 9 }, () => randomUUID());
+    const owners = Array.from({ length: 10 }, () => randomUUID());
     const [
       alice,
       bob,
@@ -69,6 +73,7 @@ describe.runIf(enabled)(
       adultOwner,
       capOwnerA,
       capOwnerB,
+      previewOwner,
     ] = owners;
     const workoutId = randomUUID();
     const stepId = randomUUID();
@@ -162,6 +167,58 @@ describe.runIf(enabled)(
       await getDb().delete(exercises).where(eq(exercises.id, familyId));
       vi.unstubAllEnvs();
       await closeDb();
+    });
+
+    it("reads confirmed planner inventory only for its owner and previews bounded seeded drafts without saving training", async () => {
+      await saveBuilderInventory(previewOwner, {
+        operationId: randomUUID(),
+        place: "gym",
+        expectedRevision: 0,
+        resources: [],
+      });
+      const own = await readAssistantProfile(previewOwner);
+      expect(own.confirmedBuilderInventories).toEqual([
+        expect.objectContaining({ place: "gym", revision: 1, resourceCount: expect.any(Number) }),
+      ]);
+      expect((await readAssistantProfile(bob)).confirmedBuilderInventories).toEqual([]);
+      const base = {
+        mode: "single",
+        place: "gym",
+        direction: "strength",
+        split: "fullbody",
+        daysPerWeek: 1,
+        intent: "start",
+        durationMinutes: 25,
+        execution: "straight",
+        variety: "familiar",
+      };
+      for (const config of [
+        base,
+        { ...base, mode: "program", daysPerWeek: 4, durationMinutes: 120 },
+      ]) {
+        const outcome = await executeAssistantTool(previewOwner, "Подготовь черновик", {
+          id: "preview",
+          type: "function",
+          function: { name: "preview_workout", arguments: JSON.stringify(config) },
+        });
+        expect(Buffer.byteLength(JSON.stringify(outcome.evidence))).toBeLessThan(14_000);
+        expect(outcome.action).toMatchObject({ type: "planner" });
+        if (outcome.action?.type === "planner") {
+          const href = new URL(outcome.action.href, "https://example.test");
+          expect(href.pathname).toBe("/workout-builder");
+          expect(href.searchParams.get("from")).toBe("assistant");
+          expect(JSON.parse(href.searchParams.get("assistantConfig")!)).toMatchObject(config);
+        }
+      }
+      expect(
+        await getDb()
+          .select()
+          .from(workoutPlannerPrograms)
+          .where(eq(workoutPlannerPrograms.userId, previewOwner)),
+      ).toEqual([]);
+      expect(
+        await getDb().select().from(workouts).where(eq(workouts.userId, previewOwner)),
+      ).toEqual([]);
     });
 
     it("serializes concurrent owner intents and replays a lost response without a model call or quota duplicate", async () => {

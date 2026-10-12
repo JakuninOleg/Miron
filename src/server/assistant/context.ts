@@ -8,6 +8,8 @@ import {
   user,
   workouts,
   recordedSets,
+  builderInventories,
+  builderInventoryResources,
 } from "../db/schema";
 import { DomainError } from "../domain/errors";
 import { getWorkout } from "../domain/workouts";
@@ -58,7 +60,24 @@ export async function readAssistantProfile(ownerId: string) {
     .innerJoin(resourceTypes, eq(resourceTypes.id, profileResources.resourceTypeId))
     .where(eq(profileResources.userId, ownerId))
     .limit(50);
-  return { ...profile, equipment, basis: "user_reported" };
+  // The planner uses its own confirmed inventory, which can differ from onboarding equipment.
+  // Keep metadata small; previewPlanner reads and validates the full owner inventory itself.
+  const confirmedBuilderInventories = await getDb()
+    .select({
+      place: builderInventories.place,
+      revision: builderInventories.revision,
+      confirmedAt: builderInventories.confirmedAt,
+      resourceCount: sql<number>`(select count(*)::int from ${builderInventoryResources} where ${builderInventoryResources.userId} = ${ownerId} and ${builderInventoryResources.place} = ${builderInventories.place})`,
+    })
+    .from(builderInventories)
+    .where(eq(builderInventories.userId, ownerId))
+    .limit(4);
+  return {
+    ...profile,
+    equipment,
+    confirmedBuilderInventories,
+    basis: "user_reported",
+  };
 }
 
 export async function readRecentWorkouts(ownerId: string) {
