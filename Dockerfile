@@ -19,7 +19,9 @@ COPY --from=builder --chown=nextjs:nodejs /app/drizzle ./drizzle
 COPY --from=builder --chown=nextjs:nodejs /app/data/catalog ./data/catalog
 COPY --from=builder --chown=nextjs:nodejs /app/.deploy ./.deploy
 COPY --from=builder --chown=nextjs:nodejs /app/scripts/deploy/start.mjs ./scripts/deploy/start.mjs
+COPY --from=builder --chown=nextjs:nodejs /app/scripts/deploy/healthcheck.mjs ./scripts/deploy/healthcheck.mjs
 COPY --from=builder --chown=nextjs:nodejs /app/scripts/deploy/timeweb-ca.crt ./scripts/deploy/timeweb-ca.crt
 USER nextjs
 EXPOSE 3000
+HEALTHCHECK --interval=15s --timeout=8s --start-period=60s --retries=4 CMD ["node", "scripts/deploy/healthcheck.mjs"]
 CMD ["node", "scripts/deploy/start.mjs"]
