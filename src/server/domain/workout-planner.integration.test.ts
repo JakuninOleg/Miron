@@ -3,7 +3,7 @@ import { existsSync } from "node:fs";
 import { and, eq } from "drizzle-orm";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { closeDb, getDb } from "../db";
-import { plannerCommands, profiles, user, workoutPlannerPrograms } from "../db/schema";
+import { plannerCommands, profiles, user, workoutPlannerPrograms, trials } from "../db/schema";
 import type { PlannerConfig } from "../../shared/workout-planner";
 import type { Workout, WorkoutCommand } from "../../shared/contracts";
 import { saveBuilderInventory } from "./workout-builder";
@@ -51,6 +51,9 @@ describe.runIf(process.env.RUN_DB_TESTS === "true")(
             emailVerified: true,
           })),
         );
+      await getDb()
+        .insert(trials)
+        .values([alice, bob].map((userId) => ({ userId })));
       await getDb()
         .insert(profiles)
         .values(
@@ -240,6 +243,26 @@ describe.runIf(process.env.RUN_DB_TESTS === "true")(
       expect(state.historySummary.confirmedSets).toBe(1);
       expect(state.historySummary.recentPrimaryMuscles).toContain("quads");
       expect((await getPlannerState(bob)).historySummary.confirmedSets).toBe(0);
+      const beforeRating = await previewPlanner(alice, strength);
+      const rated = await command({ type: "rate_load", feedback: "too_hard" });
+      expect(rated.recordedSets).toEqual(workout.recordedSets);
+      expect(rated.reward).toEqual(workout.reward);
+      const afterRating = await previewPlanner(alice, strength);
+      expect(afterRating.fingerprint).not.toBe(beforeRating.fingerprint);
+      expect(
+        afterRating.days
+          .flatMap((day) => day.steps)
+          .some((step) => step.coaching?.progression === "ease"),
+      ).toBe(true);
+      expect((await getPlannerState(alice)).historySummary.confirmedSets).toBe(1);
+      await expect(
+        confirmPlanner(alice, {
+          operationId: randomUUID(),
+          expectedProgramRevision: beforeRating.expectedProgramRevision,
+          fingerprint: beforeRating.fingerprint,
+          config: strength,
+        }),
+      ).rejects.toMatchObject({ code: "PREVIEW_CHANGED" });
       await expect(
         confirmPlanner(alice, {
           operationId: randomUUID(),

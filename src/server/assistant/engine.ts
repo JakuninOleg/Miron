@@ -157,6 +157,12 @@ export async function runAssistantEngine<Action>(
     return prepared(boundary);
   }
 
+  const conversationOnly =
+    parsedScope.data.requestedAction === "discuss" &&
+    parsedScope.data.topics.length > 0 &&
+    parsedScope.data.topics.every(
+      (topic) => topic === "companion_relationship" || topic === "contextual_smalltalk",
+    );
   const messages: ProviderMessage[] = [
     {
       role: "system",
@@ -176,7 +182,8 @@ export async function runAssistantEngine<Action>(
   const generated = await options.provider({
     messages,
     maxTokens: 768,
-    tools: options.tools,
+    tools: conversationOnly ? [] : options.tools,
+    ...(conversationOnly ? { toolsAllowed: false } : {}),
     ...(parsedScope.data.requestedAction === "discuss"
       ? {}
       : { requiredTool: parsedScope.data.requestedAction }),
@@ -193,6 +200,12 @@ export async function runAssistantEngine<Action>(
   let workoutPreviewPrepared = false;
   const receipts: unknown[] = [];
   if (generated.toolCalls.length) {
+    if (conversationOnly)
+      throw new DomainError(
+        "AI_TOOL_FORBIDDEN",
+        502,
+        "В этом разговоре действие не запрашивалось.",
+      );
     if (
       generated.toolCalls.length > 4 ||
       new Set(generated.toolCalls.map((call) => call.id)).size !== generated.toolCalls.length

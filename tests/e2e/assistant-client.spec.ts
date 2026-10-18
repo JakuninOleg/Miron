@@ -52,10 +52,19 @@ async function fixture(
   await page.route("**/api/workouts/current", (route) =>
     route.fulfill({ json: { workout: null } }),
   );
-  await page.route("**/api/assistant", async (route) => {
+  await page.route(/\/api\/assistant(?:\?.*)?$/, async (route) => {
     expect(route.request().headers()["x-miron-owner"]).toBe(owner);
     if (route.request().method() === "GET")
-      await route.fulfill({ json: { enabled: true, messages: history() } });
+      await route.fulfill({
+        json: {
+          enabled: true,
+          companion: "max",
+          revision: 0,
+          resetRevision: 0,
+          nextCursor: null,
+          messages: history(),
+        },
+      });
     else await onPost(route);
   });
   await page.goto("/chat");
@@ -90,12 +99,19 @@ test("first acquaintance loads chat only after the server confirms completion", 
     completed = true;
     await route.fulfill({ json: account });
   });
-  await page.route("**/api/assistant", async (route) => {
+  await page.route(/\/api\/assistant(?:\?.*)?$/, async (route) => {
     historyReadiness.push(completed);
     await route.fulfill({
       status: completed ? 200 : 403,
       json: completed
-        ? { enabled: true, messages: [] }
+        ? {
+            enabled: true,
+            companion: "max",
+            revision: 0,
+            resetRevision: 0,
+            nextCursor: null,
+            messages: [],
+          }
         : { error: { code: "ADULT_CONFIRMATION_REQUIRED", message: "Заверши знакомство." } },
     });
   });
@@ -109,14 +125,12 @@ test("first acquaintance loads chat only after the server confirms completion", 
   }
   await page.getByRole("button", { name: /^МАКС Энергия/ }).click();
   await page.getByRole("button", { name: "Начать с Максом", exact: true }).click();
-  await expect(page.getByRole("heading", { name: /^ГОТОВО/ })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /^Готово/i })).toBeVisible();
   expect(historyReadiness).toEqual([]);
   await page.getByRole("checkbox", { name: "Мне уже исполнилось 18 лет" }).check();
   await page.getByRole("button", { name: "Погнали", exact: true }).click();
   await expect(page).toHaveURL(/\/dashboard$/);
-  await expect(
-    page.getByText("ИИ · beta. Напарник видит подтверждённый план и записанные результаты."),
-  ).toBeVisible();
+  await expect(page.getByText("Твой напарник · ИИ beta", { exact: true })).toBeVisible();
   expect(historyReadiness.length).toBeGreaterThan(0);
   expect(historyReadiness.every(Boolean)).toBe(true);
   await expect(page.getByRole("button", { name: "Повторить загрузку чата" })).toHaveCount(0);

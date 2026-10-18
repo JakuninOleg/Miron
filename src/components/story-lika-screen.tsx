@@ -1,6 +1,6 @@
 "use client";
 
-import { ChartNoAxesColumnIncreasing, Heart, Sparkles, Sprout } from "lucide-react";
+import { ChartNoAxesColumnIncreasing, Heart, MessageCircle, Sprout } from "lucide-react";
 import {
   StoryCoachScreen,
   type CoachIntroDefinition,
@@ -12,33 +12,22 @@ const likaIntro = {
   name: "ЛИКА",
   step: 3,
   character: ["ВНИМАТЕЛЬНАЯ. СПОКОЙНАЯ.", "ПОМОГАЕТ РАЗОБРАТЬСЯ."],
-  description:
-    "Лика помогает понять, что действительно подходит тебе: тренировки, питание и отдых. Без спешки, в твоём темпе.",
-  speech: "Посмотрим, что действительно подходит тебе. ♡",
+  description: [
+    "Найдём баланс между движением и отдыхом.",
+    "Без спешки и давления —",
+    "в твоём темпе.",
+  ],
+  speech: "Расскажи, что любишь. Найдём движение в удовольствие ♡",
   benefits: [
-    { Icon: Heart, title: "Поддерживает на каждом этапе", detail: "Когда сложно — рядом" },
-    { Icon: Sprout, title: "Помогает найти баланс", detail: "Тренировки, питание, отдых" },
-    { Icon: Sparkles, title: "Объясняет без сложных слов", detail: "Всё по делу и понятно" },
+    { Icon: Heart, title: "Поддерживает", detail: "Когда сложно — рядом" },
+    { Icon: Sprout, title: "Помогает найти баланс", detail: "Движение и отдых" },
+    { Icon: MessageCircle, title: "Объясняет понятно", detail: "Без сложных слов" },
     {
       Icon: ChartNoAxesColumnIncreasing,
       title: "Замечает твой прогресс",
       detail: "И всегда верит в тебя",
     },
   ],
-  art: {
-    description:
-      "Лика сидит в спортзале в розовом костюме, улыбается, опираясь щекой на ладонь, и держит шейкер.",
-    desktop: "/story-lika/desktop-v1.webp",
-    portrait: "/story-lika/portrait-v1.webp",
-  },
-  panels: [
-    { src: "/story-lika/relax-v1.webp", alt: "Лика отдыхает на скамье среди тёмных стоек" },
-    { src: "/story-lika/window-v1.webp", alt: "Лика оборачивается у светлых окон после занятия" },
-    { src: "/story-lika/peace-v1.webp", alt: "Лика приветствует тебя у кирпичной стены с гирями" },
-  ],
-  wallNote: ["ЗАБОТА", "ТОЖЕ", "ПРОГРЕСС"],
-  kneeNote: ["СВОЙ ТЕМП.", "СВОЯ ИСТОРИЯ."],
-  quote: ["Не идеальность делает тебя сильнее,", "а постоянство."],
   cta: "Давай дальше",
 } satisfies CoachIntroDefinition;
 

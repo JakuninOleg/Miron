@@ -1,0 +1,138 @@
+.page {
+  max-width: 1120px;
+  margin: auto;
+  font-family: var(--body);
+}
+.page h2 {
+  font: 700 22px/1.4 var(--body);
+}
+.page h1 {
+  font: 800 clamp(29px, 4vw, 44px)/1.2 var(--body);
+}
+.form input[type="checkbox"] {
+  width: 20px;
+  min-height: 20px;
+  accent-color: var(--accent);
+}
+.form label:has(input[type="checkbox"]) {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.heading h1 {
+  font: 750 clamp(28px, 4vw, 44px)/1.2 var(--body);
+  margin: 0;
+}
+.lead {
+  color: var(--muted);
+  max-width: 65ch;
+  line-height: 1.6;
+}
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+.month {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.month button {
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: inherit;
+  min-width: 44px;
+  min-height: 44px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 5px;
+  text-align: center;
+}
+.grid > span {
+  color: var(--muted);
+  padding: 8px 0;
+  font-size: 12px;
+}
+.grid button {
+  position: relative;
+  min-height: 52px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: inherit;
+  font: 600 15px var(--body);
+}
+.grid button[aria-pressed="true"] {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+.grid button small {
+  display: block;
+  font-size: 10px;
+  color: var(--accent);
+}
+.form {
+  display: grid;
+  gap: 14px;
+  padding: 22px 0;
+}
+.form label {
+  display: grid;
+  gap: 7px;
+  font-size: 14px;
+}
+.form :is(input, select) {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px;
+  background: var(--surface);
+  color: inherit;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font: inherit;
+}
+.entry {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--surface);
+  padding: 20px;
+  margin-block: 14px;
+}
+.entry h3 {
+  font: 700 18px/1.4 var(--body);
+  margin: 0 0 8px;
+}
+.actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.actions :is(a, button) {
+  min-height: 44px;
+}
+@media (max-width: 760px) {
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .heading {
+    align-items: start;
+  }
+  .grid button {
+    min-height: 44px;
+  }
+}

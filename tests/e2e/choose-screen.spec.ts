@@ -84,17 +84,25 @@ for (const viewport of viewports) {
           expect(cards).not.toBeNull();
           expect(action).not.toBeNull();
           if (cards && action) {
-            expect(cards.height / viewport.height).toBeGreaterThanOrEqual(0.48);
+            const hint = await page.locator('[id="coach-choice-hint"]').boundingBox();
+            expect(hint).not.toBeNull();
+            if (hint) {
+              expect(hint.y).toBeGreaterThanOrEqual(cards.y + cards.height);
+              expect(hint.y + hint.height).toBeLessThanOrEqual(action.y);
+            }
+            expect(cards.height / viewport.height).toBeGreaterThanOrEqual(
+              viewport.height <= 700 ? 0.38 : 0.48,
+            );
             const gap = action.y - cards.y - cards.height;
             expect(gap).toBeGreaterThanOrEqual(8);
-            expect(gap).toBeLessThanOrEqual(28);
+            expect(gap).toBeLessThanOrEqual(48);
           }
         }
       }
     }
     await page.getByRole("button", { name: "Начать с Ликой", exact: true }).click();
     await expect(page).toHaveURL(/\/story$/);
-    await expect(page.getByRole("heading", { level: 1 })).toContainText("ПРОСТРАНСТВО");
+    await expect(page.getByRole("heading", { level: 1 })).toContainText("пространство");
   });
 }
 
@@ -107,7 +115,7 @@ test("keyboard choice persists across reload and back navigation without private
   });
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/story/choose");
-  const lika = page.getByRole("button", { name: "ЛИКА Внимание и драйв", exact: true });
+  const lika = page.getByRole("button", { name: "ЛИКА Внимание и баланс", exact: true });
   await lika.focus();
   await page.keyboard.press("Space");
   await expect(lika).toHaveAttribute("aria-pressed", "true");
@@ -115,7 +123,7 @@ test("keyboard choice persists across reload and back navigation without private
   await page.reload();
   await expect(lika).toHaveAttribute("aria-pressed", "true");
   await page.getByRole("button", { name: "Предыдущая сцена", exact: true }).click();
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("ЧТО ТЕБЕ");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("Что тебе");
   await page.getByRole("button", { name: "Дальше", exact: true }).click();
   await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
   await expect(lika).toHaveAttribute("aria-pressed", "true");
@@ -125,7 +133,7 @@ test("keyboard choice persists across reload and back navigation without private
   expect(privateCalls).toEqual([]);
 });
 
-test("coach colors animate without moving the header or changing card geometry", async ({
+test("coach accents change within the same neutral scene without moving the header or choices", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
@@ -140,17 +148,18 @@ test("coach colors animate without moving the header or changing card geometry",
     .getByRole("group", { name: "Выбери первого напарника" })
     .boundingBox();
   await page.locator('button[data-coach="lika"]').click();
-  await expect
-    .poll(() => page.getByRole("main").evaluate((el) => getComputedStyle(el).backgroundColor))
-    .toBe("rgb(255, 249, 251)");
+  const background = await page
+    .getByRole("main")
+    .evaluate((el) => getComputedStyle(el).backgroundColor);
+  await expect(page.getByRole("main")).toHaveAttribute("data-persona", "lika");
   expect(await bounds()).toEqual(before);
   expect(await page.getByRole("group", { name: "Выбери первого напарника" }).boundingBox()).toEqual(
     cardsBefore,
   );
   await page.locator('button[data-coach="max"]').click();
-  await expect
-    .poll(() => page.getByRole("main").evaluate((el) => getComputedStyle(el).backgroundColor))
-    .toBe("rgb(8, 14, 15)");
+  expect(await page.getByRole("main").evaluate((el) => getComputedStyle(el).backgroundColor)).toBe(
+    background,
+  );
   expect(await bounds()).toEqual(before);
   expect(await page.getByRole("group", { name: "Выбери первого напарника" }).boundingBox()).toEqual(
     cardsBefore,

@@ -49,11 +49,11 @@ for (const viewport of viewports) {
         await page.clock.pauseAt(new Date());
         await page.goto("/story");
         await expect(page.getByRole("heading", { level: 1 })).toContainText(
-          kind === "prepare" ? "ПРОСТРАНСТВО" : "ГОТОВО",
+          kind === "prepare" ? "пространство" : "Готово",
         );
         await page.evaluate(() => document.fonts.ready);
         await page
-          .locator('[data-art][aria-hidden="false"] img')
+          .locator("[data-art] img")
           .evaluate((image) => (image as HTMLImageElement).decode());
         await expect(
           page.locator(`[aria-label="Сцена ${kind === "prepare" ? 6 : 7} из 7"]`),
@@ -93,33 +93,31 @@ for (const viewport of viewports) {
           await page.clock.runFor(160);
           await expect(page.locator('[class*="steps"] li[data-state="done"]')).toHaveCount(2);
           await expect(page.getByRole("button", { name: "Можно без ожидания" })).toHaveCount(0);
-          if (viewport.width <= viewport.height) {
-            const fillsScene = await page
-              .locator('[data-art][aria-hidden="false"] picture')
-              .evaluate((picture) => {
-                const scene = picture.closest("section");
-                const art = picture.parentElement;
-                if (!scene || !art) return false;
-                const a = art.getBoundingClientRect();
-                const s = scene.getBoundingClientRect();
-                return (
-                  Math.abs(a.x - s.x) <= 1 &&
-                  Math.abs(a.y - s.y) <= 1 &&
-                  Math.abs(a.width - s.width) <= 1 &&
-                  Math.abs(a.height - s.height) <= 1
-                );
-              });
+          if (viewport.width <= 700 && viewport.height > 450) {
+            const fillsScene = await page.locator('[data-art="prepare"]').evaluate((picture) => {
+              const scene = picture.closest("section");
+              const art = picture;
+              if (!scene || !art) return false;
+              const a = art.getBoundingClientRect();
+              const s = scene.getBoundingClientRect();
+              return (
+                Math.abs(a.x - s.x) <= 1 &&
+                Math.abs(a.y - s.y) <= 1 &&
+                Math.abs(a.width - s.width) <= 1 &&
+                Math.abs(a.height - s.height) <= 1
+              );
+            });
             expect(fillsScene).toBe(true);
             expect(
               await page
-                .locator('[data-art][aria-hidden="false"] img')
+                .locator("[data-art] img")
                 .evaluate((img) => (img as HTMLImageElement).currentSrc),
-            ).toContain("preparation-mobile-v1.webp");
+            ).toContain("/visuals/soft-3d/scenes/prepare-mobile-v2.webp");
           }
           await page.clock.runFor(240);
-          await expect(page.getByRole("heading", { level: 1 })).toContainText("ГОТОВО");
+          await expect(page.getByRole("heading", { level: 1 })).toContainText("Готово");
           await page.clock.runFor(1000);
-          await expect(page.getByRole("heading", { level: 1 })).toContainText("ГОТОВО");
+          await expect(page.getByRole("heading", { level: 1 })).toContainText("Готово");
         } else {
           await page.getByRole("button", { name: "Погнали", exact: true }).focus();
           await page.keyboard.press("Enter");

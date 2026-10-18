@@ -1,0 +1,34 @@
+.root .summary {
+  font-size: 15px;
+}
+.root .principles li,
+.root .sources li {
+  display: block;
+  padding: 14px 0;
+  font-size: 14px;
+  line-height: 1.65;
+}
+.principles strong {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--wb-text);
+}
+.principles p {
+  margin: 0;
+  color: var(--wb-muted);
+}
+.sources a {
+  color: var(--wb-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere;
+}
+.sources a:focus-visible {
+  outline: 2px solid var(--wb-accent);
+  outline-offset: 3px;
+}
+.sources small {
+  display: block;
+  color: var(--wb-muted);
+  font-size: 12px;
+}

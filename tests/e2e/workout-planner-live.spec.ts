@@ -175,6 +175,16 @@ test("program, equivalent replacement, exclusions with undo and separate named c
   await page.getByLabel("Порядок подходов", { exact: true }).selectOption("pairs");
   let draft = await preview(page);
   expect(draft.days).toHaveLength(2);
+  expect(draft.methodology).toMatchObject({ kind: "strength", version: "strength-evidence-v2" });
+  await page.getByText("Почему так подобрано?", { exact: true }).click();
+  await expect(page.getByRole("link", { name: /^ACSM:/ })).toBeVisible();
+  await page
+    .locator("details")
+    .filter({ hasText: "Почему так подобрано?" })
+    .screenshot({ path: ".local/previews/strength-methodology-explanation.png" });
+  expect(await page.getByText("Усилие и следующий шаг", { exact: true }).count()).toBeGreaterThan(
+    0,
+  );
   let candidate: {
     dayKey: string;
     slotKey: string;

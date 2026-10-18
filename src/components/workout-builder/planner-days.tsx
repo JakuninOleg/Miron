@@ -64,10 +64,23 @@ export function PlannerDays({
                   {step.exercise.timing.perSide ? " на каждую сторону" : ""} · отдых{" "}
                   {step.restSeconds} сек
                   {step.pairKey
-                    ? ` · пара ${index > 0 && day.steps[index - 1].pairKey === step.pairKey ? "B" : "A"}, переход ${step.transitionSeconds ?? 15} сек`
+                    ? ` · суперсет ${index > 0 && day.steps[index - 1].pairKey === step.pairKey ? "Б" : "А"}, переход ${step.transitionSeconds ?? 15} сек`
                     : ""}
                 </p>
+                {step.dropSet ? (
+                  <p className={styles.plannerHint}>
+                    Дропсет: в последнем подходе одно снижение веса, ориентир{" "}
+                    {step.dropSet.targetReps} повт. Можно пропустить; отказ не требуется.
+                  </p>
+                ) : null}
                 {step.changeNote ? <p className={styles.plannerHint}>{step.changeNote}</p> : null}
+                {step.coaching ? (
+                  <details className={styles.plannerHint}>
+                    <summary>Усилие и следующий шаг</summary>
+                    <p>{step.coaching.effortHint}</p>
+                    <p>{step.coaching.explanation}</p>
+                  </details>
+                ) : null}
                 <div className={styles.plannerStepActions}>
                   {onReplace ? (
                     <button

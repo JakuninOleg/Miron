@@ -2,11 +2,17 @@ import type { Metadata, Viewport } from "next";
 import "@fontsource/manrope/cyrillic-400.css";
 import "@fontsource/manrope/cyrillic-600.css";
 import "@fontsource/manrope/cyrillic-700.css";
+import "@fontsource/manrope/cyrillic-800.css";
 import "@fontsource/manrope/latin-400.css";
 import "@fontsource/manrope/latin-700.css";
+import "@fontsource/manrope/latin-800.css";
+import "@fontsource/neucha/cyrillic-400.css";
+import "@fontsource/neucha/latin-400.css";
 import "@fontsource/oswald/cyrillic-500.css";
 import "@fontsource/oswald/cyrillic-600.css";
 import "@fontsource/oswald/latin-600.css";
+import "@fontsource/rubik/cyrillic-800.css";
+import "@fontsource/rubik/latin-800.css";
 import "./globals.css";
 import { AppProviders } from "@/components/app-providers";
 
@@ -33,6 +39,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           {
             "--font-manrope": '"Manrope", sans-serif',
             "--font-oswald": '"Oswald", sans-serif',
+            "--font-neucha": '"Neucha", cursive',
+            "--font-rubik": '"Rubik", sans-serif',
           } as React.CSSProperties
         }
       >

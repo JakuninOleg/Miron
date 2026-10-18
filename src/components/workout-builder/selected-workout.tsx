@@ -6,6 +6,7 @@ import {
   type BuilderSelectedStep,
 } from "@/shared/workout-builder";
 import styles from "./workout-builder.module.css";
+import { dropSetPlanError, supportsDropSet } from "@/shared/training-methods";
 
 export function SelectedWorkout({
   name,
@@ -17,6 +18,8 @@ export function SelectedWorkout({
   onRemove,
   onSave,
   onUnpair,
+  allowDropSets,
+  onDropSet,
 }: {
   name: string;
   steps: BuilderSelectedStep[];
@@ -27,11 +30,14 @@ export function SelectedWorkout({
   onRemove: (index: number) => void;
   onSave: () => void;
   onUnpair: (pairKey: string) => void;
+  allowDropSets: boolean;
+  onDropSet: (index: number, enabled: boolean) => void;
 }) {
   const pairError = builderPairError(steps);
   const valid =
     steps.length > 0 &&
     !pairError &&
+    !steps.some((step) => dropSetPlanError(step)) &&
     steps.every(
       (step) =>
         Number.isInteger(step.sets) &&
@@ -88,7 +94,7 @@ export function SelectedWorkout({
             </div>
             {step.pairKey ? (
               <div className={styles.stepFooter}>
-                <span>Пара А–Б · переход {step.transitionSeconds ?? 30} сек</span>
+                <span>Суперсет А–Б · переход {step.transitionSeconds ?? 30} сек</span>
                 <button
                   type="button"
                   className={styles.secondary}
@@ -136,6 +142,22 @@ export function SelectedWorkout({
                 />
               </label>
             </div>
+            {step.dropSet || (allowDropSets && !step.pairKey && supportsDropSet(step.exercise)) ? (
+              <label className={styles.methodOption}>
+                <input
+                  type="checkbox"
+                  checked={Boolean(step.dropSet)}
+                  disabled={busy}
+                  onChange={(event) => onDropSet(index, event.target.checked)}
+                />
+                <span>
+                  <strong>Дропсет в последнем подходе</strong>
+                  <small>
+                    Одно снижение веса, ориентир 8 повторов. Выполнять до отказа не нужно.
+                  </small>
+                </span>
+              </label>
+            ) : null}
             <div className={styles.stepFooter}>
               <span>{builderDurationLabel(estimateBuilderWorkout([step]))}</span>
               <div>

@@ -1,6 +1,10 @@
 import type { Progress, Workout, WorkoutCommand } from "@/shared/contracts";
 import { workoutExecution } from "@/shared/workout-execution";
+import { dropSetResultError } from "@/shared/training-methods";
 import { estimateWorkoutEnergy, isEnergyActivity } from "@/shared/workout-energy";
+import { canRateWorkout, WORKOUT_LOAD_FEEDBACK } from "@/shared/workout-feedback";
+import { correctWorkoutSet } from "@/shared/workout-edits";
+import { lighterWorkout } from "@/shared/workout-adjustment";
 import {
   dailyXpDelta,
   eligibleXp,
@@ -17,6 +21,20 @@ export function reduceWorkout(
   now = new Date().toISOString(),
   knownBodyWeightKg?: number,
 ): Workout {
+  if (command.type === "replace_exercise")
+    throw new Error("Для замены упражнения подключись к интернету и подтверди сравнение.");
+  if (command.type === "lighten_remaining") return lighterWorkout(workout);
+  if (
+    command.type === "correct_set" ||
+    command.type === "correct_timed_set" ||
+    command.type === "undo_set"
+  )
+    return correctWorkoutSet(workout, command, now);
+  if (command.type === "rate_load") {
+    if (!Object.hasOwn(WORKOUT_LOAD_FEEDBACK, command.feedback) || !canRateWorkout(workout))
+      throw new Error("Оценить нагрузку можно после занятия с выполненной основной работой.");
+    return { ...workout, revision: workout.revision + 1, loadFeedback: command.feedback };
+  }
   if (command.type === "estimate_energy") {
     return {
       ...workout,
@@ -66,18 +84,29 @@ export function reduceWorkout(
     if (workout.recordedSets.filter((s) => s.exerciseId === current.id).length >= current.sets)
       throw new Error("Все подходы этого упражнения записаны.");
     if (!execution.canRecord) throw new Error("Продолжи пару со следующего упражнения.");
+    if (command.type === "record_set") {
+      const invalidDrop = dropSetResultError(
+        current,
+        workout.recordedSets.filter((set) => set.exerciseId === current.id).length,
+        command.weightKg,
+        command.drop,
+      );
+      if (invalidDrop) throw new Error(invalidDrop);
+    }
     next = {
       ...next,
       recordedSets: [
         ...workout.recordedSets,
         {
           id: command.setId,
+          setIndex: workout.recordedSets.filter((set) => set.exerciseId === current.id).length,
           exerciseId: command.exerciseId,
           reps: command.type === "record_set" ? command.reps : null,
           ...(command.type === "record_timed_set"
             ? { durationSeconds: command.durationSeconds }
             : {}),
           weightKg: command.type === "record_set" ? command.weightKg : 0,
+          ...(command.type === "record_set" && command.drop ? { drop: { ...command.drop } } : {}),
           completedAt: now,
         },
       ],

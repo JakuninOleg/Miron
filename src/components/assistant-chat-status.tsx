@@ -10,6 +10,7 @@ export function AssistantChatStatus({
   pendingText,
   error,
   demo = false,
+  showContextNote = true,
   onRetry,
   onRefresh,
 }: {
@@ -20,6 +21,7 @@ export function AssistantChatStatus({
   pendingText: string | null;
   error: string | null;
   demo?: boolean;
+  showContextNote?: boolean;
   onRetry: () => Promise<void>;
   onRefresh: () => Promise<void>;
 }) {
@@ -74,7 +76,7 @@ export function AssistantChatStatus({
           </button>
         </div>
       ) : null}
-      {enabled === true && !error && !pendingText ? (
+      {showContextNote && enabled === true && !error && !pendingText ? (
         <p className={styles.note}>
           ИИ · beta. Напарник видит подтверждённый план и записанные результаты.
         </p>

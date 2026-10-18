@@ -183,16 +183,18 @@ test("companion and theme are independent and typed chat keeps its history", asy
 
 test("authentication respects configured methods and password recovery state", async ({ page }) => {
   await page.goto("/sign-in");
-  await expect(page.getByRole("heading", { name: "С возвращением" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Войти в MIRON" })).toBeVisible();
   const response = await page.request.get("/api/auth/config");
   const config: AuthConfig = await response.json();
   if (!response.ok() || config.emailPassword === false) {
-    await expect(page.getByRole("button", { name: "Яндекс ID", exact: true })).toBeVisible();
-    await expect(page.getByRole("button", { name: "VK ID", exact: true })).toBeVisible();
+    await expect(
+      page.getByRole("button", { name: "Продолжить с Яндекс ID", exact: true }),
+    ).toBeVisible();
+    await expect(page.getByRole("button", { name: /^VK ID/ })).toBeVisible();
     await expect(page.getByLabel("Пароль", { exact: true })).toHaveCount(0);
     await expect(page.getByRole("link", { name: "Забыли пароль?" })).toHaveCount(0);
     if (!config.providers?.vk)
-      await expect(page.getByRole("button", { name: "VK ID", exact: true })).toBeDisabled();
+      await expect(page.getByRole("button", { name: /^VK ID/ })).toBeDisabled();
     return;
   }
   await page.getByLabel("Пароль", { exact: true }).fill("test-password");

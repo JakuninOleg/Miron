@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 import { z } from "zod";
 import type { AssistantAction } from "../../shared/assistant";
 import { estimateWorkoutEnergy } from "../../shared/workout-energy";
+import { trainingMethodology } from "../../shared/training-methodology";
 import { DomainError } from "../domain/errors";
 import { plannerConfigInput, previewPlanner } from "../domain/workout-planner";
 import { getWorkout, workoutCommandInput } from "../domain/workouts";
@@ -38,12 +39,17 @@ const schemas = {
   read_profile: empty,
   read_current_workout: empty,
   read_recent_workouts: empty,
+  read_training_principles: z.strictObject({
+    direction: z.enum(["strength", "calisthenics", "yoga", "stretch", "mobility"]),
+  }),
   read_exercise_cards: z.strictObject({ exerciseIds: z.array(z.uuid()).min(1).max(3) }),
   preview_workout: plannerConfigInput,
   preview_energy: energyInput,
 };
 type ToolName = keyof typeof schemas;
 const descriptions: Record<ToolName, string> = {
+  read_training_principles:
+    "Прочитать правила MIRON с источниками для выбранного направления. Силовые, йога, растяжка и мобильность имеют отдельные правила. Это чтение; не изменяет программу и не назначает веса.",
   read_profile:
     "Прочитать опыт, цель, условия и инвентарь текущего пользователя; без контактов и без изменений.",
   read_current_workout:
@@ -115,6 +121,10 @@ export async function executeAssistantTool(
     throw new DomainError("AI_TOOL_INVALID", 422, "Не удалось разобрать действие.");
   }
   const name = call.function.name as ToolName;
+  if (name === "read_training_principles") {
+    const input = schemas.read_training_principles.parse(raw);
+    return { evidence: trainingMethodology(input.direction) };
+  }
   if (name === "read_profile") {
     schemas.read_profile.parse(raw);
     return { evidence: await readAssistantProfile(ownerId) };
@@ -145,6 +155,9 @@ export async function executeAssistantTool(
         saved: false,
         config: preview.config,
         disclosure: preview.disclosure,
+        methodology: preview.methodology
+          ? { kind: preview.methodology.kind, version: preview.methodology.version }
+          : undefined,
         notes: preview.notes,
         days: preview.days.slice(0, 4).map((day) => ({
           key: day.key,
@@ -155,10 +168,20 @@ export async function executeAssistantTool(
             name: step.exercise.name,
             metric: step.exercise.metric,
             sets: step.sets,
+            ...(step.dropSet ? { dropSet: step.dropSet } : {}),
+            ...(step.pairKey
+              ? { pairKey: step.pairKey, transitionSeconds: step.transitionSeconds }
+              : {}),
             ...(step.exercise.metric === "reps"
               ? { reps: step.target }
               : { durationSeconds: step.target }),
             restSeconds: step.restSeconds,
+            coaching: step.coaching
+              ? {
+                  progression: step.coaching.progression,
+                  repetitionsInReserve: step.coaching.repetitionsInReserve,
+                }
+              : undefined,
             status: step.exercise.status,
           })),
         })),

@@ -1,4 +1,11 @@
-import type { AssistantChatMessage } from "@/shared/assistant";
+import type { AssistantChatMessage, AssistantHistory } from "@/shared/assistant";
+import type { CompanionId } from "@/shared/contracts";
+
+export interface AssistantSnapshot {
+  companion: CompanionId;
+  revision: number;
+  resetRevision: number;
+}
 
 /** Only an explicit retry sends this draft again. It is never an offline queue. */
 export interface PendingAssistantOperation {
@@ -6,6 +13,8 @@ export interface PendingAssistantOperation {
   operationId: string;
   text: string;
   createdAt: string;
+  companion?: CompanionId;
+  historyRevision?: number;
 }
 
 export const PENDING_ASSISTANT_KEY = "miron:assistant:pending:v1";
@@ -28,7 +37,12 @@ export function readPendingAssistant(
       !pending.text.trim() ||
       pending.text.length > 2000 ||
       typeof pending.createdAt !== "string" ||
-      !Number.isFinite(Date.parse(pending.createdAt))
+      !Number.isFinite(Date.parse(pending.createdAt)) ||
+      (pending.companion !== undefined &&
+        pending.companion !== "max" &&
+        pending.companion !== "lika") ||
+      (pending.historyRevision !== undefined &&
+        (!Number.isInteger(pending.historyRevision) || (pending.historyRevision as number) < 0))
     ) {
       storage.removeItem(PENDING_ASSISTANT_KEY);
       return null;
@@ -38,6 +52,12 @@ export function readPendingAssistant(
       operationId: pending.operationId,
       text: pending.text,
       createdAt: pending.createdAt,
+      ...(pending.companion === "max" || pending.companion === "lika"
+        ? { companion: pending.companion }
+        : {}),
+      ...(typeof pending.historyRevision === "number"
+        ? { historyRevision: pending.historyRevision }
+        : {}),
     };
   } catch {
     // A blocked storage API must not prevent online chat in this tab.
@@ -52,6 +72,7 @@ export function pendingAssistantMessage(pending: PendingAssistantOperation): Ass
     role: "user",
     text: pending.text,
     createdAt: pending.createdAt,
+    ...(pending.companion ? { companion: pending.companion } : {}),
   };
 }
 
@@ -60,6 +81,7 @@ export function mergeAssistantMessages(
   current: AssistantChatMessage[],
   confirmed: AssistantChatMessage[],
   operationId?: string,
+  limit = 100,
 ): AssistantChatMessage[] {
   const messages = new Map<string, AssistantChatMessage>();
   const confirmedTurns = new Set(
@@ -74,5 +96,37 @@ export function mergeAssistantMessages(
   for (const message of confirmed) messages.set(message.id, message);
   return [...messages.values()]
     .sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt))
-    .slice(-100);
+    .slice(-limit);
+}
+
+/** New appends merge with loaded pages; a destructive edit replaces stale cached pages. */
+export function reconcileAssistantHistory(
+  current: AssistantChatMessage[],
+  snapshot: AssistantSnapshot | undefined,
+  page: AssistantHistory,
+) {
+  if (snapshot?.companion === page.companion && snapshot.revision > page.revision) return null;
+  const sameHistory =
+    snapshot?.companion === page.companion && snapshot.resetRevision === page.resetRevision;
+  return {
+    snapshot: {
+      companion: page.companion,
+      revision: page.revision,
+      resetRevision: page.resetRevision,
+    },
+    messages: sameHistory
+      ? mergeAssistantMessages(
+          current,
+          page.messages.map((message) => ({
+            ...message,
+            companion: message.companion ?? page.companion,
+          })),
+          undefined,
+          Infinity,
+        )
+      : page.messages.map((message) => ({
+          ...message,
+          companion: message.companion ?? page.companion,
+        })),
+  };
 }

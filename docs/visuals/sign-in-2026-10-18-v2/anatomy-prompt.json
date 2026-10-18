@@ -1,0 +1,7 @@
+{
+  "tool": "built-in imagegen",
+  "reference": "public/visuals/soft-3d/auth/companions-grounded-v3.webp",
+  "prompt": "Precise anatomy repair only of this existing transparent MIRON foreground. Lika currently has an erroneous EXTRA hand/arm at her chin. Remove the ENTIRE hand touching her cheek/chin and its connected forearm/sleeve. Her face and chin must be unobstructed, head upright with the same friendly slight tilt and smile, no hand near her head. Lika must have EXACTLY TWO anatomically connected arms and EXACTLY TWO hands: ONE arm goes naturally from her viewer-left shoulder down to the existing hand resting on her raised knee; the OTHER arm goes from her viewer-right shoulder to the hand holding the pink shaker. Clearly separated natural sleeves, shoulders, elbows and wrists. Fill the removed arm area with the correct pink sweater and body/knee folds. Preserve Max unchanged, both identities, 3D style, M chest logos, clothing colors, legs, complete shoes, bench, shaker, camera/framing and all the existing ground contact shadows. Fully visible hair and shoes. Same composition. Genuine alpha transparent background, no floor patch, no white rectangle, no UI. Count Lika's hands before finalizing: one on knee and one on shaker, no third hand anywhere.",
+  "source": "exec-7ecea54e-598c-4fc4-b85d-1dd83e26e66c.png",
+  "output": "public/visuals/soft-3d/auth/companions-anatomy-v4.webp"
+}

@@ -2,6 +2,68 @@ import { describe, expect, it } from "vitest";
 import { buildDemoWorkout, DEFAULT_PROFILE } from "@/shared/demo";
 import { demoProgress, reduceWorkout } from "./workout-reducer";
 describe("provisional workout reducer", () => {
+  it("records an optional last-set reduction atomically without another set or extra XP", () => {
+    const workout = buildDemoWorkout(DEFAULT_PROFILE);
+    const exercise = {
+      ...workout.exercises[0],
+      sets: 1,
+      metric: "reps" as const,
+      dropSet: { kind: "last_set_drop" as const, targetReps: 8 },
+    };
+    workout.exercises = [exercise];
+    const command = {
+      type: "record_set" as const,
+      exerciseId: exercise.id,
+      setId: crypto.randomUUID(),
+      reps: 10,
+      weightKg: 10,
+      drop: { reps: 8, weightKg: 7.5 },
+    };
+    const recorded = reduceWorkout(workout, command);
+    expect(recorded.recordedSets).toHaveLength(1);
+    expect(recorded.recordedSets[0].drop).toEqual(command.drop);
+    expect(workout.recordedSets).toHaveLength(0);
+    expect(() => reduceWorkout(recorded, command)).toThrow();
+    const plain = reduceWorkout(workout, { ...command, drop: undefined });
+    const base = { xp: 0, completedWorkouts: 0, history: [] };
+    expect(demoProgress(base, reduceWorkout(recorded, { type: "finish" })).xp).toBe(
+      demoProgress(base, reduceWorkout(plain, { type: "finish" })).xp,
+    );
+    expect(() => reduceWorkout(workout, { ...command, drop: { reps: 8, weightKg: 10 } })).toThrow();
+  });
+  it("records optional load feedback without touching sets, energy, completion or XP", () => {
+    const original = buildDemoWorkout(DEFAULT_PROFILE);
+    expect(() => reduceWorkout(original, { type: "rate_load", feedback: "easy" })).toThrow();
+    const recorded = reduceWorkout(original, {
+      type: "record_set",
+      exerciseId: original.exercises[0].id,
+      setId: crypto.randomUUID(),
+      reps: 8,
+      weightKg: 0,
+    });
+    const terminal = reduceWorkout(recorded, { type: "end_early" });
+    const progress = demoProgress({ xp: 0, completedWorkouts: 0, history: [] }, terminal);
+    for (const feedback of ["easy", "just_right", "hard", "too_hard"] as const) {
+      const rated = reduceWorkout(terminal, { type: "rate_load", feedback });
+      expect(rated.loadFeedback).toBe(feedback);
+      expect(rated.revision).toBe(terminal.revision + 1);
+      expect(rated.recordedSets).toEqual(terminal.recordedSets);
+      expect(rated.energyEstimate).toEqual(terminal.energyEstimate);
+      expect(rated.completedAt).toBe(terminal.completedAt);
+      expect(demoProgress(progress, rated).xp).toBe(progress.xp);
+    }
+    const aborted = reduceWorkout(original, { type: "end_early" });
+    expect(() => reduceWorkout(aborted, { type: "rate_load", feedback: "hard" })).toThrow();
+    expect(() =>
+      reduceWorkout(
+        {
+          ...terminal,
+          exercises: terminal.exercises.map((exercise) => ({ ...exercise, phase: "warmup" })),
+        },
+        { type: "rate_load", feedback: "easy" },
+      ),
+    ).toThrow();
+  });
   it("automatically estimates on terminal save, then revises energy without duplicate XP", () => {
     const original = buildDemoWorkout(DEFAULT_PROFILE);
     const recorded = reduceWorkout(original, {

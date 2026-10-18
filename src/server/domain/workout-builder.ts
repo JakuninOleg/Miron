@@ -39,7 +39,9 @@ import {
 } from "../../shared/workout-builder";
 import { resourcesSatisfy, type ResourceFact } from "./catalog";
 import { DomainError } from "./errors";
+import { assertProductAccess } from "./access";
 import { standardGymResources } from "../../shared/workout-inventory";
+import { dropSetPlanError } from "../../shared/training-methods";
 
 const placeInput = z.enum(["home", "gym", "outdoor", "workout_park"]);
 const directionInput = z.enum(["strength", "calisthenics", "yoga", "stretch", "mobility"]);
@@ -78,6 +80,7 @@ export const customWorkoutInput = z.strictObject({
     .array(
       z.strictObject({
         revisionId: z.uuid(),
+        phase: z.enum(["warmup", "main", "cooldown"]).optional(),
         sets: z.number().int().min(1).max(10),
         target: z.number().int().min(1).max(600),
         restSeconds: z.number().int().min(0).max(600),
@@ -88,6 +91,12 @@ export const customWorkoutInput = z.strictObject({
           .regex(/^[a-zA-Z0-9_.-]+$/)
           .optional(),
         transitionSeconds: z.number().int().min(0).max(120).optional(),
+        dropSet: z
+          .strictObject({
+            kind: z.literal("last_set_drop"),
+            targetReps: z.number().int().min(1).max(30),
+          })
+          .optional(),
       }),
     )
     .min(1)
@@ -221,7 +230,7 @@ export async function getBuilderBootstrap(owner: string): Promise<BuilderBootstr
     readInventories(owner, reader),
     reader.select().from(muscleGroups),
     reader
-      .select({ theme: profiles.theme })
+      .select({ theme: profiles.theme, experience: profiles.experience })
       .from(profiles)
       .where(eq(profiles.userId, owner))
       .limit(1),
@@ -271,6 +280,7 @@ export async function getBuilderBootstrap(owner: string): Promise<BuilderBootstr
   return {
     ownerId: owner,
     theme: profile[0]?.theme === "rose" ? "rose" : "dark",
+    dropSetsAvailable: profile[0]?.experience === "regular",
     resources: options,
     inventories,
     previousInventories,
@@ -289,6 +299,7 @@ export async function saveBuilderInventory(
   return withOwnerTransaction(owner, async (tx) => {
     const prior = await replay(tx, owner, input.operationId, hash);
     if (prior) return prior as BuilderInventory;
+    await assertProductAccess(owner, tx);
     const [existing] = await tx
       .select()
       .from(builderInventories)
@@ -578,7 +589,7 @@ export async function listCustomWorkouts(owner: string): Promise<CustomWorkoutSu
     .limit(100);
   return rows.map((row) => summary(row.template, row.exerciseCount));
 }
-async function readCustomWorkout(
+export async function readCustomWorkout(
   owner: string,
   id: string,
   reader: Reader,
@@ -605,9 +616,11 @@ async function readCustomWorkout(
     inventoryRevision: row.inventoryRevision,
     steps: steps.map((step) => ({
       revisionId: step.variantRevisionId,
+      phase: step.phase,
       sets: step.sets,
       target: step.target,
       restSeconds: step.restSeconds,
+      ...(step.dropSet ? { dropSet: step.dropSet } : {}),
       ...(step.pairKey
         ? { pairKey: step.pairKey, transitionSeconds: step.transitionSeconds ?? 30 }
         : {}),
@@ -630,6 +643,7 @@ export async function saveCustomWorkout(
   return withOwnerTransaction(owner, async (tx) => {
     const prior = await replay(tx, owner, input.operationId, hash);
     if (prior) return prior as CustomWorkoutTemplate;
+    await assertProductAccess(owner, tx);
     const [existing] = await tx
       .select()
       .from(customWorkoutTemplates)
@@ -695,6 +709,31 @@ export async function saveCustomWorkout(
         );
       return { ...step, exercise };
     });
+    const dropSteps = steps.filter((step) => step.dropSet);
+    if (steps.some((step) => (step.pairKey || step.dropSet) && (step.phase ?? "main") !== "main"))
+      throw new DomainError(
+        "INVALID_PHASE",
+        400,
+        "Пары и дропсеты доступны только в основной части.",
+      );
+    if (dropSteps.length) {
+      const [profile] = await tx
+        .select({ experience: profiles.experience })
+        .from(profiles)
+        .where(eq(profiles.userId, owner));
+      const invalidDrop = dropSteps.map(dropSetPlanError).find(Boolean);
+      if (
+        input.direction !== "strength" ||
+        profile?.experience !== "regular" ||
+        dropSteps.length > 1 ||
+        invalidDrop
+      )
+        throw new DomainError(
+          "INVALID_DROP_SET",
+          400,
+          invalidDrop ?? "Доступен один дропсет в силовой тренировке для регулярного уровня.",
+        );
+    }
     const estimate = estimateBuilderWorkout(steps);
     if (estimate.maxSeconds > 14_400)
       throw new DomainError(
@@ -747,11 +786,13 @@ export async function saveCustomWorkout(
         templateId: input.id,
         ordinal,
         variantRevisionId: step.revisionId,
+        phase: step.phase ?? "main",
         sets: step.sets,
         target: step.target,
         restSeconds: step.restSeconds,
         pairKey: step.pairKey ?? null,
         transitionSeconds: step.pairKey ? (step.transitionSeconds ?? 30) : null,
+        dropSet: step.dropSet ?? null,
         exercise: step.exercise,
       })),
     );

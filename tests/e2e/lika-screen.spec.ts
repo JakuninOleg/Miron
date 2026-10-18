@@ -24,12 +24,12 @@ for (const viewport of viewports) {
     await page.setViewportSize(viewport);
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/story/lika");
-    await expect(page.getByRole("heading", { level: 1 })).toHaveText("ЛИКА");
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Лика.");
     await page.evaluate(() => document.fonts.ready);
     await expect
       .poll(() =>
         page
-          .locator("picture img")
+          .locator('[data-art="coach"] img')
           .evaluate(
             (node) => node instanceof HTMLImageElement && node.complete && node.naturalWidth > 0,
           ),
@@ -57,33 +57,35 @@ for (const viewport of viewports) {
     expect(geometry).toEqual({ pageFits: true, contentFits: true, reachable: true });
     await page.getByRole("button", { name: "Давай дальше", exact: true }).click();
     await expect(page).toHaveURL(/\/story$/);
-    await expect(page.getByRole("group", { name: "Что тебе интересно" })).toBeVisible();
+    await expect(page.getByRole("group", { name: "Направления тренировок" })).toBeVisible();
   });
 }
 
-test("Lika has three independent comic images with distinct scenes", async ({ page }) => {
-  await page.setViewportSize({ width: 1672, height: 941 });
+test("lika has a distinct introduction and a different shared choice scene", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/story/lika");
-  const images = page
-    .getByRole("complementary", { name: "Знакомство с Ликой в комиксе" })
-    .getByRole("img");
-  await expect(images).toHaveCount(3);
+  const intro = page.getByRole("img", { name: /^Лика сидит/ });
   await expect
     .poll(() =>
-      images.evaluateAll((nodes) =>
-        nodes.every(
-          (node) => node instanceof HTMLImageElement && node.complete && node.naturalWidth > 0,
-        ),
+      intro.evaluate(
+        (image) => image instanceof HTMLImageElement && image.complete && image.naturalWidth > 0,
       ),
     )
     .toBe(true);
-  expect(
-    new Set(
-      await images.evaluateAll((nodes) =>
-        nodes.map((node) => (node as HTMLImageElement).currentSrc),
+  const introSource = await intro.getAttribute("src");
+  await expect(
+    page.getByText("Расскажи, что любишь. Найдём движение в удовольствие ♡", { exact: true }),
+  ).toBeVisible();
+  await page.goto("/story/choose");
+  const portrait = page.locator('picture[data-art="choose"] img');
+  await expect
+    .poll(() =>
+      portrait.evaluate(
+        (image) => image instanceof HTMLImageElement && image.complete && image.naturalWidth > 0,
       ),
-    ).size,
-  ).toBe(3);
+    )
+    .toBe(true);
+  expect(await portrait.getAttribute("src")).not.toBe(introSource);
 });
 
 test("Max to Lika changes accents, preserves context and supports keyboard return with reduced motion", async ({
@@ -97,7 +99,7 @@ test("Max to Lika changes accents, preserves context and supports keyboard retur
     .evaluate((node) => getComputedStyle(node).color);
   await page.getByRole("button", { name: "Круто, дальше" }).focus();
   await page.keyboard.press("Enter");
-  await expect(page.getByRole("heading", { name: "ЛИКА", exact: true })).toBeFocused();
+  await expect(page.getByRole("heading", { name: "Лика.", exact: true })).toBeFocused();
   const after = await page
     .getByRole("heading", { level: 1 })
     .evaluate((node) => getComputedStyle(node).color);
@@ -108,7 +110,7 @@ test("Max to Lika changes accents, preserves context and supports keyboard retur
       .evaluate((node) => getComputedStyle(node).animationName),
   ).toBe("none");
   await page.reload();
-  await expect(page.getByRole("heading", { name: "ЛИКА", exact: true })).toBeFocused();
+  await expect(page.getByRole("heading", { name: "Лика.", exact: true })).toBeFocused();
   for (const viewport of [
     { width: 1032, height: 1376 },
     { width: 1376, height: 1032 },
@@ -123,7 +125,7 @@ test("Max to Lika changes accents, preserves context and supports keyboard retur
   }
   await page.getByRole("button", { name: "Предыдущая сцена" }).focus();
   await page.keyboard.press("Enter");
-  await expect(page.getByRole("heading", { name: "МАКС", exact: true })).toBeFocused();
+  await expect(page.getByRole("heading", { name: "Макс.", exact: true })).toBeFocused();
   await page.getByRole("button", { name: "Круто, дальше" }).click();
-  await expect(page.getByRole("heading", { name: "ЛИКА", exact: true })).toBeFocused();
+  await expect(page.getByRole("heading", { name: "Лика.", exact: true })).toBeFocused();
 });

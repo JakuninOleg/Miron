@@ -1,28 +1,44 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
-import { CalendarDays, Dumbbell, Home, Route, UserRound, UsersRound } from "lucide-react";
-import "@fontsource/neucha/cyrillic-400.css";
-import "@fontsource/neucha/latin-400.css";
+import { useRouter } from "next/navigation";
+import { ProductAccessNotice } from "./product-access-notice";
+import {
+  CalendarDays,
+  ChartNoAxesColumnIncreasing,
+  Dumbbell,
+  Home,
+  Settings,
+  UserRound,
+  Utensils,
+} from "lucide-react";
 import type { CompanionId } from "@/shared/contracts";
 import {
   DASHBOARD_INTENTS,
   type DashboardIntent,
   type DashboardPanel,
 } from "@/shared/dashboard-preview";
-import { AchievementsCard, CalendarCard, JourneyCard } from "./dashboard-preview-cards";
 import { DashboardChat } from "./dashboard-preview-chat";
 import { DashboardPanels } from "./dashboard-preview-panels";
+import { DashboardLevel, DashboardScene, DashboardWeek } from "./dashboard-home-summary";
+import { DashboardProgressView } from "./dashboard-progress-view";
 import type { AccountDashboardRuntime } from "./account-dashboard-runtime";
-import styles from "./dashboard-preview.module.css";
+import legacy from "./dashboard-preview.module.css";
+import styles from "./dashboard-home.module.css";
 
 const navigation = [
-  { id: "home", label: "Главная", icon: Home },
+  { id: "home", label: "Сегодня", icon: Home },
   { id: "workouts", label: "Тренировки", icon: Dumbbell },
   { id: "calendar", label: "Календарь", icon: CalendarDays },
-  { id: "path", label: "Твой путь", icon: Route },
-  { id: "companions", label: "Напарники", icon: UsersRound },
+  { id: "path", label: "Прогресс", icon: ChartNoAxesColumnIncreasing },
+] as const;
+const mobileNavigation = [
+  navigation[0],
+  navigation[1],
+  navigation[3],
+  { id: "profile", label: "Профиль", icon: UserRound },
 ] as const;
 
 function DashboardWordmark() {
@@ -33,7 +49,7 @@ function DashboardWordmark() {
       alt="MIRON"
       width={500}
       height={69}
-      sizes="170px"
+      sizes="190px"
       loading="eager"
     />
   );
@@ -54,13 +70,20 @@ export function DashboardPreview({
   onReplay: () => void;
   accountRuntime?: AccountDashboardRuntime;
 }) {
+  const router = useRouter();
   const [panel, setPanel] = useState<DashboardPanel | null>(null);
-  const [selectedDay, setSelectedDay] = useState(today);
   const [drafts, setDrafts] = useState<Record<CompanionId, string>>({ max: "", lika: "" });
   const [intents, setIntents] = useState<Record<CompanionId, DashboardIntent | null>>({
     max: null,
     lika: null,
   });
+  const progressOpen = panel === "path" || panel === "achievements";
+  const dateLabel = new Intl.DateTimeFormat("ru-RU", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    timeZone: "UTC",
+  }).format(new Date(`${today}T12:00:00Z`));
   function prepare(id: DashboardIntent) {
     setPanel(null);
     setIntents((previous) => ({ ...previous, [companion]: id }));
@@ -74,23 +97,31 @@ export function DashboardPreview({
     });
     requestAnimationFrame(() => document.getElementById("dashboard-message")?.focus());
   }
-  function goHome() {
-    setPanel(null);
-    window.scrollTo({
-      top: 0,
-      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
-        ? "instant"
-        : "smooth",
-    });
+  function navigate(id: "home" | DashboardPanel) {
+    if (id === "calendar" && accountRuntime) {
+      router.push("/calendar");
+      return;
+    }
+    setPanel(id === "home" ? null : id);
+    if (id === "home" || id === "path" || id === "achievements") {
+      requestAnimationFrame(() =>
+        document.getElementById("dashboard-page-title")?.focus({ preventScroll: true }),
+      );
+      window.scrollTo({ top: 0, behavior: "instant" });
+    }
+  }
+  function active(id: string) {
+    return id === "home" ? panel === null : id === "path" ? progressOpen : panel === id;
   }
   return (
     <div
-      className={styles.shell}
+      className={`${legacy.shell} ${styles.shell}`}
+      data-view="companion-home"
       data-theme={accountRuntime?.profile.theme ?? (companion === "max" ? "dark" : "rose")}
       data-persona={companion}
       data-account={accountRuntime ? "true" : undefined}
     >
-      <a href="#dashboard-main" className={styles.skipLink}>
+      <a href="#dashboard-main" className={legacy.skipLink}>
         К содержимому
       </a>
       <aside className={styles.sidebar}>
@@ -98,7 +129,7 @@ export function DashboardPreview({
           type="button"
           className={styles.brandButton}
           aria-label="MIRON, главная"
-          onClick={goHome}
+          onClick={() => navigate("home")}
         >
           <DashboardWordmark />
         </button>
@@ -107,63 +138,74 @@ export function DashboardPreview({
             <button
               type="button"
               key={id}
-              data-active={id === "home" && panel === null}
-              aria-current={id === "home" && panel === null ? "page" : undefined}
-              onClick={() => (id === "home" ? goHome() : setPanel(id))}
+              data-active={active(id)}
+              aria-current={active(id) ? "page" : undefined}
+              onClick={() => navigate(id)}
             >
               <Icon size={23} aria-hidden="true" />
               <span>{label}</span>
             </button>
           ))}
+          {accountRuntime ? (
+            <Link href="/nutrition">
+              <Utensils size={23} aria-hidden="true" />
+              <span>Питание</span>
+            </Link>
+          ) : null}
         </nav>
         <div className={styles.sidebarBottom}>
-          <button type="button" className={styles.profileLink} onClick={() => setPanel("profile")}>
-            <UserRound size={23} aria-hidden="true" />
-            Профиль
-          </button>
-          <p className={styles.sidebarMotto}>
+          <p>
             Больше,
             <br />
             чем тренировки.
-            <span aria-hidden="true" />
+            <br />
+            <span>Рядом.</span>
           </p>
+          <button type="button" onClick={() => navigate("profile")}>
+            <UserRound size={23} aria-hidden="true" />
+            Профиль
+          </button>
+          {accountRuntime ? (
+            <Link href="/settings">
+              <Settings size={23} aria-hidden="true" />
+              Настройки
+            </Link>
+          ) : null}
         </div>
       </aside>
       <main id="dashboard-main" className={styles.main} data-persona={companion}>
-        <header className={styles.topbar}>
+        {accountRuntime ? <ProductAccessNotice /> : null}
+        <header className={styles.topbar} data-dashboard-chrome>
           <button
             type="button"
             className={styles.mobileBrand}
             aria-label="MIRON, главная"
-            onClick={goHome}
+            onClick={() => navigate("home")}
           >
             <DashboardWordmark />
           </button>
           <div className={styles.greeting}>
-            <h1>
-              <span>
-                {companion === "max" ? "Здорово" : "Привет"}
-                {accountRuntime
-                  ? accountRuntime.profile.name
-                    ? `, ${accountRuntime.profile.name}`
-                    : ""
-                  : ", Артём"}
-                !
-              </span>
+            <h1 id="dashboard-page-title" tabIndex={-1}>
+              {progressOpen
+                ? "Твой прогресс"
+                : `Привет${accountRuntime ? (accountRuntime.profile.name ? `, ${accountRuntime.profile.name}` : "") : ", Артём"}`}
             </h1>
-            <p>Твой темп. Твоя история.</p>
+            <p>{progressOpen ? "Твой темп. Твоя история." : dateLabel}</p>
           </div>
+          {!progressOpen ? (
+            <DashboardLevel progress={accountRuntime?.progress} onOpen={() => navigate("path")} />
+          ) : null}
           <button
             type="button"
             className={styles.profileButton}
             aria-label="Открыть профиль"
-            onClick={() => setPanel("profile")}
+            onClick={() => navigate("profile")}
           >
             <UserRound size={23} aria-hidden="true" />
           </button>
         </header>
         {accountRuntime ? (
-          <div className={styles.accountStatus}>
+          <div className={legacy.accountStatus} data-dashboard-chrome>
             {!accountRuntime.isOnline ? (
               <p role="status">Ты офлайн. Сохранённые результаты доступны на устройстве.</p>
             ) : null}
@@ -184,59 +226,68 @@ export function DashboardPreview({
             {accountRuntime.error ? <p role="status">{accountRuntime.error}</p> : null}
           </div>
         ) : (
-          <p className={styles.previewLabel}>
-            Дизайн-прототип <span>· пример нового профиля</span>
+          <p className={styles.previewLabel} data-dashboard-chrome>
+            Дизайн-прототип · пример нового профиля
           </p>
         )}
-        <div className={styles.dashboardGrid}>
-          <DashboardChat
-            companion={companion}
-            intent={intents[companion]}
-            text={drafts[companion]}
-            onTextChange={(text) => setDrafts((previous) => ({ ...previous, [companion]: text }))}
-            onPrepare={prepare}
-            onVoice={() => setPanel("voice")}
-            accountRuntime={accountRuntime}
+        {progressOpen ? (
+          <DashboardProgressView
+            progress={accountRuntime?.progress}
+            onBack={() => navigate("home")}
           />
-          <div className={styles.supportingCards}>
-            <CalendarCard
+        ) : (
+          <>
+            <div className={styles.workbench}>
+              <DashboardChat
+                companion={companion}
+                intent={intents[companion]}
+                text={drafts[companion]}
+                onTextChange={(text) =>
+                  setDrafts((previous) => ({ ...previous, [companion]: text }))
+                }
+                onPrepare={prepare}
+                onWorkouts={() => navigate("workouts")}
+                accountRuntime={accountRuntime}
+              />
+              <DashboardScene companion={companion} />
+            </div>
+            <DashboardWeek
               today={today}
-              selected={selectedDay}
-              onSelect={setSelectedDay}
-              onOpen={() => setPanel("calendar")}
-              accountRuntime={accountRuntime}
-            />
-            <JourneyCard onOpen={() => setPanel("path")} progress={accountRuntime?.progress} />
-            <AchievementsCard
-              onOpen={() => setPanel("achievements")}
               progress={accountRuntime?.progress}
+              timezone={accountRuntime?.profile.timezone}
+              onOpen={() => navigate("calendar")}
             />
-          </div>
-        </div>
-        <footer className={styles.pageFooter}>Свой темп. Своя история.</footer>
+          </>
+        )}
+        <footer className={styles.pageFooter} data-dashboard-chrome>
+          Свой темп. Своя история.
+        </footer>
       </main>
-      <nav className={styles.mobileNavigation} aria-label="Навигация на телефоне">
-        {(
-          [
-            { id: "home", label: "Главная", icon: Home },
-            { id: "workouts", label: "Тренировки", icon: Dumbbell },
-            { id: "path", label: "Путь", icon: Route },
-            { id: "profile", label: "Профиль", icon: UserRound },
-          ] as const
-        ).map(({ id, label, icon: Icon }) => (
+      <nav
+        className={styles.mobileNavigation}
+        aria-label="Навигация на телефоне"
+        data-dashboard-chrome
+      >
+        {mobileNavigation.map(({ id, label, icon: Icon }) => (
           <button
             type="button"
             key={id}
-            data-active={id === "home" && !panel}
-            aria-current={id === "home" && !panel ? "page" : undefined}
-            onClick={() => (id === "home" ? goHome() : setPanel(id))}
+            data-active={active(id)}
+            aria-current={active(id) ? "page" : undefined}
+            onClick={() => navigate(id)}
           >
             <Icon size={23} aria-hidden="true" />
             <span>{label}</span>
           </button>
         ))}
+        {accountRuntime ? (
+          <Link href="/nutrition">
+            <Utensils size={23} aria-hidden="true" />
+            <span>Питание</span>
+          </Link>
+        ) : null}
       </nav>
-      {panel ? (
+      {panel && !progressOpen ? (
         <DashboardPanels
           key={panel}
           panel={panel}

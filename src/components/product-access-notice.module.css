@@ -1,0 +1,38 @@
+.notice {
+  display: grid;
+  gap: 10px;
+  padding: 18px 20px;
+  margin: 0 0 20px;
+  border: 1px solid var(--dash-line, var(--line));
+  border-radius: 16px;
+  color: var(--dash-text, var(--text));
+  background: var(--dash-surface, var(--surface));
+  font: 14px/1.6 var(--body);
+}
+.notice strong {
+  font-size: 19px;
+}
+.notice p {
+  margin: 0;
+  color: var(--dash-muted, var(--muted));
+}
+.notice div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+}
+.notice a,
+.trial a {
+  color: inherit;
+  text-underline-offset: 4px;
+}
+.notice a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+.trial {
+  margin: 0 0 18px;
+  font: 12px/1.7 var(--body);
+  color: var(--dash-muted, var(--muted));
+}

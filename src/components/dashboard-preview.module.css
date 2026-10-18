@@ -1,13 +1,13 @@
 .shell {
-  --dash-bg: #0b1213;
-  --dash-surface: #121c1e;
-  --dash-raised: #1b272a;
+  --dash-bg: #191a1e;
+  --dash-surface: #25262c;
+  --dash-raised: #303138;
   --dash-text: #f7f6f2;
-  --dash-muted: #aebbc1;
-  --dash-line: #2d3b3f;
-  --dash-accent: #ff7b60;
+  --dash-muted: #bcbcc4;
+  --dash-line: #ffffff16;
+  --dash-accent: #ff9a7d;
   --dash-accent-text: #ff967b;
-  --dash-button: #ff7b60;
+  --dash-button: #ff9a7d;
   --dash-button-text: #171315;
   --dash-tint: #ff7b6016;
   --dash-track: #2b373b;
@@ -15,7 +15,6 @@
   --dash-art-mountain: #243337;
   --dash-art-line: #3e5056;
   --dash-art-path: #829198;
-  --dash-gym: url("/dashboard-preview/max-chat-gym-v1.webp");
   min-height: 100dvh;
   background: var(--dash-bg);
   color: var(--dash-text);
@@ -44,7 +43,6 @@
   --dash-art-mountain: #f2ecf0;
   --dash-art-line: #c4b9c2;
   --dash-art-path: #8d7e89;
-  --dash-gym: url("/dashboard-preview/lika-chat-gym-v1.webp");
   color-scheme: light;
 }
 
@@ -77,7 +75,7 @@
   stroke-width: 1.7;
 }
 .shell h2 {
-  font: 600 27px/1.2 var(--display);
+  font: 600 27px/1.2 var(--body);
   letter-spacing: -0.35px;
 }
 .shell h3 {
@@ -178,18 +176,10 @@
 .sidebarMotto {
   padding: 44px 23px 6px;
   color: var(--dash-muted);
-  font:
-    24px/1.1 Neucha,
-    cursive;
-  transform: rotate(-6deg);
+  font: 500 15px/1.6 var(--body);
 }
 .sidebarMotto span {
-  display: block;
-  width: 98px;
-  height: 3px;
-  margin-top: 10px;
-  background: var(--dash-accent);
-  clip-path: polygon(0 40%, 100% 0, 90% 85%, 3% 100%);
+  display: none;
 }
 
 .main {
@@ -302,9 +292,12 @@
   isolation: isolate;
 }
 .coachHeader {
+  position: relative;
+  min-height: 220px;
   display: flex;
   align-items: center;
-  gap: 19px;
+  gap: 14px;
+  padding-right: 230px;
 }
 .coachAvatar {
   position: relative;
@@ -318,17 +311,11 @@
   background: var(--dash-tint);
 }
 .coachAvatar img {
-  position: absolute;
-  width: 240%;
-  max-width: none;
-  height: auto;
-  left: -80%;
-  top: -35%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
-.coachAvatar[data-companion="lika"] img {
-  left: -80%;
-  top: -26%;
-}
+
 .coachHeader h2 {
   font: 700 25px/1.3 var(--body);
 }
@@ -337,14 +324,11 @@
   color: var(--dash-muted);
 }
 .chatScribble {
-  margin-left: auto;
-  max-width: 116px;
-  color: var(--dash-accent-text);
-  font:
-    20px/1.15 Neucha,
-    cursive;
-  transform: rotate(-8deg);
-  opacity: 0.8;
+  position: absolute;
+  left: 0;
+  bottom: 25px;
+  color: var(--dash-muted);
+  font: 500 13px/1.5 var(--body);
 }
 .conversation {
   display: flex;
@@ -361,7 +345,7 @@
   margin-bottom: 24px;
   background: var(--dash-raised);
   border: 1px solid var(--dash-line);
-  border-radius: 20px 20px 20px 4px;
+  border-radius: 20px;
 }
 .welcomeMessage h3 {
   font-size: 23px;
@@ -428,12 +412,8 @@
 .chatAtmosphere {
   position: absolute;
   z-index: -1;
-  inset: 30% -26px -16px;
-  background-image: var(--dash-gym);
-  background-size: cover;
-  background-position: center bottom;
-  opacity: 0.52;
-  mask-image: linear-gradient(transparent, #000 42%);
+  inset: 0;
+  background: radial-gradient(ellipse at 70% 40%, var(--dash-tint), transparent 70%);
   pointer-events: none;
 }
 .shell[data-theme="rose"] .chatAtmosphere {
@@ -889,7 +869,7 @@
   gap: 7px;
 }
 .choiceCopy strong {
-  font: 600 30px/1 var(--display);
+  font: 600 30px/1 var(--body);
 }
 .choiceCopy span {
   font-size: 12px;
@@ -1588,10 +1568,8 @@
 }
 
 .shell[data-account="true"][data-persona="max"] {
-  --dash-gym: url("/dashboard-preview/max-chat-gym-v1.webp");
 }
 .shell[data-account="true"][data-persona="lika"] {
-  --dash-gym: url("/dashboard-preview/lika-chat-gym-v1.webp");
 }
 .accountStatus {
   margin: 16px 0;
@@ -1783,5 +1761,81 @@
   }
   .shell button:active:not(:disabled) {
     transform: none;
+  }
+}
+.coachFigure {
+  position: absolute;
+  top: -25px;
+  right: -15px;
+  width: 260px;
+  height: 245px;
+  overflow: hidden;
+  pointer-events: none;
+  mask-image:
+    linear-gradient(0deg, transparent, #000 22%), linear-gradient(90deg, transparent, #000 20%);
+  mask-composite: intersect;
+  border-radius: 80px 0 0 20px;
+}
+.coachFigure img {
+  object-fit: cover;
+  object-position: center 10%;
+}
+.card {
+  border-radius: 24px;
+}
+.shell h2 {
+  font-family: var(--body);
+  font-weight: 750;
+}
+.shell[data-account="true"] .chatCard {
+  min-height: 680px;
+}
+@media (max-width: 1100px) and (min-width: 701px) {
+  .coachHeader {
+    padding-right: 170px;
+    min-height: 190px;
+  }
+  .coachFigure {
+    width: 210px;
+    height: 210px;
+  }
+}
+@media (max-width: 700px) {
+  .coachHeader {
+    min-height: 155px;
+    padding-right: 140px;
+    gap: 10px;
+  }
+  .coachAvatar {
+    width: 44px;
+    height: 44px;
+  }
+  .coachFigure {
+    width: 160px;
+    height: 172px;
+    top: -16px;
+    right: -16px;
+  }
+  .coachHeader h2 {
+    font-size: 22px;
+  }
+  .chatScribble {
+    bottom: 4px;
+    max-width: none;
+    font-size: 12px;
+  }
+  .shell[data-account="true"] .chatCard {
+    min-height: 0;
+  }
+  .card {
+    border-radius: 22px;
+  }
+}
+@media (max-width: 374px) {
+  .coachAvatar {
+    display: none;
+  }
+  .coachHeader {
+    padding-right: 130px;
   }
 }

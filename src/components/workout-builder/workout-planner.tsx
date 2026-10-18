@@ -19,6 +19,7 @@ import type {
 } from "@/shared/workout-planner";
 import { PlannerConfigForm, plannerFrequencyLabel, plannerSplitNames } from "./planner-config";
 import { PlannerDays } from "./planner-days";
+import { TrainingMethodologyDetails } from "./training-methodology";
 import { directions, places } from "./choices";
 import styles from "./workout-builder.module.css";
 
@@ -169,6 +170,7 @@ export function WorkoutPlanner({
       intent: saved?.intent ?? "start",
       durationMinutes: saved?.durationMinutes ?? 30,
       execution: supportsSplit ? (saved?.execution ?? "straight") : "straight",
+      dropSets: direction === "strength" ? saved?.dropSets : undefined,
       variety: "familiar",
       preferredTemplateId: initialConfirmed ? saved?.preferredTemplateId : undefined,
       replacements: undefined,
@@ -476,6 +478,9 @@ export function WorkoutPlanner({
             </button>
           </div>
           <p className={styles.notice}>{shown.disclosure}</p>
+          {shown.methodology ? (
+            <TrainingMethodologyDetails methodology={shown.methodology} />
+          ) : null}
           {shown.notes.length ? (
             <ul className={styles.plannerNotes}>
               {shown.notes.map((note, index) => (

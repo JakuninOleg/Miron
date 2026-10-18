@@ -24,12 +24,12 @@ for (const viewport of viewports) {
     await page.setViewportSize(viewport);
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/story/max");
-    await expect(page.getByRole("heading", { level: 1 })).toHaveText("МАКС");
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Макс.");
     await page.evaluate(() => document.fonts.ready);
     await expect
       .poll(() =>
         page
-          .locator("picture img")
+          .locator('[data-art="coach"] img')
           .evaluate(
             (image) =>
               image instanceof HTMLImageElement && image.complete && image.naturalWidth > 0,
@@ -64,34 +64,35 @@ for (const viewport of viewports) {
     expect(bounds).toEqual({ documentFits: true, allFit: true, controlsReachable: true });
     await page.getByRole("button", { name: "Круто, дальше", exact: true }).click();
     await expect(page).toHaveURL(/\/story$/);
-    await expect(page.getByRole("heading", { level: 1 })).toHaveText("ЛИКА");
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Лика.");
   });
 }
 
-test("Max comic panels are three distinct images with different scenes", async ({ page }) => {
-  await page.setViewportSize({ width: 1672, height: 941 });
+test("max has a distinct introduction and a different shared choice scene", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/story/max");
-  const aside = page.getByRole("complementary", { name: "Знакомство с Максом в комиксе" });
-  const images = aside.getByRole("img");
-  await expect(images).toHaveCount(3);
+  const intro = page.getByRole("img", { name: /^Макс с полотенцем/ });
   await expect
     .poll(() =>
-      images.evaluateAll((nodes) =>
-        nodes.every(
-          (node) => node instanceof HTMLImageElement && node.complete && node.naturalWidth > 0,
-        ),
+      intro.evaluate(
+        (image) => image instanceof HTMLImageElement && image.complete && image.naturalWidth > 0,
       ),
     )
     .toBe(true);
-  const sources = await images.evaluateAll((nodes) =>
-    nodes.map((node) => (node as HTMLImageElement).currentSrc),
-  );
-  expect(new Set(sources).size).toBe(3);
-  for (const image of await images.all()) {
-    const rect = await image.boundingBox();
-    expect(rect).not.toBeNull();
-    expect(rect!.y + rect!.height).toBeLessThanOrEqual(941);
-  }
+  const introSource = await intro.getAttribute("src");
+  await expect(
+    page.getByText("Есть двадцать минут? Уже повод сделать что-то для себя!", { exact: true }),
+  ).toBeVisible();
+  await page.goto("/story/choose");
+  const portrait = page.locator('picture[data-art="choose"] img');
+  await expect
+    .poll(() =>
+      portrait.evaluate(
+        (image) => image instanceof HTMLImageElement && image.complete && image.naturalWidth > 0,
+      ),
+    )
+    .toBe(true);
+  expect(await portrait.getAttribute("src")).not.toBe(introSource);
 });
 
 test("keyboard navigation, return to first scene and reduced motion survive orientation changes", async ({
@@ -102,7 +103,7 @@ test("keyboard navigation, return to first scene and reduced motion survive orie
   await page.goto("/story/first");
   await page.getByRole("button", { name: "Давай знакомиться" }).focus();
   await page.keyboard.press("Enter");
-  await expect(page.getByRole("heading", { name: "МАКС", exact: true })).toBeFocused();
+  await expect(page.getByRole("heading", { name: "Макс.", exact: true })).toBeFocused();
   expect(
     await page
       .locator('[aria-label="История знакомства"]')
@@ -122,7 +123,7 @@ test("keyboard navigation, return to first scene and reduced motion survive orie
   }
   await page.getByRole("button", { name: "Предыдущая сцена" }).focus();
   await page.keyboard.press("Enter");
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("ПРИВЕТ!");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("Привет!");
   await page.getByRole("button", { name: "Давай знакомиться" }).click();
-  await expect(page.getByRole("heading", { name: "МАКС", exact: true })).toBeFocused();
+  await expect(page.getByRole("heading", { name: "Макс.", exact: true })).toBeFocused();
 });

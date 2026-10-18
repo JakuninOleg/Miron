@@ -21,6 +21,8 @@ async function openDashboard(page: Page, companion: "max" | "lika" = "max") {
 }
 
 async function openCompanions(page: Page) {
+  const collapse = page.getByRole("button", { name: "Свернуть чат", exact: true });
+  if (await collapse.isVisible()) await collapse.click();
   await page.getByRole("button", { name: "Открыть профиль", exact: true }).click();
   await page.getByRole("button", { name: /^Напарники · сейчас/ }).click();
   await expect(page.getByRole("dialog")).toBeVisible();
@@ -41,6 +43,8 @@ test("dashboard drafts are honest, separate per coach and never sent or persiste
   await expect(input).toHaveValue("Хочу потренироваться сейчас.");
   await expect(input).toBeFocused();
   await input.fill("Хочу занятие дома. Есть 40 минут.");
+  await page.getByRole("button", { name: "Свернуть чат", exact: true }).click();
+  await page.getByText("Ещё", { exact: true }).click();
   await page.getByRole("button", { name: "Что приготовить?", exact: true }).click();
   await expect(input).toHaveValue("Хочу занятие дома. Есть 40 минут.");
   await page.getByRole("button", { name: "Отправить сообщение", exact: true }).click();
@@ -64,13 +68,13 @@ test("dashboard drafts are honest, separate per coach and never sent or persiste
   expect(privateCalls).toEqual([]);
 });
 
-test("calendar and achievement panels restore keyboard focus and keep empty progress", async ({
+test("calendar restores focus and progress opens as a page with empty achievements", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1536, height: 1024 });
   await page.emulateMedia({ reducedMotion: "reduce" });
   await openDashboard(page, "lika");
-  const calendar = page.getByRole("button", { name: "Добавить в календарь", exact: true });
+  const calendar = page.getByRole("button", { name: "Открыть календарь", exact: true });
   await calendar.focus();
   await page.keyboard.press("Enter");
   await expect(page.getByRole("heading", { name: "Твой календарь", exact: true })).toBeFocused();
@@ -80,14 +84,15 @@ test("calendar and achievement panels restore keyboard focus and keep empty prog
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await expect(calendar).toBeFocused();
   await expect(page.getByRole("progressbar")).toHaveAttribute("aria-valuenow", "0");
-  await page.getByRole("button", { name: "Как получить", exact: true }).click();
-  await expect(page.getByRole("dialog")).toContainText("Пока иконки серые");
-  await page.keyboard.press("Escape");
+  await page.getByRole("button", { name: "Уровень 1. Открыть прогресс", exact: true }).click();
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "Твои достижения", exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "К разговору", exact: true }).click();
   await expect(
     page.getByRole("button", { name: "Начать голосовой ввод", exact: true }),
   ).toBeVisible();
   await expect(page.getByRole("dialog")).toHaveCount(0);
-  await expect(page.locator("main")).toContainText("Пока без расписания");
+  await expect(page.locator("main")).toContainText("Начни с одного занятия.");
   expect(await page.evaluate(() => localStorage.getItem("miron:unrelated-preview-test"))).toBe(
     "preserved",
   );

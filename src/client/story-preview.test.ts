@@ -127,6 +127,26 @@ describe("account onboarding staging boundary", () => {
     });
   });
 
+  it("keeps a legacy interest in an uncertain submission after it disappears from the UI", () => {
+    const pendingCompletion: CompleteOnboardingInput = {
+      operationId: "33333333-3333-4333-8333-333333333333",
+      companion: "max",
+      interests: ["fitness", "home"],
+      adultConfirmed: true,
+    };
+    const raw = serializeAccountStoryDraft(
+      alice,
+      { ...state, interests: ["fitness"] },
+      pendingCompletion,
+    );
+    const restored = parseAccountStoryDraft(raw, alice, preferences);
+    expect(restored.pendingCompletion).toEqual(pendingCompletion);
+    expect(restored.state.interests).toEqual(["fitness", "home"]);
+    expect(parseStoryPreview(JSON.stringify({ interests: ["fitness"] })).interests).toEqual([
+      "fitness",
+    ]);
+  });
+
   it.each([
     { operationId: "invalid" },
     { adultConfirmed: false },

@@ -299,7 +299,9 @@ describe.runIf(enabled)(
       expect(provider).toHaveBeenCalledTimes(1);
       const [trial] = await getDb().select().from(trials).where(eq(trials.userId, failedOwner));
       expect(trial).toMatchObject({ used: 0, reserved: 0 });
-      expect((await getAssistantHistory(failedOwner)).messages).toEqual([]);
+      expect((await getAssistantHistory(failedOwner)).messages).toMatchObject([
+        { role: "user", replyState: "failed" },
+      ]);
       const [turn] = await getDb()
         .select()
         .from(assistantTurns)
@@ -518,17 +520,23 @@ describe.runIf(enabled)(
           createdAt: turn.createdAt.toISOString(),
         };
         const reply = { operationId: turn.operationId, messages: [message] };
-        await finishAssistantTurn(turn.userId, turn.operationId, reply, false, {
-          model: "mock",
-          policyVersion: "test",
-          calls: 1,
-          promptTokens: 1,
-          completionTokens: 1,
-          totalTokens: 2,
-          costHintRub: null,
-        });
+        const persistedReply = await finishAssistantTurn(
+          turn.userId,
+          turn.operationId,
+          reply,
+          false,
+          {
+            model: "mock",
+            policyVersion: "test",
+            calls: 1,
+            promptTokens: 1,
+            completionTokens: 1,
+            totalTokens: 2,
+            costHintRub: null,
+          },
+        );
         expect(await admitAssistantTurn(turn.userId, turn.operationId, "Привет")).toEqual({
-          replay: reply,
+          replay: persistedReply,
         });
         const deniedOwner = turn.userId === capOwnerA ? capOwnerB : capOwnerA;
         const denied = await admitAssistantTurn(deniedOwner, randomUUID(), "Снова вопрос");

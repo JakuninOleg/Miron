@@ -5,6 +5,7 @@ import {
   pendingAssistantMessage,
   PENDING_ASSISTANT_KEY,
   readPendingAssistant,
+  reconcileAssistantHistory,
   type PendingAssistantOperation,
 } from "./assistant-client-state";
 
@@ -23,6 +24,41 @@ function storage(value: unknown) {
 }
 
 describe("assistant recovery", () => {
+  it("keeps loaded older pages on append, replaces them on deletion and ignores an older response", () => {
+    const old = { ...pendingAssistantMessage(pending), companion: "max" as const };
+    const latest = { ...old, id: "latest", operationId: crypto.randomUUID(), text: "Новое" };
+    const snapshot = { companion: "max" as const, revision: 4, resetRevision: 1 };
+    const page = {
+      enabled: true,
+      companion: "max" as const,
+      revision: 5,
+      resetRevision: 1,
+      nextCursor: null,
+      messages: [latest],
+    };
+    expect(
+      reconcileAssistantHistory([old], snapshot, page)?.messages.map((message) => message.id),
+    ).toEqual([old.id, latest.id]);
+    expect(
+      reconcileAssistantHistory([old], snapshot, { ...page, resetRevision: 5 })?.messages,
+    ).toEqual([latest]);
+    expect(reconcileAssistantHistory([old], snapshot, { ...page, revision: 3 })).toBeNull();
+    const lika = reconcileAssistantHistory([old], snapshot, {
+      ...page,
+      companion: "lika",
+      messages: [],
+    });
+    expect(lika?.messages).toEqual([]);
+  });
+  it("preserves every deliberately loaded page when the caller opts out of the recent-message cap", () => {
+    const messages = Array.from({ length: 120 }, (_, index) => ({
+      ...pendingAssistantMessage(pending),
+      id: `message-${index}`,
+      operationId: undefined,
+    }));
+    expect(mergeAssistantMessages(messages, [])).toHaveLength(100);
+    expect(mergeAssistantMessages(messages, [], undefined, Infinity)).toHaveLength(120);
+  });
   it("recovers the same operation only for its authenticated owner", () => {
     const local = storage(pending);
     expect(readPendingAssistant(local, "user:alice")).toEqual(pending);

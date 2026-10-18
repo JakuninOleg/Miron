@@ -1,16 +1,23 @@
 "use client";
-import Image from "next/image";
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Check, CircleCheck, Dumbbell, Info, Play, Trophy } from "lucide-react";
 import { useMiron } from "@/client/use-miron";
 import { PageHeading } from "./app-shell";
-import { companionNames } from "./companion";
+import { ChatScreen } from "./chat-screen";
+import { WorkoutMilestones } from "./workout-milestones";
+import styles from "./workout-screen.module.css";
 import { WorkoutTimer } from "./workout-timer";
 import { WorkoutEnergyCard } from "./workout-energy-card";
+import { WorkoutLoadFeedbackCard } from "./workout-load-feedback";
+import { WorkoutSetEditor } from "./workout-set-editor";
+import { WorkoutAdjustment } from "./workout-adjustment";
+import { WorkoutReplacement } from "./workout-replacement";
 import type { Exercise, RecordedSet } from "@/shared/contracts";
 import { exerciseWorkSeconds, workoutExecution } from "@/shared/workout-execution";
+import { dropSetResultError, type DropSetResult } from "@/shared/training-methods";
+import methodStyles from "./workout-methods.module.css";
 
 function SetEntry({
   index,
@@ -19,21 +26,94 @@ function SetEntry({
   available,
   savedSet,
   onRecord,
+  onEdit,
 }: {
   index: number;
   exercise: Exercise;
   completed: boolean;
   available: boolean;
   savedSet?: RecordedSet;
-  onRecord: (reps: number, weight: number) => Promise<void>;
+  onRecord: (reps: number, weight: number, drop?: DropSetResult) => Promise<void>;
+  onEdit: () => void;
 }) {
   const timed = exercise.metric === "time";
   const [reps, setReps] = useState(timed ? exerciseWorkSeconds(exercise) : exercise.targetReps);
   const [weight, setWeight] = useState(0);
+  const hasDrop = Boolean(exercise.dropSet && index === exercise.sets - 1);
+  const [didDrop, setDidDrop] = useState(false);
+  const [dropReps, setDropReps] = useState(exercise.dropSet?.targetReps ?? 8);
+  const [dropWeight, setDropWeight] = useState(0);
+  const drop = didDrop ? { reps: dropReps, weightKg: dropWeight } : undefined;
+  const invalidDrop = dropSetResultError(exercise, index, weight, drop);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   return (
     <>
+      {completed ? (
+        <button type="button" className={methodStyles.editButton} onClick={onEdit}>
+          Исправить подход {index + 1}
+        </button>
+      ) : null}
+      {hasDrop ? (
+        <fieldset className={methodStyles.drop} disabled={completed || saving || !available}>
+          <legend>Последний подход · дропсет</legend>
+          <p>
+            После обычных повторов можно один раз снизить вес и продолжить без намеренной паузы.
+            Сохраняй управляемую технику и запас сил; отказ не требуется. Запиши обе части одним
+            действием.
+          </p>
+          {completed ? (
+            <p>
+              {savedSet?.drop
+                ? `Снижение: ${savedSet.drop.reps} повт. × ${savedSet.drop.weightKg} кг`
+                : "Снижение веса не выполнялось."}
+            </p>
+          ) : (
+            <>
+              <label className={methodStyles.toggle}>
+                <input
+                  type="checkbox"
+                  checked={didDrop}
+                  onChange={(event) => setDidDrop(event.target.checked)}
+                />
+                Снижение веса выполнено
+              </label>
+              {didDrop ? (
+                <div className={methodStyles.fields}>
+                  <label>
+                    Повторы после снижения{exercise.perSide ? " / сторона" : ""}
+                    <input
+                      className="input"
+                      type="number"
+                      min={1}
+                      max={100}
+                      value={dropReps}
+                      onChange={(event) => setDropReps(Number(event.target.value))}
+                    />
+                  </label>
+                  <label>
+                    Сниженный вес, кг
+                    <input
+                      className="input"
+                      type="number"
+                      min={0.001}
+                      max={1000}
+                      step="any"
+                      value={dropWeight}
+                      onChange={(event) => setDropWeight(Number(event.target.value))}
+                    />
+                  </label>
+                </div>
+              ) : null}
+              {didDrop && invalidDrop ? (
+                <p className="field-help">
+                  {invalidDrop} Исходный вес укажи в строке подхода ниже.
+                </p>
+              ) : null}
+            </>
+          )}
+        </fieldset>
+      ) : null}
       <div className="set-row">
         <span className="muted small">{index + 1}</span>
         <input
@@ -75,14 +155,15 @@ function SetEntry({
             reps < 1 ||
             reps > (timed ? 86400 : 1000) ||
             !Number.isFinite(weight) ||
-            weight < 0
+            weight < 0 ||
+            Boolean(invalidDrop)
           }
           aria-label={completed ? `Подход ${index + 1} записан` : `Записать подход ${index + 1}`}
           onClick={async () => {
             setSaving(true);
             setError("");
             try {
-              await onRecord(reps, weight);
+              await onRecord(reps, weight, drop);
             } catch (cause) {
               setError(
                 cause instanceof Error ? cause.message : "Подход не сохранён. Повтори запись.",
@@ -105,22 +186,42 @@ function SetEntry({
 }
 
 export function WorkoutScreen() {
+  const { workout, isReady } = useMiron();
+  return (
+    <div className={styles.screen}>
+      <WorkoutSession key={isReady ? (workout?.id ?? "empty") : "loading"} />
+    </div>
+  );
+}
+
+function WorkoutSession() {
+  const [editingSet, setEditingSet] = useState<string | null>(null);
   const {
     workout,
     profile,
+    progress,
     isReady,
     isDemo,
     pendingCount,
     startWorkout,
     recordSet,
     recordTimedSet,
+    editSet,
+    isOnline,
     advanceExercise,
     finishWorkout,
     skipExercise,
     endWorkoutEarly,
   } = useMiron();
+  const [before] = useState(() => ({
+    xp: progress.xp,
+    completedWorkouts: progress.completedWorkouts,
+    activityDays: progress.journey?.activityDays,
+  }));
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [adjustment, setAdjustment] = useState(false);
+  const [replacement, setReplacement] = useState<string | null>(null);
   const [confirmation, setConfirmation] = useState<"skip" | "end" | null>(null);
   const cancelConfirmationRef = useRef<HTMLButtonElement>(null);
   const confirmationTriggerRef = useRef<HTMLButtonElement | null>(null);
@@ -129,6 +230,7 @@ export function WorkoutScreen() {
   const exerciseHeadingRef = useRef<HTMLHeadingElement>(null);
   const status = workout?.status;
   const currentIndex = workout?.currentIndex;
+  const exerciseRevision = workout?.exercises[workout.currentIndex]?.revisionId;
   useEffect(() => {
     if (confirmation) cancelConfirmationRef.current?.focus();
     else if (confirmationTriggerRef.current?.isConnected) confirmationTriggerRef.current.focus();
@@ -141,7 +243,7 @@ export function WorkoutScreen() {
   }, [status]);
   useEffect(() => {
     if (status === "active") exerciseHeadingRef.current?.focus();
-  }, [currentIndex, status]);
+  }, [currentIndex, status, exerciseRevision]);
   if (!isReady || !profile) return <div className="loading-state">Готовим тренировку…</div>;
   if (!workout)
     return (
@@ -157,11 +259,43 @@ export function WorkoutScreen() {
         </section>
       </>
     );
+  if (replacement)
+    return (
+      <WorkoutReplacement
+        key={`${workout.id}:${replacement}`}
+        workout={workout}
+        exerciseId={replacement}
+        onClose={() => setReplacement(null)}
+      />
+    );
+  if (adjustment)
+    return (
+      <WorkoutAdjustment key={workout.id} workout={workout} onClose={() => setAdjustment(false)} />
+    );
+  if (editingSet)
+    return (
+      <WorkoutSetEditor
+        key={`${workout.id}:${editingSet}`}
+        workout={workout}
+        setId={editingSet}
+        onCommit={(command) => editSet(command, { id: workout.id, revision: workout.revision })}
+        isOnline={isOnline}
+        onClose={() => {
+          setEditingSet(null);
+          requestAnimationFrame(() =>
+            (workout.status === "active"
+              ? exerciseHeadingRef.current
+              : outcomeHeadingRef.current
+            )?.focus(),
+          );
+        }}
+      />
+    );
   if (["completed", "partial", "aborted"].includes(workout.status)) {
     const aborted = workout.status === "aborted";
     const partial = workout.status === "partial";
     const reward = workout.reward;
-    const awaitingSync = !isDemo && pendingCount > 0;
+    const awaitingSync = !isDemo && !reward && pendingCount > 0;
     const message = aborted
       ? "Занятие закрыто без записанных результатов. Можно начать снова, когда будет удобно."
       : partial
@@ -173,50 +307,94 @@ export function WorkoutScreen() {
           : "Занятие завершено. Ещё один шаг в твоём ритме — всё сохранили.";
     return (
       <section className="card finish-card">
-        <div className="finish-icon">{aborted ? <Dumbbell size={35} /> : <Trophy size={35} />}</div>
-        <h1 ref={outcomeHeadingRef} tabIndex={-1}>
-          {aborted
-            ? "Занятие закрыто"
-            : partial
-              ? "Сегодня — столько, сколько получилось"
-              : "План выполнен"}
-        </h1>
-        <p>{message}</p>
-        <div className="stage-progress-label" style={{ gap: 25, fontSize: 15 }}>
-          <span>{workout.recordedSets.length} подходов</span>
-          {!awaitingSync && reward ? <span className="accent">+{reward.awardedXp} XP</span> : null}
+        <header className={styles.resultHero}>
+          <div className="finish-icon">
+            {aborted ? <Dumbbell size={35} /> : <Trophy size={35} />}
+          </div>
+          <h1 ref={outcomeHeadingRef} tabIndex={-1}>
+            {aborted
+              ? "Занятие закрыто"
+              : partial
+                ? "Сегодня — столько, сколько получилось"
+                : "План выполнен"}
+          </h1>
+          <p>
+            {awaitingSync
+              ? "Выполненная работа записана на этом устройстве. Подтверждение сервера ещё впереди."
+              : message}
+          </p>
+          <div className="stage-progress-label" style={{ gap: 25, fontSize: 15 }}>
+            <span>Подходы: {workout.recordedSets.length}</span>
+            {!awaitingSync && reward ? (
+              <span className="accent">+{reward.awardedXp} XP</span>
+            ) : null}
+          </div>
+          {awaitingSync ? (
+            <p role="status">
+              Результаты сохранены на устройстве. XP подтвердим после синхронизации.
+            </p>
+          ) : reward && !aborted ? (
+            <p className="field-help">
+              {reward.awardedXp === 0
+                ? "Результаты сохранены. Сегодня уже начислено столько же или больше XP: повторные занятия не увеличивают награду."
+                : reward.awardedXp < reward.eligibleXp
+                  ? "Сегодня уже была награда. Добавили разницу, чтобы учесть это занятие."
+                  : "Опыт начислен автоматически."}{" "}
+              {reward.dayTotalXp} / 50 XP за день · время Москвы.
+            </p>
+          ) : aborted ? (
+            <p className="field-help">Без выполненных подходов XP не начисляется.</p>
+          ) : (
+            <p className="field-help">
+              Информация о награде появится после подтверждения результата.
+            </p>
+          )}
+          {isDemo ? (
+            <p className="field-help">Демонстрация: результаты и XP доступны только в этом демо.</p>
+          ) : null}
+        </header>
+        <div className={styles.resultBody}>
+          <div className={styles.resultFacts}>
+            {!aborted ? <WorkoutEnergyCard key={workout.id} workout={workout} /> : null}
+            <WorkoutLoadFeedbackCard key={`load-${workout.id}`} workout={workout} />
+            {workout.recordedSets.length ? (
+              <details>
+                <summary>Проверить и исправить записи</summary>
+                {workout.recordedSets.map((set, index) => (
+                  <button
+                    type="button"
+                    className={methodStyles.editButton}
+                    key={set.id}
+                    onClick={() => setEditingSet(set.id)}
+                  >
+                    Исправить подход {index + 1} ·{" "}
+                    {workout.exercises.find((exercise) => exercise.id === set.exerciseId)?.name}
+                  </button>
+                ))}
+              </details>
+            ) : null}
+          </div>
+          <aside className={styles.resultNext} aria-label="Твой путь после занятия">
+            {!isDemo && !awaitingSync && reward ? (
+              <WorkoutMilestones before={before} progress={progress} showNew={!aborted} />
+            ) : null}
+            <Link href="/progress" className="button full">
+              Посмотреть прогресс
+              <ArrowRight size={16} />
+            </Link>
+            {!isDemo && !aborted && !awaitingSync ? (
+              <Link
+                className="button secondary full"
+                href={`/workout-builder/start?source=history&id=${workout.id}&save=1`}
+              >
+                Сохранить как шаблон
+              </Link>
+            ) : null}
+            <Link href="/dashboard" className="text-link">
+              Вернуться к своему дню
+            </Link>
+          </aside>
         </div>
-        {awaitingSync ? (
-          <p role="status">
-            Результаты сохранены на устройстве. XP подтвердим после синхронизации.
-          </p>
-        ) : reward && !aborted ? (
-          <p className="field-help">
-            {reward.awardedXp === 0
-              ? "Результаты сохранены. Сегодня уже начислено столько же или больше XP: повторные занятия не увеличивают награду."
-              : reward.awardedXp < reward.eligibleXp
-                ? "Сегодня уже была награда. Добавили разницу, чтобы учесть это занятие."
-                : "Опыт начислен автоматически."}{" "}
-            {reward.dayTotalXp} / 50 XP за день · время Москвы.
-          </p>
-        ) : aborted ? (
-          <p className="field-help">Без выполненных подходов XP не начисляется.</p>
-        ) : (
-          <p className="field-help">
-            Информация о награде появится после подтверждения результата.
-          </p>
-        )}
-        {isDemo ? (
-          <p className="field-help">Демонстрация: результаты и XP доступны только в этом демо.</p>
-        ) : null}
-        {!aborted ? <WorkoutEnergyCard key={workout.id} workout={workout} /> : null}
-        <Link href="/progress" className="button full">
-          Посмотреть прогресс
-          <ArrowRight size={16} />
-        </Link>
-        <Link href="/dashboard" className="text-link">
-          Вернуться к своему дню
-        </Link>
       </section>
     );
   }
@@ -283,6 +461,20 @@ export function WorkoutScreen() {
         </div>
         <span>{workout.estimatedMinutes} мин</span>
       </div>
+      <div className={styles.controls}>
+        <button type="button" className="button secondary" onClick={() => setAdjustment(true)}>
+          Сделать оставшееся полегче
+        </button>
+        {!isDemo && !logged && !exercise.pairKey && !exercise.dropSet ? (
+          <button
+            type="button"
+            className="button secondary"
+            onClick={() => setReplacement(exercise.id)}
+          >
+            Заменить упражнение
+          </button>
+        ) : null}
+      </div>
       {error ? (
         <p className="error-text" role="alert" style={{ marginBottom: 17 }}>
           {error}
@@ -304,6 +496,9 @@ export function WorkoutScreen() {
               <h2 ref={exerciseHeadingRef} tabIndex={-1}>
                 {exercise.name}
               </h2>
+              {exercise.coaching ? (
+                <p className="field-help">{exercise.coaching.effortHint}</p>
+              ) : null}
               <p>
                 {exercise.sets} подхода ·{" "}
                 {exercise.metric === "time"
@@ -377,7 +572,7 @@ export function WorkoutScreen() {
               </div>
               {Array.from({ length: exercise.sets }, (_, index) => (
                 <SetEntry
-                  key={`${exercise.id}-${index}`}
+                  key={`${exercise.id}-${exercise.revisionId ?? "legacy"}-${index}`}
                   index={index}
                   exercise={exercise}
                   completed={index < logged}
@@ -385,9 +580,15 @@ export function WorkoutScreen() {
                   savedSet={
                     workout.recordedSets.filter((set) => set.exerciseId === exercise.id)[index]
                   }
-                  onRecord={async (reps, weight) => {
+                  onRecord={async (reps, weight, drop) => {
                     if (exercise.metric === "time") await recordTimedSet(exercise.id, reps);
-                    else await recordSet(exercise.id, reps, weight);
+                    else await recordSet(exercise.id, reps, weight, drop);
+                  }}
+                  onEdit={() => {
+                    const saved = workout.recordedSets.filter(
+                      (set) => set.exerciseId === exercise.id,
+                    )[index];
+                    if (saved) setEditingSet(saved.id);
                   }}
                 />
               ))}
@@ -531,34 +732,10 @@ export function WorkoutScreen() {
               />
             </div>
           ) : null}
-          <div className="card workout-companion">
-            <Image
-              unoptimized
-              width={768}
-              height={1152}
-              className="mini-avatar"
-              src={`/characters/${profile.companion}-avatar.webp`}
-              alt=""
-            />
-            <div>
-              <span className="rose small">{companionNames[profile.companion]}</span>
-              <p>Чистое движение важнее скорости. Не спеши.</p>
-            </div>
-          </div>
-          <section className="card">
-            <h3>Опыт за твой путь</h3>
-            <p className="field-help">
-              Это занятие: {workout.rewardKind === "support" ? "короткий комплекс" : "основное"}.
-            </p>
-            <p className="field-help">
-              Основное занятие: 50 XP за полное, 25 за частичное. Короткий аэробный или
-              восстановительный комплекс: 20 / 10 XP.
-            </p>
-            <p className="field-help">
-              До 50 XP за день по времени Москвы. Если позже выполнено более полное занятие, добавим
-              только разницу. Результаты сохраняются и после достижения лимита.
-            </p>
-          </section>
+          <details className={styles.chatDetails}>
+            <summary>Спросить напарника во время занятия</summary>
+            <ChatScreen compact />
+          </details>
           <section className="card workout-upcoming">
             <h3 style={{ marginBottom: 18 }}>План занятия</h3>
             <div className="upcoming-list">

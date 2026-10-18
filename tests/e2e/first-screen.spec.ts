@@ -20,7 +20,7 @@ for (const viewport of viewports) {
     await page.setViewportSize(viewport);
     await page.goto("/story/first");
     const heading = page.getByRole("heading", { level: 1 });
-    await expect(heading).toContainText("ПРИВЕТ!");
+    await expect(heading).toContainText("Привет!");
     await page.evaluate(() => document.fonts.ready);
     await expect
       .poll(() =>
@@ -55,7 +55,7 @@ for (const viewport of viewports) {
     await expect(page.getByText("КАК ЭТО РАБОТАЕТ", { exact: false })).toHaveCount(0);
     await button.click();
     await expect(page).toHaveURL(/\/story$/);
-    await expect(page.getByRole("heading", { level: 1 })).toHaveText("МАКС");
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Макс.");
   });
 }
 
@@ -82,5 +82,5 @@ test("first screen remains reachable after portrait/landscape resize", async ({ 
   }
   await button.focus();
   await page.keyboard.press("Enter");
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("МАКС");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Макс.");
 });

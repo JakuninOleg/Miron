@@ -13,6 +13,7 @@ import {
 } from "../db/schema";
 import { DomainError } from "../domain/errors";
 import { getWorkout } from "../domain/workouts";
+import { readCommunicationMemory } from "../domain/communication-memory";
 
 export async function authorizeAssistant(ownerId: string) {
   const [owner] = await getDb()
@@ -76,6 +77,7 @@ export async function readAssistantProfile(ownerId: string) {
     ...profile,
     equipment,
     confirmedBuilderInventories,
+    communicationPreferences: await readCommunicationMemory(ownerId, profile.companion),
     basis: "user_reported",
   };
 }
@@ -90,6 +92,8 @@ export async function readRecentWorkouts(ownerId: string) {
       revision: workouts.revision,
       completedAt: workouts.completedAt,
       energyEstimate: workouts.energyEstimate,
+      loadFeedback: workouts.loadFeedback,
+      direction: workouts.energyActivity,
       sets: sql<number>`(select count(*)::int from ${recordedSets} where ${recordedSets.userId} = ${ownerId} and ${recordedSets.workoutId} = ${workouts.id})`,
     })
     .from(workouts)
@@ -128,6 +132,8 @@ export function compactWorkout(workout: Awaited<ReturnType<typeof getWorkout>>) 
     status: workout.status,
     revision: workout.revision,
     currentIndex: workout.currentIndex,
+    direction: workout.energyActivity,
+    loadFeedback: workout.loadFeedback,
     energyEstimate: compactEnergy(workout.energyEstimate),
     exercises: workout.exercises.slice(0, 12).map((exercise) => ({
       id: exercise.id,
@@ -139,6 +145,14 @@ export function compactWorkout(workout: Awaited<ReturnType<typeof getWorkout>>) 
       targetDurationSeconds: exercise.targetDurationSeconds,
       restSeconds: exercise.restSeconds,
       skipped: exercise.skipped,
+      dropSet: exercise.dropSet,
+      pairKey: exercise.pairKey,
+      coaching: exercise.coaching
+        ? {
+            progression: exercise.coaching.progression,
+            repetitionsInReserve: exercise.coaching.repetitionsInReserve,
+          }
+        : undefined,
     })),
     recordedSets: workout.recordedSets.slice(-24),
     recordedSetCount: workout.recordedSets.length,

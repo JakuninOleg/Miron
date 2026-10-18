@@ -1,0 +1,838 @@
+/* The six reference PNGs in docs/visuals define this composition.
+   Fit the complete scene; a wider viewport extends the ambient background. */
+.screen {
+  --body: var(--font-manrope), sans-serif;
+  --scene-image: url("/visuals/soft-3d/scenes/welcome-v2.webp");
+  --frame-width: min(100vw, 159.88svh);
+  --ink: #fffaf5;
+  --muted: #e5ded8;
+  --accent: #ff765f;
+  position: relative;
+  isolation: isolate;
+  height: 100svh;
+  overflow: clip;
+  background: #292623;
+  color: var(--ink);
+  font-family: var(--body);
+}
+.screen::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: linear-gradient(0deg, #665345, transparent 35%), #292623;
+}
+.screen[data-companion="max"] {
+  --scene-image: url("/visuals/soft-3d/scenes/max-v2.webp");
+}
+.screen[data-companion="lika"] {
+  --scene-image: url("/visuals/soft-3d/scenes/lika-v2.webp");
+  --ink: #19252c;
+  --muted: #29323a;
+  --accent: #ef718f;
+  background: #f2dfca;
+}
+.screen[data-companion="lika"]::before {
+  background: linear-gradient(0deg, #f2d6b7, transparent 35%), #eedbc9;
+}
+@media (min-aspect-ratio: 17/10) {
+  .welcomeArt,
+  .coachArt {
+    mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+  }
+}
+@media (max-aspect-ratio: 6/5) and (min-height: 451px) {
+  .welcomeArt,
+  .coachArt {
+    mask-image: linear-gradient(90deg, transparent, #000 2%, #000 98%, transparent);
+  }
+}
+.screen h1,
+.screen h2,
+.screen p,
+.screen blockquote {
+  margin: 0;
+}
+.screen h1:focus {
+  outline: none;
+}
+.screen button {
+  font-family: inherit;
+  cursor: pointer;
+}
+.screen button:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+.screen button:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 5px;
+}
+.stage {
+  position: relative;
+  width: var(--frame-width);
+  height: 100svh;
+  margin-inline: auto;
+  container-type: size;
+}
+.welcomeArt,
+.coachArt {
+  position: absolute;
+  inset: 0;
+  display: block;
+  pointer-events: none;
+}
+.welcomeArt img,
+.coachArt img {
+  object-fit: contain;
+  object-position: center;
+}
+.welcomeCopy {
+  position: absolute;
+  inset: 17.2% auto auto 4.5%;
+  width: 28%;
+}
+.intro,
+.actions,
+.benefits,
+.artNote {
+  z-index: 1;
+}
+.eyebrow {
+  color: var(--muted);
+  font-size: 1.3cqw;
+  line-height: 1.4;
+}
+.title {
+  font-family: var(--font-rubik), sans-serif;
+  font-size: 6.05cqw;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 1.04;
+}
+.welcomeIntro .title {
+  margin-top: 1.2cqh;
+  font-size: 6.05cqw;
+  line-height: 1.04;
+}
+.maxName,
+.likaName {
+  font-style: normal;
+  position: relative;
+  display: inline-block;
+  width: fit-content;
+}
+.maxName {
+  color: #ff8d75;
+}
+.likaName {
+  color: #f49fb9;
+}
+.screen[data-companion="lika"] .likaName {
+  color: #ef718f;
+}
+.maxName > svg,
+.likaName > svg {
+  position: absolute;
+  width: 100%;
+  height: 0.24em;
+  left: 0;
+  bottom: -0.19em;
+  overflow: visible;
+  transform: rotate(-2deg);
+  animation: underlineIn 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  transform-origin: left;
+}
+.description {
+  color: var(--muted);
+  font-size: 1.6cqw;
+  line-height: 1.5;
+}
+.welcomeIntro .description {
+  margin-top: 3.7cqh;
+  white-space: nowrap;
+}
+.next {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.8cqw;
+  min-height: 8.4cqh;
+  padding: 1.3cqh 2.5cqw;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(110deg, #ff7d64, #ff6e60);
+  color: #fff;
+  font-size: 1.75cqw;
+  font-weight: 800;
+  white-space: nowrap;
+  transition:
+    transform 200ms ease,
+    box-shadow 200ms ease;
+}
+.next svg {
+  width: 2.1cqw;
+  height: 2.1cqw;
+  transition: transform 200ms ease;
+}
+.next:active {
+  transform: scale(0.98);
+}
+.welcomeCopy .next {
+  margin-top: 4.7cqh;
+  width: 89%;
+}
+.welcomeTagline {
+  display: none;
+}
+.welcomeBubble,
+.coachBubble {
+  position: absolute !important;
+  z-index: 1;
+  width: 12%;
+  min-height: 11.5%;
+  text-align: center;
+  padding: 2.4cqh 1cqw 3cqh !important;
+  color: #242220 !important;
+  font:
+    400 1.65cqw/1.15 var(--font-neucha),
+    cursive !important;
+  transform: rotate(-4deg);
+}
+.welcomeBubble {
+  left: 36.5%;
+  top: 11.2%;
+}
+.welcomeBubble svg path,
+.coachBubble svg path {
+  stroke: #242220;
+  stroke-width: 2.5;
+  vector-effect: non-scaling-stroke;
+}
+.welcomeBubble::after {
+  content: "";
+  position: absolute;
+  width: 22%;
+  height: 27%;
+  bottom: -30%;
+  left: 46%;
+  background: linear-gradient(45deg, transparent 42%, #ff967d 44% 54%, transparent 56%);
+  transform: rotate(-7deg);
+}
+.welcomeNote {
+  position: absolute;
+  left: 83%;
+  top: 13.5%;
+  color: #f19bb5;
+  font:
+    2cqw/1.2 var(--font-neucha),
+    cursive;
+  transform: rotate(-11deg);
+}
+.welcomeNote svg {
+  position: absolute;
+  width: 130%;
+  height: 6cqh;
+  left: -28%;
+  top: 95%;
+  overflow: visible;
+}
+.welcomeNote path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+.features {
+  position: absolute;
+  left: 4%;
+  bottom: 8.5%;
+  width: 25.5%;
+  display: flex;
+  justify-content: space-between;
+}
+.feature {
+  display: grid;
+  justify-items: center;
+  gap: 1cqh;
+}
+.feature > svg {
+  width: 2.3cqw;
+  height: 2.3cqw;
+  stroke-width: 1.6;
+}
+.feature:first-child > svg,
+.screen[data-companion="max"] .benefits li:nth-child(2) svg {
+  transform: rotate(45deg);
+}
+.feature h2 {
+  font: 400 0.88cqw/1.4 var(--body);
+}
+.intro {
+  position: absolute;
+  left: 4.5%;
+  top: 14.8%;
+  width: 38%;
+}
+.intro .title {
+  font-size: 8cqw;
+  margin-top: 0.3cqh;
+}
+.intro .maxName > svg,
+.intro .likaName > svg {
+  bottom: -0.08em;
+}
+.screen[data-companion="max"] .intro .title {
+  margin-top: -1.5cqh;
+}
+.screen[data-companion="max"] .character {
+  margin-top: 1cqh !important;
+}
+.screen[data-companion="max"] .intro .description {
+  margin-top: 1.1cqh;
+}
+.character {
+  font:
+    800 3.15cqw/1.12 var(--font-rubik),
+    sans-serif;
+  letter-spacing: -0.04em;
+  margin-top: 2cqh !important;
+}
+.intro .description {
+  font-size: 1.32cqw;
+  line-height: 1.3;
+  margin-top: 1.8cqh;
+  max-width: 96%;
+}
+.descriptionLine {
+  display: block;
+}
+.coachBubble {
+  left: 43%;
+  top: 6.2%;
+  width: 18%;
+  min-height: 12%;
+  padding: 2.3cqh 1.2cqw 3cqh !important;
+  font-size: 1.45cqw !important;
+}
+.screen[data-companion="lika"] .coachBubble {
+  left: 33%;
+  top: 10.5%;
+  width: 20%;
+}
+.artNote {
+  position: absolute;
+  left: 86%;
+  top: 13.5%;
+  font:
+    1.9cqw/1.2 var(--font-neucha),
+    cursive;
+  color: #f18b80;
+  transform: rotate(-12deg);
+}
+.screen[data-companion="lika"] .artNote {
+  left: 80%;
+  color: #da6689;
+  width: 18%;
+}
+.benefits {
+  position: absolute;
+  top: 53.5%;
+  left: 4.5%;
+  width: 33%;
+  display: grid;
+  gap: 1.9cqh;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.benefits li {
+  display: flex;
+  align-items: center;
+  gap: 1.8cqw;
+  min-width: 0;
+}
+.benefitIcon {
+  color: var(--accent);
+  flex: 0 0 auto;
+  display: flex;
+}
+.benefitIcon svg {
+  width: 2.7cqw;
+  height: 2.7cqw;
+  stroke-width: 1.7;
+}
+.benefits h2 {
+  font: 700 1.18cqw/1.3 var(--body);
+}
+.benefits p {
+  color: var(--muted);
+  font-size: 1.03cqw;
+  line-height: 1.4;
+  margin-top: 0.3cqh;
+}
+.screen[data-companion="lika"] .benefits {
+  top: 60.5%;
+  width: 40%;
+  grid-template-columns: 1fr 1fr;
+  gap: 3.4cqh 2cqw;
+}
+.screen[data-companion="lika"] .benefits li {
+  gap: 1.3cqw;
+}
+.actions {
+  position: absolute;
+  left: 4.5%;
+  top: 81.7%;
+  width: 31%;
+}
+.actions .next {
+  min-height: 8cqh;
+  font-weight: 700;
+  font-size: 1.6cqw;
+}
+.screen[data-companion="lika"] .actions {
+  top: 77.6%;
+}
+.actionFooter {
+  margin-top: 1.4cqh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 1cqw;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  min-height: 44px;
+  padding: 0;
+  font-size: 1.2cqw;
+}
+.back svg {
+  width: 1.8cqw;
+  height: 1.8cqw;
+}
+.tagline {
+  font-size: max(12px, 0.8cqw);
+  color: var(--muted);
+}
+.screen[data-companion="lika"] .tagline {
+  color: #fffaf5;
+  background: #19252ce0;
+  padding: 6px 10px;
+  border-radius: 16px;
+}
+@media (hover: hover) {
+  .next:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px #00000015;
+  }
+  .next:hover svg {
+    transform: translateX(4px);
+  }
+}
+@media (max-aspect-ratio: 6/5) and (min-height: 451px) {
+  .screen {
+    --frame-width: min(100vw, 46.26svh);
+    --scene-image: url("/visuals/soft-3d/scenes/welcome-mobile-v2.webp");
+  }
+  .screen[data-companion="max"] {
+    --scene-image: url("/visuals/soft-3d/scenes/max-mobile-v2.webp");
+  }
+  .screen[data-companion="lika"] {
+    --scene-image: url("/visuals/soft-3d/scenes/lika-mobile-v2.webp");
+  }
+  .welcomeCopy {
+    inset: 0;
+    width: 100%;
+  }
+  .welcomeIntro {
+    position: absolute;
+    top: 8.6%;
+    left: 8%;
+    width: 88%;
+  }
+  .eyebrow {
+    font-size: max(11px, 3.3cqw);
+    line-height: 1.35;
+  }
+  .welcomeIntro .title {
+    margin-top: 1.3cqh;
+    font-size: 11.15cqw;
+    line-height: 1.06;
+  }
+  .welcomeIntro .description {
+    margin-top: 1.3cqh;
+    font-size: max(11px, 3.4cqw);
+    line-height: 1.4;
+    white-space: normal;
+  }
+  .next {
+    min-height: max(48px, 6.2cqh);
+    font-size: max(16px, 4.6cqw);
+    gap: 3cqw;
+    padding: 10px 4cqw;
+  }
+  .next svg {
+    width: max(24px, 5cqw);
+    height: max(24px, 5cqw);
+  }
+  .welcomeCopy .next {
+    position: absolute;
+    left: 7%;
+    bottom: 7.9%;
+    width: 86%;
+    margin: 0;
+  }
+  .welcomeTagline {
+    display: block;
+    position: absolute;
+    width: 100%;
+    bottom: 2.8%;
+    text-align: center;
+    color: #ddd0c3;
+    font:
+      max(12px, 4cqw)/1.1 var(--font-neucha),
+      cursive;
+  }
+  .welcomeBubble {
+    left: 7%;
+    top: 36.5%;
+    width: 25%;
+    min-height: 6.6%;
+    padding: 1cqh 1.8cqw 2cqh !important;
+    font-size: max(11px, 3.5cqw) !important;
+  }
+  .welcomeBubble::after {
+    height: 40%;
+    bottom: -40%;
+  }
+  .welcomeNote {
+    left: 80%;
+    top: 34%;
+    width: 19%;
+    font-size: 3.7cqw;
+  }
+  .welcomeNote svg {
+    width: 100%;
+    height: 3cqh;
+    left: 0;
+  }
+  .features {
+    display: none;
+  }
+  .intro {
+    top: 9.5%;
+    left: 7%;
+    width: 88%;
+  }
+  .intro .title {
+    font-size: max(34px, 12.3cqw);
+    line-height: 1.12;
+    margin-top: 0.4cqh;
+  }
+  .screen[data-companion="max"] .intro .title {
+    margin-top: 0.4cqh;
+  }
+  .screen[data-companion="lika"] .intro .title {
+    font-size: 15.3cqw;
+  }
+  .character {
+    font-size: max(14px, 5.1cqw);
+    line-height: 1.12;
+    margin-top: 1.2cqh !important;
+  }
+  .screen[data-companion="lika"] .character {
+    font-size: max(14px, 6cqw);
+  }
+  .intro .description {
+    font-size: max(11px, 3.1cqw);
+    line-height: 1.35;
+    margin-top: 1.2cqh;
+    max-width: 70%;
+  }
+  .screen[data-companion="max"] .intro .description {
+    margin-top: 0.7cqh;
+  }
+  .screen[data-companion="lika"] .intro .description {
+    max-width: 56%;
+  }
+  .coachBubble {
+    left: 24%;
+    top: 32%;
+    width: 39%;
+    min-height: 6.7%;
+    padding: 1.1cqh 2cqw 2cqh !important;
+    font-size: max(13px, 3.5cqw) !important;
+  }
+  .screen[data-companion="lika"] .coachBubble {
+    left: 60%;
+    top: 25%;
+    width: 36%;
+    min-height: 7%;
+  }
+  .artNote {
+    left: 84%;
+    top: 19%;
+    width: 16%;
+    font-size: 3.5cqw;
+  }
+  .screen[data-companion="lika"] .artNote {
+    display: none;
+  }
+  .benefits {
+    top: 56.5%;
+    left: 7%;
+    width: 40%;
+    gap: 1.8cqh;
+  }
+  .benefits li {
+    gap: 3cqw;
+    align-items: flex-start;
+  }
+  .benefitIcon svg {
+    width: max(24px, 6.7cqw);
+    height: max(24px, 6.7cqw);
+  }
+  .benefits h2 {
+    font-size: max(11px, 3.25cqw);
+    line-height: 1.2;
+  }
+  .benefits p {
+    font-size: max(10px, 2.85cqw);
+    line-height: 1.2;
+    margin-top: 0.3cqh;
+  }
+  .screen[data-companion="lika"] .benefits {
+    top: 38.7%;
+    left: 6.5%;
+    width: 41%;
+    grid-template-columns: 1fr;
+    gap: 1.7cqh;
+  }
+  .screen[data-companion="lika"] .benefits li {
+    gap: 3cqw;
+  }
+  .screen[data-companion="lika"] .benefits h2 {
+    font-size: max(10.5px, 2.85cqw);
+  }
+  .screen[data-companion="lika"] .benefits p {
+    font-size: max(10px, 2.6cqw);
+  }
+  .actions,
+  .screen[data-companion="lika"] .actions {
+    top: auto;
+    bottom: max(6px, 1.5cqh);
+    left: 7%;
+    width: 86%;
+  }
+  .actions .next {
+    display: flex;
+    width: 100%;
+    min-height: max(48px, 5.6cqh);
+    font-size: max(16px, 4.6cqw);
+  }
+  .actionFooter {
+    margin-top: 0.6cqh;
+    min-height: 44px;
+  }
+  .back {
+    font-size: max(12px, 3.3cqw);
+    gap: 2cqw;
+  }
+  .back svg {
+    width: 23px;
+    height: 23px;
+  }
+  .tagline {
+    font-size: max(8px, 2.1cqw);
+    max-width: 48%;
+    text-align: right;
+  }
+}
+@media (max-aspect-ratio: 6/5) and (max-height: 700px) and (min-height: 451px) {
+  .welcomeIntro {
+    top: 7.6%;
+  }
+  .welcomeIntro .title {
+    font-size: 10.8cqw;
+  }
+  .welcomeIntro .description {
+    margin-top: 1cqh;
+  }
+  .intro {
+    top: 9%;
+  }
+  .intro .description {
+    max-width: 55%;
+    font-size: 11px;
+  }
+  .benefits {
+    top: 54%;
+    gap: 1.5cqh;
+    width: 44%;
+  }
+  .benefits p {
+    display: none;
+  }
+  .screen[data-companion="lika"] .benefits {
+    top: 42%;
+    gap: 3cqh;
+    width: 34%;
+  }
+  .coachBubble {
+    top: 35%;
+    left: 26%;
+  }
+  .screen[data-companion="lika"] .coachBubble {
+    top: 26%;
+  }
+  .artNote {
+    display: none;
+  }
+}
+@media (max-height: 450px) {
+  .welcomeCopy {
+    top: 18%;
+    width: 34%;
+  }
+  .welcomeCopy .title {
+    font-size: 5.5cqw;
+  }
+  .welcomeCopy .eyebrow,
+  .features,
+  .welcomeNote,
+  .artNote,
+  .tagline {
+    display: none;
+  }
+  .welcomeIntro .title {
+    margin-top: 0;
+  }
+  .welcomeIntro .description {
+    font-size: 1.8cqw;
+    line-height: 1.3;
+    margin-top: 3cqh;
+  }
+  .welcomeCopy .next {
+    min-height: 45px;
+    margin-top: 3cqh;
+    font-size: 1.8cqw;
+    padding: 4px 12px;
+  }
+  .intro {
+    top: 18%;
+    width: 39%;
+  }
+  .intro .title {
+    font-size: 6.4cqw;
+  }
+  .intro .eyebrow {
+    display: none;
+  }
+  .character {
+    font-size: 2.3cqw;
+    margin-top: 3cqh !important;
+  }
+  .intro .description {
+    font-size: 1.6cqw;
+  }
+  .benefits {
+    top: 55%;
+    grid-template-columns: 1fr 1fr;
+    gap: 3cqh;
+    width: 44%;
+  }
+  .benefits h2 {
+    font-size: max(10px, 1.3cqw);
+  }
+  .benefits p {
+    display: none;
+  }
+  .screen[data-companion="lika"] .benefits {
+    top: 55%;
+    width: 44%;
+    gap: 3cqh;
+  }
+  .benefitIcon svg {
+    width: 18px;
+    height: 18px;
+  }
+  .benefits li,
+  .screen[data-companion="lika"] .benefits li {
+    gap: 1cqw;
+  }
+  .actions,
+  .screen[data-companion="lika"] .actions {
+    top: auto;
+    bottom: 2%;
+    width: 42%;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .actions .next {
+    min-height: 44px;
+    font-size: 12px;
+    padding: 4px 12px;
+    gap: 8px;
+  }
+  .actions .next svg {
+    width: 20px;
+    height: 20px;
+  }
+  .actionFooter {
+    margin-top: 0;
+  }
+  .back {
+    font-size: 11px;
+    min-width: 44px;
+  }
+  .back svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+@keyframes sceneIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes sceneBack {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes underlineIn {
+  from {
+    transform: rotate(-2deg) scaleX(0);
+  }
+  to {
+    transform: rotate(-2deg) scaleX(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stage,
+  .screen[data-direction="back"] .stage,
+  .maxName > svg,
+  .likaName > svg {
+    animation: none;
+  }
+  .next,
+  .next svg {
+    transition: none;
+  }
+}

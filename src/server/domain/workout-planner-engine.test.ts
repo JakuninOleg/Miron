@@ -61,6 +61,73 @@ function exerciseFromRow(row: CatalogSeedRow, index: number): BuilderExercise {
   };
 }
 const catalog = rows.map(exerciseFromRow);
+
+describe("optional strength methods", () => {
+  it("keeps drop sets opt-in and bounded to one unpaired allowed main exercise per day", () => {
+    const source = input();
+    source.config = {
+      ...source.config,
+      split: "push_pull_legs",
+      daysPerWeek: 3,
+      durationMinutes: 90,
+    };
+    const plain = buildPlannerDraft(source);
+    expect(plain.days.flatMap((day) => day.steps).every((step) => !step.dropSet)).toBe(true);
+    source.config.dropSets = true;
+    const withDrops = buildPlannerDraft(source);
+    expect(withDrops.days.some((day) => day.steps.some((step) => step.dropSet))).toBe(true);
+    for (const day of withDrops.days) {
+      const drops = day.steps.filter((step) => step.dropSet);
+      expect(drops.length).toBeLessThanOrEqual(1);
+      for (const step of drops) {
+        expect(step.phase).toBe("main");
+        expect(step.pairKey).toBeUndefined();
+        expect(step.dropSet).toEqual({ kind: "last_set_drop", targetReps: 8 });
+        expect(step.coaching?.progression).toBe("repeat");
+      }
+    }
+    expect(withDrops.weeklyPrimarySets).toEqual(plain.weeklyPrimarySets);
+    expect(plain.days.flatMap((day) => day.steps).every((step) => !step.dropSet)).toBe(true);
+  });
+  it.each(["beginner", "returning", "start", "pause", "hard"] as const)(
+    "does not intensify %s plans",
+    (reason) => {
+      const source = input();
+      source.config = {
+        ...source.config,
+        dropSets: true,
+        split: "push_pull_legs",
+        daysPerWeek: 3,
+        durationMinutes: 90,
+      };
+      if (reason === "beginner" || reason === "returning") source.experience = reason;
+      if (reason === "start") source.config.intent = "start";
+      if (reason === "pause")
+        source.history = [history("strength.biceps_curl.dumbbell", "2026-09-01T12:00:00Z")];
+      if (reason === "hard")
+        source.history = [{ ...history("strength.biceps_curl.dumbbell"), loadFeedback: "hard" }];
+      const draft = buildPlannerDraft(source);
+      expect(draft.days.flatMap((day) => day.steps).every((step) => !step.dropSet)).toBe(true);
+      expect(
+        draft.days.every((day) =>
+          day.warnings.some((warning) => warning.includes("Дропсет не добавлен")),
+        ),
+      ).toBe(true);
+    },
+  );
+  it("does not attach a drop set to a superset or to non-strength practice", () => {
+    const source = input();
+    source.config = { ...source.config, execution: "pairs", dropSets: true, durationMinutes: 90 };
+    const draft = buildPlannerDraft(source);
+    for (const step of draft.days.flatMap((day) => day.steps))
+      if (step.dropSet) expect(step.pairKey).toBeUndefined();
+    for (const direction of ["yoga", "stretch", "mobility", "calisthenics"] as const) {
+      expect(() =>
+        buildPlannerDraft({ ...source, config: { ...source.config, direction } }),
+      ).toThrow("Дропсеты доступны только");
+    }
+  });
+});
 function noEquipmentCatalog(place: "home" | "outdoor"): BuilderExercise[] {
   const facts = [
     { code: "floor", quantity: 1 },
@@ -677,5 +744,189 @@ describe("deterministic workout planner", () => {
       ],
     };
     expect(() => buildPlannerDraft(source)).toThrow("отдельные асаны не подменяются");
+  });
+});
+
+describe("evidence-based strength coaching and separate practice entities", () => {
+  function successfulHistory(source: PlannerEngineInput): PlannerHistory[] {
+    const day = buildPlannerDraft(source).days[0];
+    return [1, 2].map((age) => ({
+      id: `successful-${age}`,
+      endedAt: new Date(now.getTime() - age * 86_400_000).toISOString(),
+      status: "completed",
+      direction: "strength",
+      loadFeedback: "just_right",
+      programRevision: null,
+      dayKey: null,
+      sets: day.steps
+        .filter((step) => step.phase === "main")
+        .flatMap((step) =>
+          Array.from({ length: step.sets }, () => ({
+            variantId: step.exercise.variantId,
+            revisionId: step.revisionId,
+            plannedSets: step.sets,
+            target: step.target,
+            reps: step.exercise.metric === "reps" ? step.target : null,
+            durationSeconds: step.exercise.metric === "time" ? step.target : null,
+            weightKg: 10,
+            phase: "main" as const,
+            primaryMuscles: step.exercise.primaryMuscles.map((muscle) => muscle.code),
+            secondaryMuscles: [],
+          })),
+        ),
+    }));
+  }
+  it.each(["yoga", "stretch", "mobility"] as const)(
+    "keeps %s separate from strength volume, RIR and progression",
+    (direction) => {
+      const source = input();
+      source.config = { ...source.config, direction, durationMinutes: 60 };
+      const draft = buildPlannerDraft(source);
+      expect(draft.methodology?.kind).toBe(direction);
+      expect(draft.methodology?.sources).toEqual([]);
+      expect(draft.weeklyPrimarySets).toEqual([]);
+      expect(
+        draft.days.flatMap((day) => day.steps).every((step) => !step.coaching && step.sets === 1),
+      ).toBe(true);
+      const before = draft.days;
+      source.history = successfulHistory(input()).map((entry) => ({
+        ...entry,
+        loadFeedback: "too_hard",
+      }));
+      const separate = buildPlannerDraft(source);
+      expect(separate.days).toEqual(before);
+      expect(separate.historySummary.confirmedSets).toBe(0);
+    },
+  );
+  it("pins sources and effort guidance only to strength main work", () => {
+    const draft = buildPlannerDraft(input());
+    expect(draft.methodology).toMatchObject({
+      kind: "strength",
+      version: "strength-evidence-v2",
+      effort: { minRir: 2, maxRir: 3 },
+    });
+    const known = new Set(draft.methodology?.sources.map((source) => source.id));
+    expect(
+      draft.methodology?.principles.every((rule) => rule.sourceIds.every((id) => known.has(id))),
+    ).toBe(true);
+    for (const step of draft.days.flatMap((day) => day.steps)) {
+      if (step.phase !== "main") expect(step.coaching).toBeUndefined();
+      else if (step.exercise.metric === "reps")
+        expect(step.coaching?.repetitionsInReserve).toEqual({ min: 2, max: 3 });
+      else expect(step.coaching?.repetitionsInReserve).toBeUndefined();
+    }
+  });
+  it("proposes discussion after two complete rated sessions without changing targets or transferring weights", () => {
+    const source = input();
+    const before = buildPlannerDraft(source);
+    source.history = successfulHistory(source);
+    const draft = buildPlannerDraft(source);
+    const next = draft.days[0].steps.filter(
+      (step) => step.phase === "main" && step.exercise.metric === "reps",
+    );
+    expect(next.every((step) => step.coaching?.progression === "discuss_progression")).toBe(true);
+    expect(
+      draft.days[0].steps.map(({ sets, target, revisionId }) => ({ sets, target, revisionId })),
+    ).toEqual(
+      before.days[0].steps.map(({ sets, target, revisionId }) => ({ sets, target, revisionId })),
+    );
+  });
+  it.each(["drop", "hadDropSetPlan"] as const)(
+    "does not compare ordinary progression with %s history",
+    (kind) => {
+      const source = input();
+      source.history = successfulHistory(source).map((entry) => ({
+        ...entry,
+        sets: entry.sets.map((set) => ({
+          ...set,
+          ...(kind === "drop" ? { drop: { reps: 8, weightKg: 7.5 } } : { hadDropSetPlan: true }),
+        })),
+      }));
+      expect(
+        buildPlannerDraft(source).days[0].steps.every(
+          (step) => step.coaching?.progression !== "discuss_progression",
+        ),
+      ).toBe(true);
+    },
+  );
+  it.each([
+    "missing_rating",
+    "partial",
+    "different_revision",
+    "missing_set",
+    "missed_target",
+    "changed_weight",
+    "future",
+    "legacy",
+    "duplicate",
+  ])("does not infer progression from %s", (caseName) => {
+    const source = input();
+    source.history = successfulHistory(source);
+    const affected = source.history[0];
+    if (caseName === "missing_rating") delete affected.loadFeedback;
+    if (caseName === "partial") affected.status = "partial";
+    if (caseName === "different_revision")
+      affected.sets.forEach((set) => {
+        set.revisionId = "another-revision";
+      });
+    if (caseName === "missing_set") affected.sets = [];
+    if (caseName === "missed_target")
+      affected.sets.forEach((set) => {
+        set.reps = 1;
+      });
+    if (caseName === "changed_weight")
+      affected.sets.forEach((set) => {
+        set.weightKg = 15;
+      });
+    if (caseName === "future") affected.endedAt = "2026-10-11T12:00:00Z";
+    if (caseName === "legacy") delete affected.direction;
+    if (caseName === "duplicate") affected.id = source.history[1].id;
+    const next = buildPlannerDraft(source);
+    expect(
+      next.days
+        .flatMap((day) => day.steps)
+        .some((step) => step.coaching?.progression === "discuss_progression"),
+    ).toBe(false);
+  });
+  it.each([2, 3, 4])(
+    "reduces a difficult strength week's volume at %i days and keeps every movement",
+    (daysPerWeek) => {
+      const source = input();
+      source.config.daysPerWeek = daysPerWeek;
+      const before = buildPlannerDraft(source);
+      source.history = successfulHistory(source).map((entry) => ({
+        ...entry,
+        loadFeedback: "too_hard",
+      }));
+      const snapshot = JSON.stringify(source.history);
+      const next = buildPlannerDraft(source);
+      expect(mainSets(next)).toBeLessThan(mainSets(before));
+      expect(next.days.map((day) => day.steps.map((step) => step.slotKey))).toEqual(
+        before.days.map((day) => day.steps.map((step) => step.slotKey)),
+      );
+      expect(next.days.flatMap((day) => day.steps).every((step) => step.sets >= 1)).toBe(true);
+      expect(JSON.stringify(source.history)).toBe(snapshot);
+      expect(next.notes.join(" ")).toContain("оценка силовой нагрузки");
+    },
+  );
+  it("does not let yoga feedback change strength volume or conceal a long strength break", () => {
+    const source = input();
+    const before = buildPlannerDraft(source);
+    const strength = successfulHistory(source)[0];
+    source.history = [{ ...strength, direction: "yoga", loadFeedback: "too_hard" }];
+    expect(mainSets(buildPlannerDraft(source))).toBe(mainSets(before));
+    source.history.push({ ...strength, endedAt: "2026-08-01T12:00:00Z" });
+    expect(buildPlannerDraft(source).historySummary.returningAfterPause).toBe(true);
+  });
+  it("keeps difficult feedback in effect when a newer session is unrated or only partially easy", () => {
+    const source = input();
+    source.history = successfulHistory(source);
+    source.history[0].loadFeedback = undefined;
+    source.history[1].loadFeedback = "too_hard";
+    const held = buildPlannerDraft(source);
+    expect(held.days[0].steps.some((step) => step.coaching?.progression === "ease")).toBe(true);
+    source.history[0].status = "partial";
+    source.history[0].loadFeedback = "just_right";
+    expect(buildPlannerDraft(source).days).toEqual(held.days);
   });
 });

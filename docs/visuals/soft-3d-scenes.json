@@ -1,0 +1,92 @@
+{
+  "version": 1,
+  "date": "2026-10-13",
+  "style": "Soft 3D animated film, adult characters; warm gym and ivory studio",
+  "branding": {
+    "wordmark": "public/brand/wordmark.webp",
+    "mark": "public/brand/mark.webp"
+  },
+  "tool": "image_gen.imagegen",
+  "assets": [
+    {
+      "file": "public/visuals/soft-3d/scenes/welcome-desktop-v1.webp",
+      "source": "exec-2fb596d3-f688-45c9-990c-13b4ac77a0f7.png",
+      "conversion": {
+        "format": "webp",
+        "quality": 87,
+        "maxWidth": 1800
+      },
+      "prompt": "Premium soft stylized 3D animated-film character illustration for MIRON everyday fitness app. STRICTLY preserve Max and Lika's friendly adult faces, brown hair, adult proportions, calm smiles and original clothing from the references. No comic ink, no halftone, no photorealism, no overly childlike faces. Rounded realistic studio equipment, soft satin materials, gentle warm cinematic sunlight, lovely depth. No text, no UI elements, no lettering, no speech bubbles, no marks on walls, no buttons. Branding: use the attached M symbol EXACTLY, white left half and pink right half, small and clean on chest. This is the only logo on clothing. Remove ALL lime double slashes, bars or stripes from shirt, shoes and objects. NO black square behind the M symbol. Natural correct fingers, no extra fingers. This is background illustration for an app; typography and speech overlays will be separate HTML. Use the approved attached desktop screenshot as the art composition reference: Max casually seated on a bench extending a welcoming open hand to the viewer, Lika sitting next to him with a pink shaker raised as greeting. Preserve this exact pair and cozy gym composition, but REMOVE every UI/text/icon/button/underline from the screenshot. Wide landscape 16:10. Keep characters LARGE on RIGHT 65% of image, heads fully visible about 8% from top, natural bench and floor, warm gym windows on the right, rounded dumbbells and plant. Left 35% ONLY quiet charcoal gym wall smoothly darkened for legible UI overlay, no objects or people in left text column. Full scene from heads to lower legs. No neon bloom or pink filter. Use actual M chest logo on Max in place of lime stripes."
+    },
+    {
+      "file": "public/visuals/soft-3d/scenes/welcome-mobile-v1.webp",
+      "source": "exec-7a81e0dd-dbd5-451b-b13f-3de0b5318c73.png",
+      "conversion": {
+        "format": "webp",
+        "quality": 87,
+        "maxWidth": 900
+      },
+      "prompt": "Same MIRON premium soft 3D animated-film style as the attached references: friendly adult Max and Lika, warm sincere expressions, brown hair, Max black t-shirt/joggers and Lika pink sweatshirt/burgundy leggings. Preserve their faces. Smooth rounded materials, soft warm daylight, no comic ink outlines or halftone, no photorealism. IMPORTANT actual white-left pink-right M logo from the attached brand image on Max's chest, not lime slashes, no old double stripes anywhere. All hands physically coherent, five fingers. NO text, NO UI, NO lettering or bubbles. Adapt the attached welcoming bench scene as a tall portrait 9:19.5 mobile background. Max on left, extends welcoming hand; Lika right seated holding pink shaker up in greeting. Keep them recognizably identical to attached bench scene. TOP 34% of canvas is calm dark charcoal softly blurred gym wall, completely empty for UI overlay, no character heads in it. Characters' heads start around 38% of canvas, large faces, bodies extend down to bottom edge, chest logos visible. Both people close together filling lower two thirds, warm sunlit gym windows at right, rounded equipment. Max hand reaches into lower left, natural bench, knees toward bottom. Friendly and intimate, no excessive empty space between heads and top reserved area, no floating cutouts. Make art reach all edges."
+    },
+    {
+      "file": "public/visuals/soft-3d/scenes/max-scene-v1.webp",
+      "source": "exec-fa57f5a6-df92-44cd-a35d-5d2bc94b66b6.png",
+      "conversion": {
+        "format": "webp",
+        "quality": 87,
+        "maxWidth": 1100
+      },
+      "prompt": "Premium soft stylized 3D animated-film character illustration for MIRON everyday fitness app. STRICTLY preserve Max and Lika's friendly adult faces, brown hair, adult proportions, calm smiles and original clothing from the references. No comic ink, no halftone, no photorealism, no overly childlike faces. Rounded realistic studio equipment, soft satin materials, gentle warm cinematic sunlight, lovely depth. No text, no UI elements, no lettering, no speech bubbles, no marks on walls, no buttons. Branding: use the attached M symbol EXACTLY, white left half and pink right half, small and clean on chest. This is the only logo on clothing. Remove ALL lime double slashes, bars or stripes from shirt, shoes and objects. NO black square behind the M symbol. Natural correct fingers, no extra fingers. This is background illustration for an app; typography and speech overlays will be separate HTML. Max ALONE in a warm charcoal modern cozy gym. DIFFERENT pose: standing casually at a rounded weight rack, white towel loosely resting over one shoulder, one arm resting naturally on rack, other hand gives a relaxed thumbs-up near his waist. Looks at viewer with sincere friendly smile, encouraging everyday workout buddy, not smug bodybuilder. Black t-shirt with our white-and-pink M chest logo, loose black joggers and cream sneakers. Portrait 2:3, full body completely visible with comfortable margin, character occupies center-right 65%, windows and softly blurred weights behind, left part quiet darker wall. No other character."
+    },
+    {
+      "file": "public/visuals/soft-3d/scenes/lika-scene-v1.webp",
+      "source": "exec-e982e4f3-272b-46a4-b304-98a978c39776.png",
+      "conversion": {
+        "format": "webp",
+        "quality": 87,
+        "maxWidth": 1100
+      },
+      "prompt": "Premium soft stylized 3D animated-film character illustration for MIRON everyday fitness app. STRICTLY preserve Max and Lika's friendly adult faces, brown hair, adult proportions, calm smiles and original clothing from the references. No comic ink, no halftone, no photorealism, no overly childlike faces. Rounded realistic studio equipment, soft satin materials, gentle warm cinematic sunlight, lovely depth. No text, no UI elements, no lettering, no speech bubbles, no marks on walls, no buttons. Branding: use the attached M symbol EXACTLY, white left half and pink right half, small and clean on chest. This is the only logo on clothing. Remove ALL lime double slashes, bars or stripes from shirt, shoes and objects. NO black square behind the M symbol. Natural correct fingers, no extra fingers. This is background illustration for an app; typography and speech overlays will be separate HTML. Lika ALONE in a warm ivory and blush sunlit movement studio, not dark gym. DIFFERENT pose: casually sitting cross-legged on a rose yoga mat, one hand rests on her knee, the other hand makes a small friendly open-palm reassuring gesture. A genuine warm gentle smile toward the viewer. Pink sweatshirt and burgundy leggings, cream sneakers placed naturally aside, M chest logo white and pink. Portrait 2:3, full seated character and mat, head completely visible, soft cream walls, warm window, cork blocks and plant, environment subtly blush rather than all-pink filter. Rounded 3D cozy studio. No other character, no technique demonstration."
+    },
+    {
+      "file": "public/visuals/soft-3d/scenes/max-choice-v1.webp",
+      "source": "exec-6fef71be-839b-479a-8ec8-8a2755f30f2c.png",
+      "conversion": {
+        "format": "webp",
+        "quality": 87,
+        "maxWidth": 1100
+      },
+      "prompt": "Premium soft stylized 3D animated-film character illustration for MIRON everyday fitness app. STRICTLY preserve Max and Lika's friendly adult faces, brown hair, adult proportions, calm smiles and original clothing from the references. No comic ink, no halftone, no photorealism, no overly childlike faces. Rounded realistic studio equipment, soft satin materials, gentle warm cinematic sunlight, lovely depth. No text, no UI elements, no lettering, no speech bubbles, no marks on walls, no buttons. Branding: use the attached M symbol EXACTLY, white left half and pink right half, small and clean on chest. This is the only logo on clothing. Remove ALL lime double slashes, bars or stripes from shirt, shoes and objects. NO black square behind the M symbol. Natural correct fingers, no extra fingers. This is background illustration for an app; typography and speech overlays will be separate HTML. Max ALONE, three-quarter portrait head to mid-thigh, centered, friendly relaxed confident smile. DIFFERENT pose: leans slightly toward viewer with BOTH hands resting naturally on the rounded backrest of a gym bench in front of him. Black loose t-shirt with clear small white-and-pink M chest logo. Towel on bench instead of shoulder, loose black joggers. Cozy charcoal gym background with warm windows and coral objects softly blurred. Portrait 2:3, generous margin around head and hands, no props obscure face or chest logo."
+    },
+    {
+      "file": "public/visuals/soft-3d/scenes/lika-choice-v1.webp",
+      "source": "exec-e3095d4a-a7a5-4c52-9ee0-c4973bfd12c6.png",
+      "conversion": {
+        "format": "webp",
+        "quality": 87,
+        "maxWidth": 1100
+      },
+      "prompt": "Premium soft stylized 3D animated-film character illustration for MIRON everyday fitness app. STRICTLY preserve Max and Lika's friendly adult faces, brown hair, adult proportions, calm smiles and original clothing from the references. No comic ink, no halftone, no photorealism, no overly childlike faces. Rounded realistic studio equipment, soft satin materials, gentle warm cinematic sunlight, lovely depth. No text, no UI elements, no lettering, no speech bubbles, no marks on walls, no buttons. Branding: use the attached M symbol EXACTLY, white left half and pink right half, small and clean on chest. This is the only logo on clothing. Remove ALL lime double slashes, bars or stripes from shirt, shoes and objects. NO black square behind the M symbol. Natural correct fingers, no extra fingers. This is background illustration for an app; typography and speech overlays will be separate HTML. Lika ALONE, three-quarter portrait head to mid-thigh, centered, sincere warm friendly smile. DIFFERENT pose: standing relaxed, one hand on her hip, other hand making a small peace sign near shoulder level, realistic two fingers V, five fingers in total. Original rose sweatshirt and burgundy leggings with small actual white-and-pink M logo on sweatshirt chest. Warm ivory movement studio background, gentle blush objects and plant. Portrait 2:3, generous margin around head, entire hand visible without overlapping face. Not seated, no shaker in hands."
+    },
+    {
+      "file": "public/visuals/soft-3d/scenes/interests-duo-v1.webp",
+      "source": "exec-6db36966-36e3-4bb7-8a07-1576718076bc.png",
+      "conversion": {
+        "format": "webp",
+        "quality": 87,
+        "maxWidth": 1100
+      },
+      "prompt": "Same MIRON premium soft 3D animated-film style as the attached references: friendly adult Max and Lika, warm sincere expressions, brown hair, Max black t-shirt/joggers and Lika pink sweatshirt/burgundy leggings. Preserve their faces. Smooth rounded materials, soft warm daylight, no comic ink outlines or halftone, no photorealism. IMPORTANT actual white-left pink-right M logo from the attached brand image on Max's chest, not lime slashes, no old double stripes anywhere. All hands physically coherent, five fingers. NO text, NO UI, NO lettering or bubbles. Different scene and DIFFERENT POSES: in cozy warm charcoal gym, Max stands holding a small blank tablet horizontally at his waist, angled toward Lika, smiles toward viewer. Lika stands to his right carrying a rolled rose yoga mat tucked under one arm, other arm relaxed, smiles confidently toward viewer. They look like two buddies offering several ways to move. Max M logo visible, Lika M logo on sweatshirt. Portrait 2:3 head-to-knee composition, characters fill center, warm windows, blurred rack and plant, comfortable natural interaction. NO screen writing on tablet, no exercise demonstrations, no shaker, no welcoming extended hand, no peace signs."
+    },
+    {
+      "file": "public/visuals/soft-3d/scenes/finish-scene-v1.webp",
+      "source": "exec-8423bf7b-7705-4d2f-9427-4dd1d166d60b.png",
+      "conversion": {
+        "format": "webp",
+        "quality": 87,
+        "maxWidth": 1400
+      },
+      "prompt": "Same MIRON premium soft 3D animated-film style as the attached references: friendly adult Max and Lika, warm sincere expressions, brown hair, Max black t-shirt/joggers and Lika pink sweatshirt/burgundy leggings. Preserve their faces. Smooth rounded materials, soft warm daylight, no comic ink outlines or halftone, no photorealism. IMPORTANT actual white-left pink-right M logo from the attached brand image on Max's chest, not lime slashes, no old double stripes anywhere. All hands physically coherent, five fingers. NO text, NO UI, NO lettering or bubbles. Celebratory final onboarding scene, DIFFERENT POSE: Max stands on left and Lika on right in a warm cozy charcoal gym, they turn slightly toward each other and gently touch their closed fists at center around chest height, both smile warmly and look toward viewer. Relaxed natural friendly fist bump, not a boxing fight. Complete proper hands, no interlocked fingers. Max white-and-pink M chest logo visible, Lika pink sweatshirt. Wide landscape 3:2, heads fully visible with generous space above, waist-up characters large on RIGHT 65% of frame. LEFT 35% softly dark charcoal empty studio wall reserved for interface text. Warm window at right, subtle rose and coral accessories. No fireworks, no UI, no letters, no text, no paint splatters."
+    }
+  ]
+}

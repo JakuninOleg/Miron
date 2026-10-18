@@ -66,6 +66,9 @@ test("empty early finish is aborted and allows a fresh workout without XP", asyn
   await expect(page.getByRole("heading", { name: "Занятие закрыто", exact: true })).toBeVisible();
   await expect(page.getByText("+0 XP", { exact: true })).toBeVisible();
   await expect(page.getByText("Без выполненных подходов XP не начисляется.")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Как тебе нагрузка?", exact: true })).toHaveCount(
+    0,
+  );
   await page.getByRole("link", { name: "Вернуться к своему дню", exact: true }).click();
   await page.getByRole("button", { name: "Новое демо-занятие", exact: true }).click();
   await expect(page.getByRole("button", { name: "Записать подход 1", exact: true })).toBeEnabled();

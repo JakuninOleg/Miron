@@ -23,7 +23,14 @@ import type {
   PlannerStep,
 } from "../../shared/workout-planner";
 import { CATALOG_SKILL_POLICY } from "../db/catalog-skill-policy";
+import { supportsDropSet } from "../../shared/training-methods";
 import { DomainError } from "./errors";
+import { isStrengthDirection, trainingMethodology } from "../../shared/training-methodology";
+import {
+  recentDifficultStrength,
+  strengthHistory,
+  strengthStepCoaching,
+} from "./strength-coaching";
 
 export interface PlannerEngineInput {
   config: PlannerConfig;
@@ -96,7 +103,20 @@ function isConservative(input: PlannerEngineInput): boolean {
   return (
     input.experience !== "regular" ||
     input.config.intent === "start" ||
-    summarizePlannerHistory(input.history, input.now).returningAfterPause
+    summarizePlannerHistory(directionHistory(input), input.now).returningAfterPause
+  );
+}
+
+function directionHistory(input: PlannerEngineInput): PlannerHistory[] {
+  if (isStrengthDirection(input.config.direction)) return strengthHistory(input.history);
+  return input.history.filter((entry) =>
+    entry.direction !== undefined
+      ? entry.direction === input.config.direction
+      : entry.sets.some(
+          (set) =>
+            (set.phase === undefined || set.phase === "main") &&
+            set.variantId.startsWith(`${input.config.direction}.`),
+        ),
   );
 }
 
@@ -367,6 +387,8 @@ function sortedTemplates(
 }
 
 function validateConfig(config: PlannerConfig): void {
+  if (config.dropSets && config.direction !== "strength")
+    throw new DomainError("INVALID_INPUT", 400, "Дропсеты доступны только в силовом направлении.");
   if (
     !Number.isInteger(config.daysPerWeek) ||
     config.daysPerWeek < 1 ||
@@ -449,16 +471,26 @@ function setsForDay(
   index: number,
 ): number {
   const intent = isConservative(input) ? "start" : input.config.intent;
-  const target = intent === "start" ? 4 : intent === "maintain" ? 6 : 8;
+  const difficult =
+    isStrengthDirection(input.config.direction) &&
+    !!recentDifficultStrength(input.history, input.now);
+  const target = (intent === "start" ? 4 : intent === "maintain" ? 6 : 8) - (difficult ? 2 : 0);
   if (input.config.mode === "single" || kinds.length === 1)
-    return intent === "start" ? 1 : intent === "maintain" ? 2 : 3;
+    return Math.max(
+      1,
+      (intent === "start" ? 1 : intent === "maintain" ? 2 : 3) - (difficult ? 1 : 0),
+    );
   const kind = kinds[index];
   const occurrences = kinds.filter((entry) => entry === kind).length;
   const occurrence = kinds.slice(0, index).filter((entry) => entry === kind).length;
   if (kind !== "fullbody" && occurrences === 1)
-    return intent === "start" ? 2 : intent === "maintain" ? 3 : 4;
+    return Math.max(
+      1,
+      (intent === "start" ? 2 : intent === "maintain" ? 3 : 4) - (difficult ? 1 : 0),
+    );
   // Same weekly role budget for 2/3/4 fullbody days; never multiply a heavy session.
-  return Math.floor(target / occurrences) + (occurrence < target % occurrences ? 1 : 0);
+  const weeklyTarget = Math.max(occurrences, target);
+  return Math.floor(weeklyTarget / occurrences) + (occurrence < weeklyTarget % occurrences ? 1 : 0);
 }
 
 function makeStep(
@@ -567,6 +599,9 @@ function buildDay(
       : 1;
     const target = Math.round(slot.target * factor);
     const step = makeStep(slot, exercise, template.wholeSequence ? 1 : sets, target);
+    if (isStrengthDirection(input.config.direction)) {
+      step.coaching = strengthStepCoaching(step, input.history, input.now);
+    }
     const old = previousStep(input, key, slot.key);
     if (old && old.exercise.variantId !== exercise.variantId)
       step.changeNote =
@@ -594,6 +629,27 @@ function buildDay(
     warnings.push(
       "Последовательность сохранена целиком; парные силовые подходы к ней не применяются.",
     );
+  if (input.config.dropSets) {
+    const eligible =
+      input.config.direction === "strength" &&
+      !isConservative(input) &&
+      !recentDifficultStrength(input.history, input.now);
+    const candidate = eligible
+      ? steps.findLast(
+          (step) => step.phase === "main" && !step.pairKey && supportsDropSet(step.exercise),
+        )
+      : undefined;
+    if (candidate) {
+      candidate.dropSet = { kind: "last_set_drop", targetReps: 8 };
+      candidate.coaching = strengthStepCoaching(candidate, input.history, input.now);
+    } else {
+      warnings.push(
+        eligible
+          ? "Нет отдельного упражнения, подходящего для дропсета. Суперсет и дропсет не совмещаем; обычные подходы сохранены."
+          : "Дропсет не добавлен: он доступен для регулярных силовых занятий без недавней тяжёлой оценки и возвращения после паузы. Обычный план сохранён.",
+      );
+    }
+  }
   const estimate = estimateBuilderWorkout(steps);
   return {
     key,
@@ -712,14 +768,15 @@ function planChanges(input: PlannerEngineInput, days: PlannerDay[]): PlannerDraf
         oldStep.sets !== step.sets ||
         oldStep.target !== step.target ||
         oldStep.restSeconds !== step.restSeconds ||
-        oldStep.pairKey !== step.pairKey
+        oldStep.pairKey !== step.pairKey ||
+        JSON.stringify(oldStep.dropSet) !== JSON.stringify(step.dropSet)
       )
         changes.push({
           label: `${day.key}: ${step.exercise.name}`,
           before: oldStep
-            ? `${oldStep.exercise.name}: ${oldStep.sets} × ${oldStep.target}, отдых ${oldStep.restSeconds} с`
+            ? `${oldStep.exercise.name}: ${oldStep.sets} × ${oldStep.target}, отдых ${oldStep.restSeconds} с${oldStep.pairKey ? ", в суперсете" : ""}${oldStep.dropSet ? ", снижение веса в последнем подходе" : ""}`
             : "Нет назначения",
-          after: `${step.exercise.name}: ${step.sets} × ${step.target}, отдых ${step.restSeconds} с${step.pairKey ? ", в паре" : ""}`,
+          after: `${step.exercise.name}: ${step.sets} × ${step.target}, отдых ${step.restSeconds} с${step.pairKey ? ", в суперсете" : ""}${step.dropSet ? ", снижение веса в последнем подходе" : ""}`,
         });
     }
     for (const oldStep of old.steps.filter(
@@ -756,6 +813,8 @@ function weeklySets(days: PlannerDay[]): PlannerDraft["weeklyPrimarySets"] {
 
 export function buildPlannerDraft(input: PlannerEngineInput): PlannerDraft {
   validateConfig(input.config);
+  const strength = isStrengthDirection(input.config.direction);
+  input = { ...input, history: directionHistory(input) };
   const historySummary = summarizePlannerHistory(input.history, input.now);
   const catalog = eligibleCatalog(input);
   const kinds = orderedKinds(input);
@@ -773,12 +832,17 @@ export function buildPlannerDraft(input: PlannerEngineInput): PlannerDraft {
         400,
         "Слот замены отсутствует в текущем занятии.",
       );
-  const notes = [
-    "Численный вес не назначается и не переносится между упражнениями. Подтверждённые результаты остаются фактами; автоматического повышения нагрузки нет.",
-    "Повторы и секунды — стартовый ориентир. Завершай подход при потере управляемой техники; сообщение о боли требует отдельного сценария, а не обычной замены.",
-    "Время включает подходы, стороны, отдых, подготовку и переходы; ожидание тренажёра не учтено.",
-  ];
+  const notes = strength
+    ? [
+        "Численный вес не назначается и не переносится между упражнениями. Подтверждённые результаты остаются фактами; автоматического повышения нагрузки нет.",
+        "Повторы и секунды — стартовый ориентир. Завершай подход при потере управляемой техники; сообщение о боли требует отдельного сценария, а не обычной замены.",
+        "Время включает подходы, стороны, отдых, подготовку и переходы; ожидание тренажёра не учтено.",
+      ]
+    : [
+        "Цельный комплекс сохраняет собственные порядок, стороны и дозировки. Силовые правила повторений, веса и недельных подходов к нему не применяются.",
+      ];
   if (
+    strength &&
     input.config.mode === "program" &&
     input.config.split === "fullbody" &&
     input.config.daysPerWeek > 1
@@ -786,11 +850,11 @@ export function buildPlannerDraft(input: PlannerEngineInput): PlannerDraft {
     notes.push(
       "Недельная основная работа распределена между днями; увеличение частоты не умножает объём. Разминка и заминка не входят в основной объём.",
     );
-  if (input.config.mode === "program" && input.config.daysPerWeek === 1)
+  if (strength && input.config.mode === "program" && input.config.daysPerWeek === 1)
     notes.push(
       "Один визит — ограниченное комплексное занятие. Вся неделя не компенсируется чрезмерным объёмом за один раз.",
     );
-  if (input.config.mode === "program" && input.config.split === "upper_lower")
+  if (strength && input.config.mode === "program" && input.config.split === "upper_lower")
     notes.push(
       input.config.daysPerWeek === 3
         ? "Верх/низ — продолжающийся трёхдневный цикл. Стороны чередуются по завершённым занятиям; каждой половине тела не обещаны два дня в каждой календарной неделе."
@@ -798,13 +862,21 @@ export function buildPlannerDraft(input: PlannerEngineInput): PlannerDraft {
           ? "Два дня верх/низ дают каждой половине тела одно занятие в неделю. Для более частого охвата выбери всё тело."
           : "Четыре дня: верх A / низ A / верх B / низ B.",
     );
-  if (input.config.split === "push_pull_legs" && input.config.mode === "program")
+  if (strength && input.config.split === "push_pull_legs" && input.config.mode === "program")
     notes.push(
       "Три дня жимы/тяги/ноги — по одному занятию каждой части; это не шестидневный цикл.",
     );
   if (historySummary.returningAfterPause || input.experience === "returning")
     notes.push(
       "После паузы используется консервативный старт: только начальный уровень и уменьшенный объём, прежняя прогрессия автоматически не продолжается. Порог 21 день — редакционное правило этой версии.",
+    );
+  if (strength && recentDifficultStrength(input.history, input.now))
+    notes.push(
+      "Учтена сохранённая оценка силовой нагрузки: уменьшаем число подходов, сохраняя движения и минимум один подход. Вес не повышается. Изменения применятся после подтверждения черновика.",
+    );
+  if (input.config.dropSets && strength)
+    notes.push(
+      "Не более одного дропсета в занятии: после последнего подхода выбранного упражнения снизь вес и продолжи с управляемой техникой. Обязательного отказа нет; снижение можно пропустить. Килограммы не назначаются. Это продолжение подхода, а не ещё один полный подход или дополнительный XP.",
     );
   if (input.config.mode === "single" && historySummary.recentPrimaryMuscles.length)
     notes.push(
@@ -832,11 +904,12 @@ export function buildPlannerDraft(input: PlannerEngineInput): PlannerDraft {
     );
   return {
     policyVersion: "planner-v1",
+    methodology: trainingMethodology(input.config.direction),
     config: structuredClone(input.config),
     days,
     notes,
     changes: planChanges(input, days),
-    weeklyPrimarySets: weeklySets(days),
+    weeklyPrimarySets: strength ? weeklySets(days) : [],
     historySummary,
     disclosure: PLANNER_LIBRARY_DISCLOSURE,
   };
@@ -868,6 +941,7 @@ export function getPlannerReplacements(
       );
       const pair = step.pairKey ? modified.filter((entry) => entry.pairKey === step.pairKey) : [];
       if (pair.length && (pair.length !== 2 || !pairCompatible(pair[0], pair[1]))) return false;
+      if (step.dropSet && !supportsDropSet(exercise)) return false;
       return estimateBuilderWorkout(modified).maxSeconds <= input.config.durationMinutes * 60;
     })
     .sort(

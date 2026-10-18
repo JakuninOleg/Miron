@@ -1,0 +1,27 @@
+.art {
+  display: flex;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1.5;
+  align-items: center;
+  justify-content: center;
+}
+.object {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.object img {
+  object-fit: contain;
+}
+.art[data-paired="true"] .object {
+  width: 61%;
+  flex-shrink: 0;
+}
+.art[data-paired="true"] .object:first-child {
+  transform: translateX(9%) translateY(-6%);
+}
+.art[data-paired="true"] .object:last-child {
+  transform: translateX(-9%) translateY(9%);
+}

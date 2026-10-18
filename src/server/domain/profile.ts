@@ -68,7 +68,14 @@ export async function initializeAccount(userId: string) {
     if (!owner || owner.status !== "active")
       throw new DomainError("ACCOUNT_UNAVAILABLE", 403, "Аккаунт недоступен.");
     await tx.insert(profiles).values({ userId, displayName: owner.name }).onConflictDoNothing();
-    await tx.insert(trials).values({ userId }).onConflictDoNothing();
+    await tx
+      .insert(trials)
+      .values({
+        userId,
+        startsAt: owner.createdAt,
+        endsAt: new Date(owner.createdAt.getTime() + 168 * 3600000),
+      })
+      .onConflictDoNothing();
   });
 }
 export const ensureAccount = initializeAccount;
@@ -90,16 +97,26 @@ export async function getProgress(userId: string, reader: Reader = getDb()): Pro
     .select({ workoutId: recordedSets.workoutId })
     .from(recordedSets)
     .where(eq(recordedSets.userId, userId));
+  const [totals] = await reader
+    .select({
+      completed: sql<number>`count(*) filter (where ${workouts.status} = 'completed')`,
+      activityDays: sql<number>`count(distinct case
+        when ${workouts.status} in ('completed', 'partial')
+          and ${workouts.isDemo} = false
+          and ${workouts.completedAt} is not null
+          and exists (select 1 from ${recordedSets}
+            where ${recordedSets.workoutId} = ${workouts}."id"
+              and ${recordedSets.userId} = ${workouts}."user_id")
+        then coalesce(${workouts.rewardDay},
+          (${workouts.completedAt} at time zone 'Europe/Moscow')::date)
+        end)`,
+    })
+    .from(workouts)
+    .where(eq(workouts.userId, userId));
   return {
     xp: events.reduce((n, e) => n + e.amount, 0),
-    completedWorkouts: Number(
-      (
-        await reader
-          .select({ count: sql<number>`count(*)` })
-          .from(workouts)
-          .where(and(eq(workouts.userId, userId), eq(workouts.status, "completed")))
-      )[0].count,
-    ),
+    completedWorkouts: Number(totals.completed),
+    journey: { activityDays: Number(totals.activityDays) },
     history: completed.map((w) => ({
       id: w.id,
       title: w.name,

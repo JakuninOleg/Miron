@@ -29,19 +29,24 @@ function createAuth() {
       },
     },
     trustedOrigins: config.trustedOrigins,
-    disabledPaths: config.emailPassword
-      ? undefined
-      : [
-          "/sign-in/email",
-          "/sign-up/email",
-          "/request-password-reset",
-          "/reset-password",
-          "/send-verification-email",
-          "/verify-email",
-          "/change-password",
-          "/set-password",
-          "/verify-password",
-        ],
+    disabledPaths: [
+      "/delete-user",
+      "/delete-user/callback",
+      ...(config.emailPassword
+        ? []
+        : [
+            "/sign-in/email",
+            "/sign-up/email",
+            "/request-password-reset",
+            "/reset-password",
+            "/send-verification-email",
+            "/verify-email",
+            "/change-password",
+            "/set-password",
+            "/verify-password",
+          ]),
+    ],
+    user: { deleteUser: { enabled: true } },
     database: drizzleAdapter(getDb(), {
       provider: "pg",
       transaction: true,

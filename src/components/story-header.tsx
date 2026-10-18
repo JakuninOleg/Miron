@@ -1,5 +1,4 @@
 import Image from "next/image";
-import type { CSSProperties } from "react";
 import { STORY_PANELS } from "@/shared/story-content";
 import styles from "./story-header.module.css";
 
@@ -8,6 +7,8 @@ type Props = {
   total?: number;
   caption: string;
   companion?: "max" | "lika";
+  tone?: "dark" | "light";
+  overlay?: boolean;
 };
 
 export function StoryHeader({
@@ -15,15 +16,19 @@ export function StoryHeader({
   total = STORY_PANELS.length,
   caption,
   companion = "max",
+  tone = companion === "lika" ? "light" : "dark",
+  overlay = false,
 }: Props) {
-  const progress = total > 1 ? ((step - 1) / (total - 1)) * 100 : 0;
-  const style: CSSProperties & { "--story-header-progress": string } = {
-    "--story-header-progress": `${progress}%`,
-  };
   return (
-    <header className={styles.header} data-companion={companion}>
+    <header
+      className={styles.header}
+      data-companion={companion}
+      data-tone={tone}
+      data-overlay={overlay}
+    >
       <div className={styles.brand}>
         <Image
+          unoptimized
           className={styles.wordmark}
           src="/brand/wordmark.webp"
           alt="MIRON"
@@ -32,18 +37,18 @@ export function StoryHeader({
           loading="eager"
         />
       </div>
-      <p className={styles.motto}>ТВОЙ ПУТЬ. НА ТВОИХ УСЛОВИЯХ.</p>
+      <p className={styles.motto}>
+        Твой фитнес-компаньон
+        <br />
+        на каждый день
+      </p>
       <div className={styles.progress} aria-label={`Сцена ${step} из ${total}`}>
+        <span className={styles.caption}>{caption}</span>
+        <span className={styles.separator} aria-hidden="true" />
         <span className={styles.number}>
           <span className={styles.current}>{String(step).padStart(2, "0")}</span>
           <span className={styles.total}>/ {String(total).padStart(2, "0")}</span>
         </span>
-        <div className={styles.dots} style={style} aria-hidden="true">
-          {Array.from({ length: total }, (_, index) => (
-            <i key={index} data-active={index < step} />
-          ))}
-        </div>
-        <span className={styles.caption}>{caption}</span>
       </div>
     </header>
   );

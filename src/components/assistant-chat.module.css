@@ -9,6 +9,49 @@
   line-height: 1.6;
   overflow-wrap: anywhere;
 }
+.compact {
+  min-width: 0;
+}
+.compact :global(.chat-panel) {
+  min-height: 0;
+  padding: 16px;
+}
+.compact :global(.chat-panel-header) {
+  padding-bottom: 12px;
+}
+.compact :global(.chat-panel-header h3) {
+  font: 700 17px/1.4 var(--body);
+}
+.compact :global(.chat-messages) {
+  height: clamp(160px, 26dvh, 280px);
+  min-height: 140px;
+  flex: none;
+  max-height: 280px;
+  overscroll-behavior: contain;
+  overflow-anchor: none;
+}
+.compact :global(.chat-message) {
+  max-width: 100%;
+}
+.compact :global(.message) {
+  max-width: 100%;
+}
+.compact :global(.quick-prompts) {
+  flex-wrap: wrap;
+  overflow: visible;
+}
+.compact :global(.chat-panel > .quick-prompts) {
+  display: flex;
+}
+.compact :global(.quick-prompt) {
+  white-space: normal;
+}
+.compact :global(.chat-input-bar) {
+  min-width: 0;
+}
+.compact :global(.chat-input-bar textarea) {
+  min-width: 0;
+}
 .note {
   margin: 10px 2px;
   color: var(--dash-muted, var(--muted));

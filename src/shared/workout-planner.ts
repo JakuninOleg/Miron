@@ -1,6 +1,9 @@
 import type { CatalogContext, CatalogDirection, MuscleGroup } from "./catalog-taxonomy";
 import type { Experience } from "./contracts";
 import type { BuilderEstimate, BuilderSelectedStep } from "./workout-builder";
+import type { StrengthStepCoaching, TrainingMethodology } from "./training-methodology";
+import type { WorkoutLoadFeedback } from "./workout-feedback";
+import type { DropSetResult } from "./training-methods";
 
 export type PlannerSplit = "fullbody" | "upper_lower" | "push_pull_legs";
 export type PlannerIntent = "start" | "maintain" | "develop";
@@ -14,6 +17,7 @@ export interface PlannerConfig {
   intent: PlannerIntent;
   durationMinutes: number;
   execution: PlannerExecution;
+  dropSets?: boolean;
   variety: "familiar" | "different";
   preferredTemplateId?: string;
   /** One-off omissions; permanent exclusions use the explicit preferences command. */
@@ -31,8 +35,15 @@ export interface PlannerHistory {
   status: "completed" | "partial" | "aborted";
   programRevision: number | null;
   dayKey: string | null;
+  direction?: CatalogDirection;
+  loadFeedback?: WorkoutLoadFeedback;
   sets: {
+    drop?: DropSetResult;
+    hadDropSetPlan?: boolean;
     variantId: string;
+    revisionId?: string;
+    plannedSets?: number;
+    target?: number;
     reps: number | null;
     durationSeconds: number | null;
     weightKg: number;
@@ -42,6 +53,7 @@ export interface PlannerHistory {
   }[];
 }
 export interface PlannerStep extends BuilderSelectedStep {
+  coaching?: StrengthStepCoaching;
   slotKey: string;
   phase: "warmup" | "main" | "cooldown";
   sourceVariantId: string;
@@ -68,6 +80,8 @@ export interface PlannerHistorySummary {
 }
 export interface PlannerDraft {
   policyVersion: "planner-v1";
+  /** Optional only for confirmed legacy revisions; new previews always pin their methodology. */
+  methodology?: TrainingMethodology;
   config: PlannerConfig;
   days: PlannerDay[];
   notes: string[];

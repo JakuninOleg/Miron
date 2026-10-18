@@ -1,0 +1,2 @@
+ALTER TABLE "workouts" ADD COLUMN "load_feedback" text;--> statement-breakpoint
+ALTER TABLE "workouts" ADD CONSTRAINT "workouts_load_feedback_check" CHECK ("workouts"."load_feedback" is null or ("workouts"."load_feedback" in ('easy','just_right','hard','too_hard') and "workouts"."status" in ('completed','partial')));

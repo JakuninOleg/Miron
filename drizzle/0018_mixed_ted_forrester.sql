@@ -1,0 +1,1 @@
+ALTER TABLE "workouts" ADD COLUMN "saved_source" jsonb;

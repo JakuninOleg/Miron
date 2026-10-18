@@ -23,8 +23,8 @@ for (const viewport of viewports) {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/story/interests");
     await page.evaluate(() => document.fonts.ready);
-    const choices = page.getByRole("group", { name: "Что тебе интересно" });
-    await expect(choices.getByRole("button")).toHaveCount(7);
+    const choices = page.getByRole("group", { name: "Направления тренировок" });
+    await expect(choices.getByRole("button")).toHaveCount(6);
     const geometry = await page.evaluate(() => ({
       fits:
         document.documentElement.scrollHeight <= innerHeight + 1 &&
@@ -55,12 +55,13 @@ for (const viewport of viewports) {
       }),
     }));
     expect(geometry).toEqual({ fits: true, reachable: true, labelsFit: true });
-    const duo = page.getByRole("img", { name: /^Макс стоит/ });
-    if (viewport.width <= 1100 || viewport.width <= viewport.height) {
-      await expect(duo).toBeHidden();
-    } else {
-      await expect(duo).toBeVisible();
-    }
+    const scene = page.locator('[data-art="interests"] img');
+    await expect(scene).toBeVisible();
+    await scene.evaluate((img) => (img as HTMLImageElement).decode());
+    const portrait = viewport.width / viewport.height <= 1.2 && viewport.height > 450;
+    expect(await scene.evaluate((img) => (img as HTMLImageElement).currentSrc)).toContain(
+      portrait ? "interests-mobile-v2.webp" : "interests-v2.webp",
+    );
     await page.getByRole("button", { name: "Йога", exact: true }).click();
     await expect(page.getByRole("button", { name: "Йога", exact: true })).toHaveAttribute(
       "aria-pressed",
@@ -83,7 +84,7 @@ test("multiple directions persist, undecided is exclusive, keyboard return keeps
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/story/interests");
   const yoga = page.getByRole("button", { name: "Йога", exact: true });
-  const home = page.getByRole("button", { name: "Дома", exact: true });
+  const home = page.getByRole("button", { name: "Силовые дома", exact: true });
   const explore = page.getByRole("button", { name: "Пока не знаю", exact: true });
   await yoga.focus();
   await page.keyboard.press("Space");
@@ -99,7 +100,7 @@ test("multiple directions persist, undecided is exclusive, keyboard return keeps
   await expect(explore).toHaveAttribute("aria-pressed", "false");
   await expect(yoga).toHaveAttribute("aria-pressed", "true");
   await page.getByRole("button", { name: "Предыдущая сцена" }).click();
-  await expect(page.getByRole("heading", { name: "ЛИКА", exact: true })).toBeFocused();
+  await expect(page.getByRole("heading", { name: "Лика.", exact: true })).toBeFocused();
   await page.getByRole("button", { name: "Давай дальше" }).click();
   await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
   await expect(yoga).toHaveAttribute("aria-pressed", "true");

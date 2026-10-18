@@ -1,4 +1,7 @@
 import type { BuilderTiming } from "./workout-builder";
+import type { WorkoutLoadFeedback } from "./workout-feedback";
+import type { StrengthStepCoaching } from "./training-methodology";
+import type { DropSetPlan, DropSetResult } from "./training-methods";
 
 export type CompanionId = "max" | "lika";
 export type Theme = "dark" | "rose";
@@ -77,6 +80,9 @@ export interface Trial {
   repliesUsed: number;
 }
 export interface Exercise {
+  revisionId?: string;
+  dropSet?: DropSetPlan;
+  coaching?: StrengthStepCoaching;
   id: string;
   name: string;
   description: string;
@@ -99,8 +105,11 @@ export interface Exercise {
   transitionSeconds?: number;
 }
 export interface RecordedSet {
+  drop?: DropSetResult;
   id: string;
   exerciseId: string;
+  /** Stable order within an exercise; older cached facts may omit it. */
+  setIndex?: number;
   reps: number | null;
   /** Absent on legacy records/ACKs. New timed records have null reps. */
   durationSeconds?: number | null;
@@ -116,6 +125,7 @@ export interface Workout {
   currentIndex: number;
   status: WorkoutStatus;
   revision: number;
+  source?: { kind: "template" | "history" | "schedule"; id: string; revision: number };
   recordedSets: RecordedSet[];
   startedAt: string | null;
   completedAt: string | null;
@@ -127,10 +137,13 @@ export interface Workout {
   /** Pinned at admission; never inferred from today's profile or the workout title. */
   energyActivity?: EnergyActivity;
   energyEstimate?: WorkoutEnergyEstimate;
+  loadFeedback?: WorkoutLoadFeedback;
 }
 export interface Progress {
   xp: number;
   completedWorkouts: number;
+  /** Server-confirmed distinct activity days; absent in older offline snapshots. */
+  journey?: { activityDays: number };
   history: {
     id: string;
     title: string;
@@ -154,12 +167,27 @@ export interface AccountState {
   trial: Trial;
   progress: Progress;
 }
+export type SetCorrectionCommand =
+  | { type: "correct_set"; setId: string; reps: number; weightKg: number; drop?: DropSetResult }
+  | { type: "correct_timed_set"; setId: string; durationSeconds: number }
+  | { type: "undo_set"; setId: string };
 export type WorkoutCommand =
-  | { type: "record_set"; exerciseId: string; setId: string; reps: number; weightKg: number }
+  | SetCorrectionCommand
+  | { type: "lighten_remaining" }
+  | { type: "replace_exercise"; exerciseId: string; revisionId: string }
+  | {
+      type: "record_set";
+      exerciseId: string;
+      setId: string;
+      reps: number;
+      weightKg: number;
+      drop?: DropSetResult;
+    }
   | { type: "record_timed_set"; exerciseId: string; setId: string; durationSeconds: number }
   | { type: "next_exercise" }
   | { type: "skip_exercise"; exerciseId: string }
   | ({ type: "estimate_energy" } & WorkoutEnergyInput)
+  | { type: "rate_load"; feedback: WorkoutLoadFeedback }
   | { type: "end_early" }
   | { type: "finish" };
 export interface CommandEnvelope {

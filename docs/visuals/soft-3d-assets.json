@@ -1,0 +1,169 @@
+{
+  "generatedAt": "2026-10-13",
+  "provider": "image_gen",
+  "processing": "WEBP conversion and resize only; alpha preserved",
+  "assets": [
+    {
+      "name": "max",
+      "file": "public/visuals/soft-3d/max.webp",
+      "prompt": "Use case: identity-preserve. Asset type: MIRON fitness companion reusable character cutout. Image 1 is the ONLY identity/style reference for adult Max, image 2 only confirms the visual family. Recreate Max with exactly the reference friendly adult face, thick eyebrows, short tousled brown hair, natural fit everyday proportions, black relaxed t-shirt and joggers, light chunky sneakers. Soft high-end animated-film 3D render, physically shaded cloth, warm approachable expression, smooth volumetric light, no line drawing. Standing in an open welcoming pose, one hand relaxed and the other gently waving at chest level; anatomically clean five-finger hand. Entire body and all shoes within canvas, generous 8 percent empty margins. No text or brand marks on clothing. Fully transparent background, soft contact shadow only. Avoid comic outlines, ink, hatching, halftone, grunge, exaggerated muscles, photoreal human skin, smug grin, childish face. Portrait 2:3.",
+      "source": ["public/characters/max.webp", "public/characters/lika.webp"]
+    },
+    {
+      "name": "lika",
+      "file": "public/visuals/soft-3d/lika.webp",
+      "prompt": "Use case: identity-preserve. Asset type: MIRON fitness companion reusable character cutout. Image 2 is the ONLY identity/style reference for adult Lika; image 1 confirms the visual family. Recreate Lika with exactly the reference adult friendly face, warm brown eyes, brown loose messy bun, small hoop earrings, pink relaxed sweatshirt, dusty burgundy leggings and cream chunky sneakers. Soft high-end animated-film 3D render, physically shaded fabric, warm gentle smile, smooth volumetric light, no line drawing. Standing naturally, one hand by side and other resting gently at waist, easy welcoming posture. Entire body and all shoes within canvas, generous 8 percent empty margins. No text or logos. Fully transparent background, soft contact shadow only. Avoid comic outlines, ink, hatching, halftone, grunge, exaggerated anatomy, photoreal skin, childish face. Portrait 2:3.",
+      "source": ["public/characters/max.webp", "public/characters/lika.webp"]
+    },
+    {
+      "name": "gym",
+      "file": "public/visuals/soft-3d/gym.webp",
+      "prompt": "Use case: stylized-concept. Asset type: MIRON training-place selection card, landscape 3:2. A polished soft animated-film 3D illustration, rounded believable objects, subtle tactile materials, gentle natural lighting, clean composition and warm welcoming everyday fitness atmosphere. Style must match the supplied soft 3D adult character references, not comic or ink. No text, no numbers, no lettering, no logos, no watermarks, no people. One coherent scene with clear visual hierarchy; all essential objects completely inside frame with breathing room. Avoid outlines, sketching, halftone, paint strokes, glossy neon, clutter. A welcoming modern gym room with a squat rack, neat compact dumbbell rack, an upholstered weight bench and large window. Charcoal rubber, warm oak accents, soft daylight, small muted coral details. Recognizable physically coherent equipment, aligned rails and benches, no floating weights. Low front three-quarter angle.",
+      "source": []
+    },
+    {
+      "name": "home",
+      "file": "public/visuals/soft-3d/home.webp",
+      "prompt": "Use case: stylized-concept. Asset type: MIRON training-place selection card, landscape 3:2. A polished soft animated-film 3D illustration, rounded believable objects, subtle tactile materials, gentle natural lighting, clean composition and warm welcoming everyday fitness atmosphere. Style must match the supplied soft 3D adult character references, not comic or ink. No text, no numbers, no lettering, no logos, no watermarks, no people. One coherent scene with clear visual hierarchy; all essential objects completely inside frame with breathing room. Avoid outlines, sketching, halftone, paint strokes, glossy neon, clutter. An inviting everyday living room used for a home workout: soft beige sofa, a terracotta exercise mat laid on floor, a pair of compact graphite dumbbells beside it, green houseplant, sunlight through a window. Warm neutral room, subtle dusty rose/coral accents. Clear free space for exercise. Low three-quarter angle.",
+      "source": []
+    },
+    {
+      "name": "park",
+      "file": "public/visuals/soft-3d/park.webp",
+      "prompt": "Use case: stylized-concept. Asset type: MIRON training-place selection card, landscape 3:2. A polished soft animated-film 3D illustration, rounded believable objects, subtle tactile materials, gentle natural lighting, clean composition and warm welcoming everyday fitness atmosphere. Style must match the supplied soft 3D adult character references, not comic or ink. No text, no numbers, no lettering, no logos, no watermarks, no people. One coherent scene with clear visual hierarchy; all essential objects completely inside frame with breathing room. Avoid outlines, sketching, halftone, paint strokes, glossy neon, clutter. A calm outdoor calisthenics area with a simple real pull-up bar (two sturdy vertical posts plus horizontal bar), parallel bars, soft grass, trees and quiet blue morning sky. Coherent realistic structural geometry, subtle coral grip accents. Friendly rounded stylized 3D environment, no giant floating structures.",
+      "source": []
+    },
+    {
+      "name": "yoga",
+      "file": "public/visuals/soft-3d/yoga.webp",
+      "prompt": "Use case: stylized-concept. Asset type: MIRON training-place selection card, landscape 3:2. A polished soft animated-film 3D illustration, rounded believable objects, subtle tactile materials, gentle natural lighting, clean composition and warm welcoming everyday fitness atmosphere. Style must match the supplied soft 3D adult character references, not comic or ink. No text, no numbers, no lettering, no logos, no watermarks, no people. One coherent scene with clear visual hierarchy; all essential objects completely inside frame with breathing room. Avoid outlines, sketching, halftone, paint strokes, glossy neon, clutter. A quiet sunlit yoga corner: a dusty rose yoga mat, TWO natural cork yoga blocks and coiled fabric yoga strap in an airy warm ivory studio with one plant and soft curtains. Compact grounded still life, sculpted soft cloth and cork. No exercise body poses.",
+      "source": []
+    },
+    {
+      "name": "mobility",
+      "file": "public/visuals/soft-3d/mobility.webp",
+      "prompt": "Use case: stylized-concept. Asset type: MIRON training-place selection card, landscape 3:2. A polished soft animated-film 3D illustration, rounded believable objects, subtle tactile materials, gentle natural lighting, clean composition and warm welcoming everyday fitness atmosphere. Style must match the supplied soft 3D adult character references, not comic or ink. No text, no numbers, no lettering, no logos, no watermarks, no people. One coherent scene with clear visual hierarchy; all essential objects completely inside frame with breathing room. Avoid outlines, sketching, halftone, paint strokes, glossy neon, clutter. A comfortable daylight stretching corner: a soft sage mat, ribbed muted coral foam roller, looped fabric stretching strap and neatly folded cream towel, low bench behind. Soft 3D objects with gentle daylight shadows, breathable clean room. No diagrams.",
+      "source": []
+    },
+    {
+      "name": "fitness",
+      "file": "public/visuals/soft-3d/fitness.webp",
+      "prompt": "Use case: stylized-concept. Asset type: MIRON training-place selection card, landscape 3:2. A polished soft animated-film 3D illustration, rounded believable objects, subtle tactile materials, gentle natural lighting, clean composition and warm welcoming everyday fitness atmosphere. Style must match the supplied soft 3D adult character references, not comic or ink. No text, no numbers, no lettering, no logos, no watermarks, no people. One coherent scene with clear visual hierarchy; all essential objects completely inside frame with breathing room. Avoid outlines, sketching, halftone, paint strokes, glossy neon, clutter. A welcoming curved park path on a beautiful quiet morning, trees, a wooden park bench, running shoes and a graphite sports water bottle placed together near the foreground. Warm softly lit rounded 3D scenery, calm coral/peach sunrise with green foliage, natural everyday movement mood.",
+      "source": []
+    },
+    {
+      "name": "preparation",
+      "file": "public/visuals/soft-3d/preparation.webp",
+      "prompt": "Portrait 2:3 premium soft 3D animated-film still life for a friendly everyday fitness app. Low camera: large graphite sports duffel with rounded sewn handles, one coral towel draped naturally, one pair of black hex dumbbells, one graphite shaker bottle with cream lid, all complete physically plausible and arranged tastefully on warm grey studio floor in LOWER HALF of image. Upper half empty charcoal grey studio wall softly lit with warm window light. Neutral dark warm atmosphere, broad subtle gradients, no comic ink outlines, no paint strokes, no bright pink filter, no lettering or logos. High quality rounded satin material renders, gentle cinematic ambient lighting. Composition usable as a full mobile screen background with text above, objects large and readable.",
+      "source": []
+    },
+    {
+      "name": "finish",
+      "file": "public/visuals/soft-3d/finish.webp",
+      "prompt": "Landscape 3:2 isolated soft 3D animated-film render of a friendly fist bump: adult male Max's left forearm entering from left with graphite short sleeve and black wrist band, adult female Lika's forearm entering from right with blush pink sweatshirt sleeve. Their two closed fists touching gently at center. Anatomically coherent adult hands with four curled fingers and one correctly folded thumb each, natural relaxed hands. Same soft rounded stylized 3D aesthetic as friendly animated-film human characters, warm skin, subtle soft studio lighting, gentle material shading. No comic ink outlines, no text, no paint streaks, no speed lines, no fireworks. Complete hands with generous empty space above and below, genuinely transparent background.",
+      "source": []
+    },
+    {
+      "name": "dumbbell",
+      "file": "public/visuals/soft-3d/equipment/dumbbell.webp",
+      "prompt": "Use case: product-mockup. Asset type: MIRON equipment-choice illustration. One clean isolated fitness item, centered and fully visible with generous 12% margins. Soft animated-film 3D render, believable rounded geometry and subtle tactile rubber, textile or matte metal materials, soft warm studio light. Three-quarter view, gentle grounded contact shadow, genuinely transparent background. Graphite and muted coral/dusty rose accents only. No text, numbers, weights, logos, labels, people, comic outline, ink, hatch, paint, halftone, floating parts, harsh reflections. The object must be unmistakably recognizable and structurally sound. Landscape 3:2. Subject: ONE hexagonal rubber dumbbell, two symmetrical dark graphite hexagonal heads securely joined by ONE short silver knurled handle, both heads identical size, subtle coral ring detail.",
+      "source": []
+    },
+    {
+      "name": "kettlebell",
+      "file": "public/visuals/soft-3d/equipment/kettlebell.webp",
+      "prompt": "Use case: product-mockup. Asset type: MIRON equipment-choice illustration. One clean isolated fitness item, centered and fully visible with generous 12% margins. Soft animated-film 3D render, believable rounded geometry and subtle tactile rubber, textile or matte metal materials, soft warm studio light. Three-quarter view, gentle grounded contact shadow, genuinely transparent background. Graphite and muted coral/dusty rose accents only. No text, numbers, weights, logos, labels, people, comic outline, ink, hatch, paint, halftone, floating parts, harsh reflections. The object must be unmistakably recognizable and structurally sound. Landscape 3:2. Subject: ONE graphite cast-iron kettlebell with a single thick closed arched handle smoothly joined to the rounded bell, small muted coral base trim.",
+      "source": []
+    },
+    {
+      "name": "barbell",
+      "file": "public/visuals/soft-3d/equipment/barbell.webp",
+      "prompt": "Use case: product-mockup. Asset type: MIRON equipment-choice illustration. One clean isolated fitness item, centered and fully visible with generous 12% margins. Soft animated-film 3D render, believable rounded geometry and subtle tactile rubber, textile or matte metal materials, soft warm studio light. Three-quarter view, gentle grounded contact shadow, genuinely transparent background. Graphite and muted coral/dusty rose accents only. No text, numbers, weights, logos, labels, people, comic outline, ink, hatch, paint, halftone, floating parts, harsh reflections. The object must be unmistakably recognizable and structurally sound. Landscape 3:2. Subject: ONE straight silver weight barbell with two identical graphite round plates at each end and symmetrical silver sleeves. Entire long bar inside image. Clean mechanical assembly, no extra loose rods.",
+      "source": []
+    },
+    {
+      "name": "band",
+      "file": "public/visuals/soft-3d/equipment/band.webp",
+      "prompt": "Use case: product-mockup. Asset type: MIRON equipment-choice illustration. One clean isolated fitness item, centered and fully visible with generous 12% margins. Soft animated-film 3D render, believable rounded geometry and subtle tactile rubber, textile or matte metal materials, soft warm studio light. Three-quarter view, gentle grounded contact shadow, genuinely transparent background. Graphite and muted coral/dusty rose accents only. No text, numbers, weights, logos, labels, people, comic outline, ink, hatch, paint, halftone, floating parts, harsh reflections. The object must be unmistakably recognizable and structurally sound. Landscape 3:2. Subject: Two closed-loop resistance bands resting in a relaxed coherent oval, one dusty coral fabric short loop and one graphite rubber long loop, no loose wire ends.",
+      "source": []
+    },
+    {
+      "name": "bench",
+      "file": "public/visuals/soft-3d/equipment/bench.webp",
+      "prompt": "Use case: product-mockup. Asset type: MIRON equipment-choice illustration. One clean isolated fitness item, centered and fully visible with generous 12% margins. Soft animated-film 3D render, believable rounded geometry and subtle tactile rubber, textile or matte metal materials, soft warm studio light. Three-quarter view, gentle grounded contact shadow, genuinely transparent background. Graphite and muted coral/dusty rose accents only. No text, numbers, weights, logos, labels, people, comic outline, ink, hatch, paint, halftone, floating parts, harsh reflections. The object must be unmistakably recognizable and structurally sound. Landscape 3:2. Subject: ONE standard flat strength-training weight bench, charcoal upholstered rectangular pad, stable graphite metal frame with two wide floor feet, physically coherent fixed flat geometry.",
+      "source": []
+    },
+    {
+      "name": "mat",
+      "file": "public/visuals/soft-3d/equipment/mat.webp",
+      "prompt": "Use case: product-mockup. Asset type: MIRON equipment-choice illustration. One clean isolated fitness item, centered and fully visible with generous 12% margins. Soft animated-film 3D render, believable rounded geometry and subtle tactile rubber, textile or matte metal materials, soft warm studio light. Three-quarter view, gentle grounded contact shadow, genuinely transparent background. Graphite and muted coral/dusty rose accents only. No text, numbers, weights, logos, labels, people, comic outline, ink, hatch, paint, halftone, floating parts, harsh reflections. The object must be unmistakably recognizable and structurally sound. Landscape 3:2. Subject: ONE softly textured dusty rose exercise mat partially unrolled on floor, gentle rounded edges and a coherent simple rolled end, entire mat visible.",
+      "source": []
+    },
+    {
+      "name": "block",
+      "file": "public/visuals/soft-3d/equipment/block.webp",
+      "prompt": "Use case: product-mockup. Asset type: MIRON equipment-choice illustration, landscape 3:2. Centered isolated object fully visible with generous margins. Soft animated-film 3D render, coherent rounded physical geometry and tactile fabric/cork/foam. Soft warm studio lighting, muted coral, dusty rose, cream or natural material color. Genuine transparent background with only a soft contact shadow. No text, numbers, logo, label, people, comic outline, ink, halftone, grunge or floating parts. Subject: TWO natural cork yoga blocks with softly rounded cuboid corners, one lying flat and the other standing nearby, visibly separate and sturdy.",
+      "source": []
+    },
+    {
+      "name": "strap",
+      "file": "public/visuals/soft-3d/equipment/strap.webp",
+      "prompt": "Use case: product-mockup. Asset type: MIRON equipment-choice illustration, landscape 3:2. Centered isolated object fully visible with generous margins. Soft animated-film 3D render, coherent rounded physical geometry and tactile fabric/cork/foam. Soft warm studio lighting, muted coral, dusty rose, cream or natural material color. Genuine transparent background with only a soft contact shadow. No text, numbers, logo, label, people, comic outline, ink, halftone, grunge or floating parts. Subject: ONE woven dusty rose yoga strap loosely coiled with its fabric free end resting naturally and a coherent pair of metal D-ring buckle loops at one end.",
+      "source": []
+    },
+    {
+      "name": "bolster",
+      "file": "public/visuals/soft-3d/equipment/bolster.webp",
+      "prompt": "Use case: product-mockup. Asset type: MIRON equipment-choice illustration, landscape 3:2. Centered isolated object fully visible with generous margins. Soft animated-film 3D render, coherent rounded physical geometry and tactile fabric/cork/foam. Soft warm studio lighting, muted coral, dusty rose, cream or natural material color. Genuine transparent background with only a soft contact shadow. No text, numbers, logo, label, people, comic outline, ink, halftone, grunge or floating parts. Subject: ONE long cylindrical yoga bolster pillow in dusty rose woven fabric, rounded ends, a small sewn fabric carry handle at one end.",
+      "source": []
+    },
+    {
+      "name": "blanket",
+      "file": "public/visuals/soft-3d/equipment/blanket.webp",
+      "prompt": "Use case: product-mockup. Asset type: MIRON equipment-choice illustration, landscape 3:2. Centered isolated object fully visible with generous margins. Soft animated-film 3D render, coherent rounded physical geometry and tactile fabric/cork/foam. Soft warm studio lighting, muted coral, dusty rose, cream or natural material color. Genuine transparent background with only a soft contact shadow. No text, numbers, logo, label, people, comic outline, ink, halftone, grunge or floating parts. Subject: ONE neatly folded warm cream cotton blanket in a stack of three folds, subtle woven tactile texture and soft rounded folded edges.",
+      "source": []
+    },
+    {
+      "name": "roller",
+      "file": "public/visuals/soft-3d/equipment/roller.webp",
+      "prompt": "Use case: product-mockup. Asset type: MIRON equipment-choice illustration, landscape 3:2. Centered isolated object fully visible with generous margins. Soft animated-film 3D render, coherent rounded physical geometry and tactile fabric/cork/foam. Soft warm studio lighting, muted coral, dusty rose, cream or natural material color. Genuine transparent background with only a soft contact shadow. No text, numbers, logo, label, people, comic outline, ink, halftone, grunge or floating parts. Subject: ONE ribbed matte coral foam massage roller with a simple hollow cylindrical core, entire tube visible from a three-quarter angle.",
+      "source": []
+    },
+    {
+      "name": "rings",
+      "file": "public/visuals/soft-3d/equipment/rings.webp",
+      "prompt": "Use case: product-mockup. Asset type: MIRON equipment-choice illustration, landscape 3:2. Centered isolated object fully visible with generous margins. Soft animated-film 3D render, coherent rounded physical geometry and tactile fabric/cork/foam. Soft warm studio lighting, muted coral, dusty rose, cream or natural material color. Genuine transparent background with only a soft contact shadow. No text, numbers, logo, label, people, comic outline, ink, halftone, grunge or floating parts. Subject: TWO wooden gymnastic rings each attached to its own graphite woven adjustable strap. Coherent closed wooden rings and proper strap loops at ring tops, straps visible folded above and no imaginary anchor.",
+      "source": []
+    },
+    {
+      "name": "pullup",
+      "file": "public/visuals/soft-3d/equipment/pullup.webp",
+      "prompt": "Premium soft 3D animated-film fitness equipment icon, rounded realistic proportions, physically coherent product model, smooth satin materials, gentle warm studio lighting, subtle ambient occlusion, no comic outlines or halftone, no text, no letters, no brand logos, no people, no hands. Isolated complete object on a genuinely transparent background, generous empty margin on all four sides, landscape 3:2 canvas, front three-quarter view. Same cohesive family as warm grey and blush sports accessories. ONE sturdy portable doorway pull-up bar, graphite metal frame with cream foam hand grips and a subtle coral ring, realistic complete uncomplicated construction.",
+      "source": []
+    },
+    {
+      "name": "parallettes",
+      "file": "public/visuals/soft-3d/equipment/parallettes.webp",
+      "prompt": "Premium soft 3D animated-film fitness equipment icon, rounded realistic proportions, physically coherent product model, smooth satin materials, gentle warm studio lighting, subtle ambient occlusion, no comic outlines or halftone, no text, no letters, no brand logos, no people, no hands. Isolated complete object on a genuinely transparent background, generous empty margin on all four sides, landscape 3:2 canvas, front three-quarter view. Same cohesive family as warm grey and blush sports accessories. A PAIR of low gymnastics parallettes, two separate short parallel hand bars, natural wooden handles and stable graphite rectangular metal feet, both fully visible.",
+      "source": []
+    },
+    {
+      "name": "vest",
+      "file": "public/visuals/soft-3d/equipment/vest.webp",
+      "prompt": "Premium soft 3D animated-film fitness equipment icon, rounded realistic proportions, physically coherent product model, smooth satin materials, gentle warm studio lighting, subtle ambient occlusion, no comic outlines or halftone, no text, no letters, no brand logos, no people, no hands. Isolated complete object on a genuinely transparent background, generous empty margin on all four sides, landscape 3:2 canvas, front three-quarter view. Same cohesive family as warm grey and blush sports accessories. ONE graphite weighted training vest standing upright as a product, coral small zipper pulls, coherent stitched weight pockets, two shoulder straps, no torso inside.",
+      "source": []
+    },
+    {
+      "name": "belt",
+      "file": "public/visuals/soft-3d/equipment/belt.webp",
+      "prompt": "Premium soft 3D animated-film fitness equipment icon, rounded realistic proportions, physically coherent product model, smooth satin materials, gentle warm studio lighting, subtle ambient occlusion, no comic outlines or halftone, no text, no letters, no brand logos, no people, no hands. Isolated complete object on a genuinely transparent background, generous empty margin on all four sides, landscape 3:2 canvas, front three-quarter view. Same cohesive family as warm grey and blush sports accessories. ONE graphite padded dip weight belt laid down in an oval, one silver steel chain securely attached to the belt's metal D-rings on both ends, uncluttered and physically correct, subtle coral edging.",
+      "source": []
+    },
+    {
+      "name": "backpack",
+      "file": "public/visuals/soft-3d/equipment/backpack.webp",
+      "prompt": "Premium soft 3D animated-film fitness equipment icon, rounded realistic proportions, physically coherent product model, smooth satin materials, gentle warm studio lighting, subtle ambient occlusion, no comic outlines or halftone, no text, no letters, no brand logos, no people, no hands. Isolated complete object on a genuinely transparent background, generous empty margin on all four sides, landscape 3:2 canvas, front three-quarter view. Same cohesive family as warm grey and blush sports accessories. ONE closed graphite sports backpack, warm coral zipper pulls, two coherent shoulder straps, simple rounded shape, completely visible.",
+      "source": []
+    }
+  ]
+}

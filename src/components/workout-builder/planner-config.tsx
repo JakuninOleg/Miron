@@ -193,7 +193,7 @@ export function PlannerConfigForm({
               }
             >
               <option value="straight">Обычные подходы</option>
-              {supportsSplit ? <option value="pairs">Пары A/B</option> : null}
+              {supportsSplit ? <option value="pairs">Суперсеты А–Б</option> : null}
             </select>
           </label>
           <label>
@@ -211,9 +211,25 @@ export function PlannerConfigForm({
             </select>
           </label>
         </div>
+        {config.direction === "strength" ? (
+          <label className={styles.methodOption}>
+            <input
+              type="checkbox"
+              checked={config.dropSets ?? false}
+              onChange={(event) => onChange({ ...config, dropSets: event.target.checked })}
+            />
+            <span>
+              <strong>Добавить дропсет, если подходит</strong>
+              <small>
+                Одно снижение веса в последнем подходе. Для регулярных занятий; при старте или после
+                паузы останутся обычные подходы.
+              </small>
+            </span>
+          </label>
+        ) : null}
         <p className={styles.plannerHint}>
           {supportsSplit
-            ? "Пары чередуют два упражнения с отдыхом между раундами. "
+            ? "Суперсеты чередуют два совместимых упражнения с отдыхом между раундами. "
             : "Для этого направления упражнения идут последовательно. "}
           Примерное время зависит от фактического состава и может отличаться от пожелания.
         </p>

@@ -1,9 +1,20 @@
 import { sql } from "drizzle-orm";
-import type { EnergyActivity, WorkoutEnergyEstimate, WorkoutReward } from "../../shared/contracts";
+import type {
+  CompanionId,
+  EnergyActivity,
+  WorkoutEnergyEstimate,
+  WorkoutReward,
+  Workout,
+} from "../../shared/contracts";
+import type { WorkoutLoadFeedback } from "../../shared/workout-feedback";
+import type { DropSetPlan, DropSetResult } from "../../shared/training-methods";
 import type { CatalogEditorial } from "../../shared/catalog-taxonomy";
 import type { BuilderExercise, BuilderEstimate } from "../../shared/workout-builder";
 import type { PlannerDraft, PlannerStep } from "../../shared/workout-planner";
-import type { AssistantReply } from "../../shared/assistant";
+import type { AssistantReply, AssistantHistoryReceipt } from "../../shared/assistant";
+import type { CalendarSnapshot, CalendarEntry } from "../../shared/calendar";
+import type { CommunicationPreferences, MemoryScope } from "../../shared/communication-memory";
+import type { Dish, MealPlanItem, FoodEntry, NutritionPreferences } from "../../shared/nutrition";
 import {
   bigint,
   boolean,
@@ -498,6 +509,7 @@ export const customWorkoutTemplateSteps = pgTable(
     userId: uuid("user_id").notNull(),
     templateId: uuid("template_id").notNull(),
     ordinal: integer("ordinal").notNull(),
+    phase: text("phase").$type<"warmup" | "main" | "cooldown">().notNull().default("main"),
     variantRevisionId: uuid("variant_revision_id")
       .notNull()
       .references(() => variantRevisions.id, { onDelete: "restrict" }),
@@ -506,10 +518,15 @@ export const customWorkoutTemplateSteps = pgTable(
     restSeconds: integer("rest_seconds").notNull(),
     pairKey: text("pair_key"),
     transitionSeconds: integer("transition_seconds"),
+    dropSet: jsonb("drop_set").$type<DropSetPlan>(),
     exercise: jsonb("exercise").$type<BuilderExercise>().notNull(),
   },
   (t) => [
     primaryKey({ columns: [t.userId, t.templateId, t.ordinal] }),
+    check(
+      "custom_workout_phase_check",
+      sql`${t.phase} in ('warmup','main','cooldown') and (${t.pairKey} is null or ${t.phase} = 'main') and (${t.dropSet} is null or ${t.phase} = 'main')`,
+    ),
     check(
       "custom_workout_pair_check",
       sql`(${t.pairKey} is null and ${t.transitionSeconds} is null) or (${t.pairKey} is not null and ${t.transitionSeconds} is not null and length(${t.pairKey}) between 1 and 80 and ${t.transitionSeconds} between 0 and 120)`,
@@ -607,12 +624,14 @@ export const workouts = pgTable(
     reward: jsonb("reward").$type<WorkoutReward>(),
     energyActivity: text("energy_activity").$type<EnergyActivity>(),
     energyEstimate: jsonb("energy_estimate").$type<WorkoutEnergyEstimate>(),
+    loadFeedback: text("load_feedback").$type<WorkoutLoadFeedback>(),
     startedAt: timestamp("started_at", { withTimezone: true }),
     isDemo: boolean("is_demo").notNull().default(false),
     place: text("place").notNull(),
     availableSeconds: integer("available_seconds").notNull(),
     sourceProfileRevision: integer("source_profile_revision").notNull(),
     sourcePlannerRevision: integer("source_planner_revision"),
+    savedSource: jsonb("saved_source").$type<Workout["source"]>(),
     sourcePlannerDayKey: text("source_planner_day_key"),
     completedAt: timestamp("completed_at", { withTimezone: true }),
     createdAt: created(),
@@ -647,6 +666,108 @@ export const workouts = pgTable(
       sql`${t.energyEstimate} is null or ${t.status} in ('completed','partial')`,
     ),
     check("workouts_revision_check", sql`${t.revision}>=1`),
+    check(
+      "workouts_load_feedback_check",
+      sql`${t.loadFeedback} is null or (${t.loadFeedback} in ('easy','just_right','hard','too_hard') and ${t.status} in ('completed','partial'))`,
+    ),
+  ],
+);
+export const nutritionProfiles = pgTable(
+  "nutrition_profiles",
+  {
+    userId: uuid("user_id")
+      .primaryKey()
+      .references(() => user.id, { onDelete: "cascade" }),
+    revision: integer("revision").notNull().default(1),
+    preferences: jsonb("preferences").$type<NutritionPreferences>().notNull(),
+    dishes: jsonb("dishes").$type<Dish[]>().notNull().default([]),
+    updatedAt: updated(),
+  },
+  (t) => [check("nutrition_profile_revision_check", sql`${t.revision} >= 1`)],
+);
+export const nutritionDays = pgTable(
+  "nutrition_days",
+  {
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    date: date("date").notNull(),
+    revision: integer("revision").notNull().default(1),
+    planned: jsonb("planned").$type<MealPlanItem[]>().notNull().default([]),
+    entries: jsonb("entries").$type<FoodEntry[]>().notNull().default([]),
+    updatedAt: updated(),
+  },
+  (t) => [
+    primaryKey({ columns: [t.userId, t.date] }),
+    check("nutrition_day_revision_check", sql`${t.revision} >= 1`),
+  ],
+);
+
+export const communicationMemory = pgTable(
+  "communication_memory",
+  {
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    scope: text("scope").$type<MemoryScope>().notNull(),
+    revision: integer("revision").notNull().default(1),
+    preferences: jsonb("preferences").$type<CommunicationPreferences>().notNull(),
+    updatedAt: updated(),
+  },
+  (t) => [
+    primaryKey({ columns: [t.userId, t.scope] }),
+    check(
+      "communication_scope_check",
+      sql`${t.scope} in ('shared','max','lika') and ${t.revision} >= 1`,
+    ),
+  ],
+);
+
+export const journeyReads = pgTable(
+  "journey_reads",
+  {
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    chapterId: text("chapter_id").notNull(),
+    readAt: created(),
+  },
+  (t) => [
+    primaryKey({ columns: [t.userId, t.chapterId] }),
+    check(
+      "journey_chapter_check",
+      sql`${t.chapterId} in ('meeting','first-route','own-trail','further-together')`,
+    ),
+  ],
+);
+
+export const calendarEntries = pgTable(
+  "calendar_entries",
+  {
+    id: id(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    revision: integer("revision").notNull().default(1),
+    date: date("date").notNull(),
+    timezone: text("timezone").notNull(),
+    status: text("status").$type<CalendarEntry["status"]>().notNull().default("planned"),
+    snapshot: jsonb("snapshot").$type<CalendarSnapshot>().notNull(),
+    workoutId: uuid("workout_id"),
+    createdAt: created(),
+    updatedAt: updated(),
+  },
+  (t) => [
+    index("calendar_owner_date_idx").on(t.userId, t.date),
+    foreignKey({
+      columns: [t.userId, t.workoutId],
+      foreignColumns: [workouts.userId, workouts.id],
+    }).onDelete("cascade"),
+    check("calendar_revision_check", sql`${t.revision} >= 1`),
+    check(
+      "calendar_status_check",
+      sql`${t.status} in ('planned','skipped','cancelled','started') and ((${t.status} = 'started') = (${t.workoutId} is not null))`,
+    ),
   ],
 );
 export const workoutResources = pgTable(
@@ -716,6 +837,7 @@ export const recordedSets = pgTable(
     reps: integer("reps"),
     durationSeconds: integer("duration_seconds"),
     weightG: integer("weight_g").notNull().default(0),
+    drop: jsonb("drop_result").$type<DropSetResult>(),
     createdAt: created(),
   },
   (t) => [
@@ -724,6 +846,18 @@ export const recordedSets = pgTable(
       foreignColumns: [workoutSteps.userId, workoutSteps.workoutId, workoutSteps.id],
     }).onDelete("cascade"),
     unique("recorded_sets_index_uq").on(t.stepId, t.setIndex),
+    check(
+      "recorded_sets_drop_check",
+      sql`${t.drop} is null or coalesce((
+      ${t.reps} is not null and ${t.durationSeconds} is null and
+      jsonb_typeof(${t.drop}) = 'object' and
+      jsonb_typeof(${t.drop}->'reps') = 'number' and jsonb_typeof(${t.drop}->'weightKg') = 'number' and
+      (${t.drop}->>'reps')::numeric between 1 and 100 and
+      (${t.drop}->>'reps')::numeric = trunc((${t.drop}->>'reps')::numeric) and
+      (${t.drop}->>'weightKg')::numeric > 0 and
+      (${t.drop}->>'weightKg')::numeric * 1000 < ${t.weightG}
+    ), false)`,
+    ),
     check(
       "recorded_sets_values_check",
       sql`${t.setIndex}>=0 and ${t.weightG}>=0 and ((${t.reps} is not null and ${t.reps}>0 and ${t.durationSeconds} is null) or (${t.reps} is null and ${t.durationSeconds} is not null and ${t.durationSeconds} between 1 and 86400 and ${t.weightG}=0))`,
@@ -859,6 +993,8 @@ export const assistantTurns = pgTable(
     }>(),
     createdAt: created(),
     finishedAt: timestamp("finished_at", { withTimezone: true }),
+    userDeletedAt: timestamp("user_deleted_at", { withTimezone: true }),
+    assistantDeletedAt: timestamp("assistant_deleted_at", { withTimezone: true }),
   },
   (t) => [
     primaryKey({ columns: [t.userId, t.operationId] }),
@@ -880,4 +1016,35 @@ export const assistantTurns = pgTable(
       sql`${t.errorStatus} is null or ${t.errorStatus} between 400 and 599`,
     ),
   ],
+);
+
+export const assistantConversations = pgTable(
+  "assistant_conversations",
+  {
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    companion: text("companion").$type<CompanionId>().notNull(),
+    revision: integer("revision").notNull().default(0),
+    updatedAt: updated(),
+  },
+  (t) => [
+    primaryKey({ columns: [t.userId, t.companion] }),
+    check("assistant_conversation_companion_check", sql`${t.companion} in ('max','lika')`),
+    check("assistant_conversation_revision_check", sql`${t.revision} >= 0`),
+  ],
+);
+
+export const assistantHistoryCommands = pgTable(
+  "assistant_history_commands",
+  {
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    operationId: uuid("operation_id").notNull(),
+    payloadHash: text("payload_hash").notNull(),
+    result: jsonb("result").$type<AssistantHistoryReceipt>().notNull(),
+    createdAt: created(),
+  },
+  (t) => [primaryKey({ columns: [t.userId, t.operationId] })],
 );

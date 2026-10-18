@@ -3,6 +3,8 @@ import { createHmac, randomUUID, timingSafeEqual } from "node:crypto";
 import { z } from "zod";
 import { AuthError, getCurrentUser, requireUser } from "@/server/auth";
 import { consumeAuthRateLimit } from "@/server/auth/rate-limit";
+import { assertProductAccess } from "@/server/domain/access";
+import { DomainError } from "@/server/domain/errors";
 import { VOICE_MAX_AUDIO_BYTES, VOICE_MAX_SECONDS, VOICE_MAX_TEXT_LENGTH } from "@/shared/voice";
 
 const COOKIE = "miron.voice-preview";
@@ -214,6 +216,8 @@ async function boundedBody(request: Request | Response, maxBytes: number, signal
 }
 
 function errorResponse(error: unknown) {
+  if (error instanceof DomainError)
+    return reply({ error: { code: error.code, message: error.message } }, error.status);
   if (error instanceof VoiceError)
     return reply(
       { error: { code: error.code, message: error.message } },
@@ -286,8 +290,9 @@ export async function transcribeVoice(request: Request) {
     checkOrigin(request);
     const owner = (await accountOwner(request)) ?? previewOwner(request);
     if (!owner) throw new AuthError(401, "Войдите в аккаунт.");
-    const secret = workerSecret();
     const isPreview = owner.startsWith("preview:");
+    if (!isPreview) await assertProductAccess(owner.slice("account:".length));
+    const secret = workerSecret();
     await guard(owner, 60, isPreview ? 3 : 8);
     await guard(`day:${owner}`, 86400, isPreview ? 30 : 120);
     await guard("global", 60, 60);

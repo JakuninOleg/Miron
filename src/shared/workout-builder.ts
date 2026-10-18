@@ -1,4 +1,5 @@
 import type { CatalogContext, CatalogDirection, MuscleGroup } from "./catalog-taxonomy";
+import type { DropSetPlan } from "./training-methods";
 
 export type BuilderEquipmentFilter =
   "all" | "machines" | "free_weights" | "bodyweight" | "bands" | "cables";
@@ -18,6 +19,7 @@ export interface BuilderInventory {
 }
 
 export interface BuilderBootstrap {
+  dropSetsAvailable?: boolean;
   ownerId: string;
   theme: "dark" | "rose";
   resources: BuilderResourceOption[];
@@ -63,6 +65,8 @@ export interface BuilderCatalog {
 }
 
 export interface BuilderStep {
+  phase?: "warmup" | "main" | "cooldown";
+  dropSet?: DropSetPlan;
   revisionId: string;
   sets: number;
   target: number;
@@ -146,7 +150,8 @@ export function estimateBuilderWorkout(steps: BuilderSelectedStep[]): BuilderEst
   let maxSeconds = 0;
   let groups = 0;
   for (let index = 0; index < steps.length; index++) {
-    const { exercise, sets, target, restSeconds, pairKey, transitionSeconds } = steps[index];
+    const { exercise, sets, target, restSeconds, pairKey, transitionSeconds, dropSet } =
+      steps[index];
     const { timing, metric } = exercise;
     const sides = timing.perSide ? 2 : 1;
     const previous = steps[index - 1];
@@ -169,6 +174,11 @@ export function estimateBuilderWorkout(steps: BuilderSelectedStep[]): BuilderEst
       transitionsWithinPair +
       timing.setupSeconds.max +
       switches * timing.sideSwitchSeconds.max;
+    if (dropSet) {
+      // Planned repetitions plus a short equipment change; no extra round/rest/XP.
+      minSeconds += dropSet.targetReps * sides * timing.secondsPerRep.min + 5;
+      maxSeconds += dropSet.targetReps * sides * timing.secondsPerRep.max + 20;
+    }
     // Invalid pairs are rejected by the command validator before authoritative estimation.
   }
   const transitions = Math.max(0, groups - 1);

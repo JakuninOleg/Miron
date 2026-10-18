@@ -42,6 +42,8 @@ export function parseStoryPreview(raw: string | null): StoryPreviewState {
       input.companion === "max" || input.companion === "lika" ? input.companion : null;
     const allowed = new Set<string>(STORY_INTERESTS.map((item) => item.id));
     allowed.add("explore");
+    // Retain older saved preferences while the new UI offers five directions.
+    allowed.add("fitness");
     const allowedLocations = new Set<string>(STORY_LOCATIONS.map((item) => item.id));
     const chooseStep = STORY_PANELS.findIndex((panel) => panel.kind === "choose");
     const storedStep =
@@ -125,7 +127,11 @@ export function parseAccountStoryDraft(
     const pending = input.pendingCompletion;
     if (!pending || typeof pending !== "object") return { state, pendingCompletion: null };
     const candidate = pending as Record<string, unknown>;
-    const validInterests = new Set<string>([...STORY_INTERESTS.map((item) => item.id), "explore"]);
+    const validInterests = new Set<string>([
+      ...STORY_INTERESTS.map((item) => item.id),
+      "explore",
+      "fitness",
+    ]);
     if (
       typeof candidate.operationId !== "string" ||
       !UUID.test(candidate.operationId) ||

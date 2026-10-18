@@ -8,19 +8,20 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowLeft, ArrowRight, Eye, EyeOff, Mail } from "lucide-react";
 import { authClient, signInWithProvider } from "@/client/auth-client";
 import type { AuthConfig } from "@/shared/contracts";
-import { Brand } from "./app-shell";
+import { AuthScene } from "./auth-scene";
+import styles from "./auth-screen.module.css";
 
 export type AuthMode =
   "sign-in" | "sign-up" | "forgot-password" | "reset-password" | "verify-email";
 const titles: Record<AuthMode, string> = {
-  "sign-in": "С возвращением",
-  "sign-up": "Начнём твой путь",
+  "sign-in": "Войти в MIRON",
+  "sign-up": "Создать аккаунт",
   "forgot-password": "Восстановить пароль",
   "reset-password": "Новый пароль",
   "verify-email": "Подтверди почту",
 };
 const descriptions: Record<AuthMode, string> = {
-  "sign-in": "Твой план и напарник ждут тебя.",
+  "sign-in": "Твои тренировки, переписка и прогресс — в одном аккаунте.",
   "sign-up": "Создай аккаунт. Сначала познакомимся, потом начнём занятие.",
   "forgot-password": "Отправим ссылку для смены пароля на твою почту.",
   "reset-password": "Выбери пароль, который используешь только здесь.",
@@ -175,38 +176,26 @@ export function AuthScreen({ mode }: { mode: AuthMode }) {
   const showSocial = mode === "sign-in" || mode === "sign-up";
   const emailEnabled = config?.emailPassword === true;
   return (
-    <div className="auth-page">
-      <aside className="auth-art">
-        <Link href="/sign-in">
-          <Brand />
+    <div className={styles.page} data-auth-mode={mode} data-compact={!showSocial || emailEnabled}>
+      <a className={styles.skipLink} href="#auth-form">
+        К форме входа
+      </a>
+      <header className={styles.header}>
+        <Link href="/sign-in" aria-label="MIRON, вход" className={styles.brand}>
+          <Image
+            src="/brand/wordmark-light.svg"
+            alt="MIRON"
+            width={500}
+            height={69}
+            sizes="(max-width: 1100px) 166px, 260px"
+            loading="eager"
+            unoptimized
+          />
         </Link>
-        <h2>
-          Больше,
-          <br />
-          чем тренировки.
-          <br />
-          Рядом.
-        </h2>
-        <Image
-          unoptimized
-          width={768}
-          height={1152}
-          className="auth-character"
-          src="/characters/max.webp"
-          alt=""
-        />
-        <p>
-          Твой темп.
-          <br />
-          Твой следующий шаг.
-          <span className="auth-stroke" />
-        </p>
-      </aside>
-      <main className="auth-content">
-        <div className="auth-card">
-          <Link href="/sign-in">
-            <Brand />
-          </Link>
+      </header>
+      <AuthScene />
+      <main className={styles.content} id="auth-form" tabIndex={-1}>
+        <div className={styles.card}>
           {mode !== "sign-in" && mode !== "sign-up" ? (
             <Link className="auth-back" href="/sign-in">
               <ArrowLeft size={14} />
@@ -214,11 +203,18 @@ export function AuthScreen({ mode }: { mode: AuthMode }) {
             </Link>
           ) : null}
           <h1>{titles[mode]}</h1>
-          <p className="auth-description">
-            {showSocial && config && !emailEnabled
-              ? "Продолжи через свой аккаунт. Если ты впервые здесь, создадим профиль MIRON."
-              : descriptions[mode]}
-          </p>
+          <p className={styles.description}>{descriptions[mode]}</p>
+          {params.get("deleted") === "1" ? (
+            <p className="auth-status" role="status">
+              Аккаунт и его данные удалены.
+            </p>
+          ) : params.get("deletion") === "unconfirmed" ? (
+            <p className="auth-status" role="alert">
+              Локальные копии удалены. Связь прервалась, поэтому удаление на сервере не
+              подтверждено. Если аккаунт ещё существует, войди в него и повтори удаление в
+              настройках.
+            </p>
+          ) : null}
           {params.get("verified") === "1" ? (
             <p className="auth-status success-text" role="status">
               <Mail size={17} style={{ display: "inline", marginRight: 9 }} />
@@ -246,26 +242,37 @@ export function AuthScreen({ mode }: { mode: AuthMode }) {
           ) : null}
           {showSocial && !success ? (
             <>
-              <div className="oauth-row">
+              <div className={styles.providers}>
                 <button
-                  className="button"
+                  className={styles.yandexButton}
                   type="button"
                   disabled={busy || !config?.providers.yandex}
                   onClick={() => void social("yandex")}
                 >
-                  Яндекс ID
+                  <span className={styles.yandexIcon} aria-hidden="true">
+                    Я
+                  </span>
+                  Продолжить с Яндекс ID
                 </button>
                 <button
-                  className="button"
+                  className={styles.vkButton}
                   type="button"
                   disabled={busy || !config?.providers.vk}
                   onClick={() => void social("vk")}
                 >
-                  VK ID
+                  <span className={styles.vkIcon} aria-hidden="true">
+                    VK
+                  </span>
+                  VK ID{config && !config.providers.vk ? " · скоро" : ""}
                 </button>
               </div>
-              {config && (!config.providers.yandex || !config.providers.vk) ? (
-                <p className="provider-hint">Недоступные способы входа ещё не подключены.</p>
+              {config && !emailEnabled && (config.providers.yandex || config.providers.vk) ? (
+                <p className={styles.firstVisit}>Первый раз? Создадим профиль после входа.</p>
+              ) : null}
+              {config && !emailEnabled && !config.providers.yandex && !config.providers.vk ? (
+                <p className="auth-status" role="status">
+                  Сейчас нет доступных способов входа. Попробуй позже.
+                </p>
               ) : null}
               {emailEnabled ? <div className="auth-divider">Или по почте</div> : null}
             </>
@@ -391,9 +398,10 @@ export function AuthScreen({ mode }: { mode: AuthMode }) {
                   </Link>
                 </p>
               ) : null}
-              <p className="auth-bottom small">
-                <Link href="/demo">Посмотреть демоверсию</Link>
-              </p>
+              <Link href="/demo" className={styles.demoLink}>
+                Посмотреть демоверсию
+                <ArrowRight size={22} aria-hidden="true" />
+              </Link>
             </>
           ) : null}
         </div>

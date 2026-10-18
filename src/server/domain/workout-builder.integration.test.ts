@@ -11,6 +11,7 @@ import {
   exercises,
   muscleGroups,
   resourceTypes,
+  trials,
   user,
   variantRequirements,
   variantRevisionMuscles,
@@ -56,6 +57,9 @@ describe.runIf(enabled)("PostgreSQL manual workout ownership and catalogue gates
         { id: alice, name: "Builder Alice", email: `${alice}@example.test`, emailVerified: true },
         { id: bob, name: "Builder Bob", email: `${bob}@example.test`, emailVerified: true },
       ]);
+    await getDb()
+      .insert(trials)
+      .values([alice, bob].map((userId) => ({ userId })));
     await getDb()
       .insert(exercises)
       .values({ id: familyId, nameRu: "Constructor fixture", discipline: "strength" });

@@ -1,0 +1,1601 @@
+.screen {
+  --story-header-height: 12svh;
+  --ink: #f8f6f2;
+  --muted: #c5c1bf;
+  --surface: #191a1e;
+  --accent: #ff9a7d;
+  --button-ink: #2d211e;
+  --edge: #ffffff25;
+  --body: var(--font-manrope), sans-serif;
+  height: 100svh;
+  min-height: 100svh;
+  color: var(--ink);
+  background: var(--surface);
+  font-family: var(--body);
+  overflow: clip;
+  transition:
+    background-color 480ms ease,
+    color 480ms ease;
+}
+.screen[data-companion="lika"],
+.screen[data-persona="lika"]:not([data-kind]) {
+  --ink: #302c32;
+  --muted: #6b626a;
+  --surface: #faf7f5;
+  --accent: #d87fa1;
+  --button-ink: #2d1823;
+  --edge: #30232c26;
+}
+.screen[data-kind][data-persona="lika"] {
+  --accent: #e6a0bb;
+}
+.screen button {
+  font: inherit;
+  cursor: pointer;
+}
+.screen button:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+.screen button:focus-visible,
+.adultConfirmation:focus-within {
+  outline: 3px solid var(--accent);
+  outline-offset: 5px;
+}
+.screen h1:focus {
+  outline: none;
+}
+.screen h1,
+.screen h2,
+.screen p,
+.screen blockquote {
+  margin: 0;
+}
+.screen h2 {
+  font-family: var(--body);
+}
+.screen section {
+  animation: sceneIn 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.screen[data-direction="back"] section {
+  animation-name: sceneBack;
+}
+.intro,
+.actions,
+.welcomeCopy {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+}
+.eyebrow {
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+}
+.title {
+  font-family: var(--body);
+  font-size: clamp(44px, 4.7vw, 84px);
+  line-height: 1.09;
+  font-weight: 800;
+  letter-spacing: -0.06em;
+  text-wrap: balance;
+}
+.maxName,
+.likaName {
+  font-style: normal;
+  position: relative;
+  display: inline-block;
+  width: fit-content;
+}
+.maxName {
+  color: #ff9a7d;
+}
+.likaName {
+  color: #e79dbb;
+}
+.screen[data-companion="lika"] .likaName {
+  color: #ab4275;
+}
+.maxName::after,
+.likaName::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 0.07em;
+  left: 0;
+  bottom: -0.025em;
+  background: currentColor;
+  border-radius: 65% 30% 50% 35%;
+  transform: rotate(-2deg);
+  transform-origin: left;
+  animation: underlineIn 650ms 220ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.description {
+  color: var(--muted);
+  font-size: clamp(15px, 1.25vw, 21px);
+  line-height: 1.65;
+}
+.next {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  width: 100%;
+  min-height: 58px;
+  padding: 14px 24px;
+  border: 0;
+  border-radius: 16px;
+  background: var(--accent);
+  color: var(--button-ink);
+  font-weight: 750 !important;
+  box-shadow: 0 8px 26px #0000000c;
+  transition:
+    transform 200ms ease,
+    background-color 480ms ease,
+    box-shadow 200ms ease;
+}
+.next svg {
+  width: 25px;
+  height: 25px;
+  transition: transform 200ms ease;
+}
+.next:active {
+  transform: scale(0.98);
+}
+.back {
+  min-height: 44px;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 8px 0 0;
+}
+.back svg {
+  width: 22px;
+  height: 22px;
+}
+.actionFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+.tagline {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
+.speech {
+  position: relative;
+  isolation: isolate;
+  color: #332c2a;
+  padding: 22px 24px 38px;
+  font-size: 17px;
+  line-height: 1.45;
+  font-weight: 600;
+}
+.speech svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: visible;
+}
+.speech path {
+  fill: #fffaf2;
+  stroke: #352e2b;
+  stroke-width: 2;
+}
+.speech > span {
+  display: block;
+}
+.welcome {
+  position: relative;
+  height: calc(100svh - var(--story-header-height));
+  min-height: 0;
+  padding: 0 5%;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) 116px;
+}
+.welcomeArt {
+  position: absolute;
+  inset: 0;
+}
+.welcomeArt img {
+  object-fit: cover;
+  object-position: center;
+}
+.welcome::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, #191a1ecc 0%, #191a1e75 26%, transparent 48%),
+    linear-gradient(0deg, #191a1e 0%, #191a1e90 12%, transparent 34%);
+}
+.welcomeCopy {
+  align-self: center;
+  width: min(36%, 480px);
+  display: grid;
+  gap: 32px;
+}
+.welcomeIntro {
+  display: grid;
+  gap: 25px;
+}
+.welcomeCopy .title {
+  font-size: clamp(44px, 4.6vw, 84px);
+}
+.welcomeCopy .description {
+  color: #e0d9d2;
+}
+.littleHeart {
+  color: #f4bdd0;
+  font-size: 1.3em;
+  white-space: nowrap;
+}
+.welcomeTagline {
+  display: none;
+}
+.welcomeBubble {
+  position: absolute;
+  z-index: 1;
+  left: 35%;
+  top: 7%;
+  width: 190px;
+  transform: rotate(-5deg);
+}
+.welcomeNote {
+  position: absolute;
+  z-index: 1;
+  right: 5%;
+  top: 8%;
+  font:
+    28px/1.2 var(--font-neucha),
+    cursive;
+  color: #fff2e9;
+  transform: rotate(7deg);
+}
+.features {
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+  width: min(100%, 1280px);
+  justify-self: center;
+  position: relative;
+  z-index: 1;
+}
+.feature {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding-inline: 22px;
+  min-height: 60px;
+}
+.feature + .feature {
+  border-left: 1px solid #ffffff20;
+}
+.feature > svg {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  color: #edc9bb;
+}
+.feature h2 {
+  font-size: 13px;
+  font-weight: 700;
+}
+.feature p {
+  color: #c4bab4;
+  font-size: 12px;
+  line-height: 1.55;
+  max-width: 180px;
+  margin-top: 5px;
+}
+.coachScene,
+.interestScene,
+.choiceScene {
+  height: calc(100svh - var(--story-header-height));
+  min-height: 0;
+  display: grid;
+  padding: clamp(24px, 4svh, 52px) 5%;
+  gap: 28px;
+}
+.coachScene {
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.2fr) minmax(0, 0.85fr);
+  grid-template-rows: minmax(0, 1fr) auto;
+}
+.coachScene .intro {
+  align-self: center;
+  display: grid;
+  gap: 24px;
+}
+.character {
+  font-size: clamp(18px, 1.9vw, 29px);
+  font-weight: 650;
+  line-height: 1.35;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+.coachArt {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  min-height: 0;
+  position: relative;
+  overflow: hidden;
+  border-radius: 160px 160px 28px 28px;
+}
+.coachArt img {
+  object-fit: cover;
+  object-position: center 30%;
+}
+.artNote {
+  position: absolute;
+  bottom: 25px;
+  left: 25px;
+  color: #fffaf2;
+  text-shadow: 0 1px 14px #000;
+  font:
+    24px/1.2 var(--font-neucha),
+    cursive;
+  transform: rotate(-7deg);
+}
+.screen[data-companion="lika"] .artNote {
+  color: #884764;
+  text-shadow: none;
+}
+.coachDetails {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(20px, 3svh, 36px);
+  grid-column: 3;
+  grid-row: 1 / 3;
+}
+.benefits {
+  display: grid;
+  gap: clamp(18px, 3svh, 36px);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.benefits li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.benefitIcon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  color: var(--accent);
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--edge);
+  border-radius: 16px;
+}
+.benefitIcon svg {
+  width: 24px;
+  height: 24px;
+}
+.benefits h2 {
+  font-size: clamp(13px, 1vw, 17px);
+  font-weight: 650;
+  line-height: 1.5;
+}
+.benefits p {
+  font-size: clamp(11px, 0.9vw, 14px);
+  color: var(--muted);
+  line-height: 1.5;
+  margin-top: 3px;
+}
+.coachScene .actions {
+  grid-column: 1;
+  grid-row: 2;
+  align-self: end;
+}
+.interestScene {
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.6fr);
+}
+.interestScene .intro {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  min-height: 0;
+}
+.interestScene .title {
+  font-size: clamp(42px, 4.4vw, 76px);
+}
+.interestArt {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  margin-top: 8px;
+  border-radius: 120px 120px 24px 24px;
+  overflow: hidden;
+  max-width: 390px;
+}
+.interestArt img {
+  object-fit: cover;
+  object-position: center 12%;
+  transform: scale(1.12);
+  transform-origin: center top;
+}
+.selection {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 24px;
+  min-height: 0;
+}
+.choices {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  min-height: 0;
+}
+.interestCard {
+  min-width: 0;
+  min-height: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  text-align: left;
+  overflow: hidden;
+  border-radius: 22px;
+  border: 2px solid var(--edge);
+  background: #27272b;
+  color: var(--ink);
+  transition:
+    border-color 200ms ease,
+    transform 200ms ease;
+}
+.interestCard[aria-pressed="true"] {
+  border-color: var(--accent);
+}
+.cardArt {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  position: relative;
+}
+.cardArt img {
+  object-fit: cover;
+}
+.cardCopy {
+  padding: 14px 16px;
+  display: grid;
+  gap: 6px;
+  min-height: 77px;
+}
+.cardTitle {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.35;
+  padding-right: 20px;
+}
+.cardDetail {
+  color: #c8c3c1;
+  font-size: 11px;
+  line-height: 1.4;
+}
+.check {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--button-ink);
+  opacity: 0;
+  transform: scale(0.6);
+  transition:
+    opacity 180ms ease,
+    transform 250ms cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+.check svg {
+  width: 18px;
+  height: 18px;
+}
+[aria-pressed="true"] > .check,
+.check[data-selected="true"] {
+  opacity: 1;
+  transform: scale(1);
+}
+.explore {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: radial-gradient(ellipse at 60% 30%, #c78f7820, transparent 75%), #26262a;
+}
+.explore > svg {
+  width: 58px;
+  height: 58px;
+  color: #dcbda8;
+  margin-top: 10px;
+}
+.explore .cardCopy {
+  min-height: auto;
+  padding: 18px 16px;
+}
+.explore .cardTitle {
+  padding-right: 0;
+}
+.selection .actions {
+  display: grid;
+  grid-template-columns: 100px minmax(0, 1fr);
+  align-items: center;
+  gap: 20px;
+}
+.choiceScene {
+  grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.5fr);
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 24px 40px;
+}
+.choiceScene .intro {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: center;
+  display: grid;
+  gap: 24px;
+}
+.choiceNote {
+  font:
+    32px/1.2 var(--font-neucha),
+    cursive;
+  color: var(--accent);
+  transform: rotate(-6deg);
+  margin-top: 26px !important;
+}
+.coachChoices {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  min-height: 0;
+}
+.coachCard {
+  --card-accent: #ff9a7d;
+  position: relative;
+  min-height: 0;
+  min-width: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  padding: 0;
+  border: 2px solid var(--edge);
+  border-radius: 26px;
+  overflow: hidden;
+  text-align: left;
+  background: #242428;
+  color: #fff8f2;
+  transition:
+    border-color 250ms ease,
+    box-shadow 250ms ease;
+}
+.coachCard[data-coach="lika"] {
+  --card-accent: #db8eaf;
+  background: #f7eee8;
+  color: #3c2935;
+}
+.coachCard[aria-pressed="true"] {
+  border-color: var(--card-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--card-accent) 22%, transparent);
+}
+.choicePortrait {
+  position: relative;
+  min-height: 0;
+}
+.choicePortrait img {
+  object-fit: cover;
+  object-position: center 25%;
+}
+.coachCardCopy {
+  position: relative;
+  padding: 20px 24px 24px;
+  display: grid;
+  gap: 8px;
+}
+.coachName {
+  font-weight: 800;
+  font-size: clamp(26px, 2.7vw, 44px);
+  line-height: 1.1;
+  letter-spacing: -0.05em;
+}
+.coachTrait {
+  font-size: 12px;
+  color: #cdbfb7;
+}
+.coachCard[data-coach="lika"] .coachTrait {
+  color: #755863;
+}
+.cardQuote {
+  font:
+    20px/1.35 var(--font-neucha),
+    cursive;
+  color: #f4c1ae;
+  min-height: 2.7em;
+}
+.coachCard[data-coach="lika"] .cardQuote {
+  color: #944c6c;
+}
+.coachCard .check {
+  background: var(--card-accent);
+}
+.choiceScene .actions {
+  grid-column: 1;
+  grid-row: 2;
+}
+.choiceHint {
+  min-height: 3em;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--muted);
+  padding-bottom: 12px;
+}
+.finalScene {
+  height: calc(100svh - var(--story-header-height));
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.4fr);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 28px;
+  padding: 5svh 5% 3svh;
+}
+.finalScene .intro {
+  grid-column: 1;
+  grid-row: 1;
+  display: grid;
+  gap: 22px;
+  align-self: center;
+  padding-top: 4svh;
+}
+.finalScene .title {
+  font-size: clamp(42px, 4.4vw, 76px);
+}
+.finalArt {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.finalArt img {
+  object-fit: cover;
+  object-position: center;
+}
+.screen[data-kind="prepare"] .finalArt {
+  left: 40%;
+}
+.screen[data-kind="prepare"] .finalArt img {
+  object-fit: contain;
+  object-position: right bottom;
+}
+.finalArt::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, #191a1e 0%, #191a1ec0 25%, transparent 57%),
+    linear-gradient(0deg, #191a1e 0%, transparent 35%);
+}
+.screen[data-kind="prepare"] .finalArt::after {
+  background:
+    linear-gradient(90deg, #191a1e, transparent 35%),
+    linear-gradient(0deg, #191a1e, transparent 18%);
+}
+.finalScene > .actions {
+  grid-column: 1;
+  grid-row: 2;
+  align-self: end;
+}
+.finalScene > .tagline {
+  grid-column: 1;
+  grid-row: 3;
+  z-index: 1;
+}
+.finalNote {
+  position: absolute;
+  right: 8%;
+  bottom: 9%;
+  color: #f4bfd2;
+  font:
+    30px/1.2 var(--font-neucha),
+    cursive;
+  transform: rotate(-5deg);
+}
+.adultConfirmation {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  line-height: 1.5;
+  min-height: 44px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+.adultConfirmation input {
+  width: 21px;
+  height: 21px;
+  accent-color: var(--accent);
+}
+.saveError {
+  font-size: 12px;
+  line-height: 1.5;
+  color: #ffbbb1;
+  margin-bottom: 10px !important;
+}
+
+@media (hover: hover) {
+  .next:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px #00000018;
+  }
+  .next:hover svg {
+    transform: translateX(4px);
+  }
+  .interestCard:hover {
+    transform: translateY(-2px);
+    border-color: #ff9a7d80;
+  }
+  .coachCard:hover {
+    border-color: var(--card-accent);
+  }
+}
+@media (min-width: 701px) and (max-width: 1100px) {
+  .welcomeCopy {
+    width: 42%;
+  }
+  .welcomeBubble {
+    left: 35%;
+    top: 3%;
+    width: 150px;
+    font-size: 14px;
+  }
+  .welcomeNote {
+    font-size: 22px;
+  }
+  .feature {
+    gap: 12px;
+    padding-inline: 12px;
+  }
+  .feature > svg {
+    width: 25px;
+  }
+  .coachScene {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    gap: 22px;
+  }
+  .coachScene .intro {
+    gap: 16px;
+  }
+  .coachArt {
+    grid-column: 2;
+    grid-row: 1 / 4;
+  }
+  .coachDetails {
+    grid-column: 1;
+    grid-row: 2;
+    gap: 20px;
+  }
+  .coachDetails .speech {
+    font-size: 15px;
+    padding: 16px 20px 30px;
+  }
+  .benefits {
+    gap: 18px;
+  }
+  .coachScene .actions {
+    grid-row: 3;
+  }
+  .interestScene {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: 24px;
+  }
+  .choices {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .cardCopy {
+    min-height: 68px;
+    padding: 10px 12px;
+  }
+  .cardTitle {
+    font-size: 13px;
+  }
+  .cardDetail {
+    font-size: 10px;
+  }
+  .choiceScene {
+    gap: 20px;
+    grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.4fr);
+  }
+  .coachChoices {
+    gap: 16px;
+  }
+  .coachCardCopy {
+    padding: 16px;
+  }
+  .coachTrait {
+    font-size: 11px;
+  }
+  .cardQuote {
+    font-size: 18px;
+  }
+}
+@media (max-width: 700px) and (min-height: 451px) {
+  .title {
+    font-size: clamp(32px, 10.5vw, 52px);
+  }
+  .eyebrow {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+  }
+  .description {
+    font-size: clamp(12px, 3.3vw, 15px);
+    line-height: 1.5;
+  }
+  .next {
+    min-height: 52px;
+    border-radius: 14px;
+    gap: 18px;
+    padding: 12px 16px;
+    font-size: 14px !important;
+  }
+  .next svg {
+    width: 23px;
+    height: 23px;
+  }
+  .back {
+    font-size: 12px !important;
+  }
+  .tagline {
+    font-size: 9px;
+  }
+  .welcome {
+    height: calc(100svh - var(--story-header-height));
+    padding: 0 6%;
+    display: block;
+  }
+  .welcome::after {
+    background:
+      linear-gradient(0deg, #191a1e 0%, #191a1eaa 9%, transparent 25%),
+      linear-gradient(180deg, #191a1e80 0%, transparent 35%);
+  }
+  .welcomeArt img {
+    object-position: center 30%;
+  }
+  .welcomeCopy {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 14px 0 18px;
+    gap: 14px;
+  }
+  .welcomeIntro {
+    gap: 14px;
+  }
+  .welcomeCopy .title {
+    font-size: clamp(29px, min(10.8vw, 5.4svh), 54px);
+  }
+  .desktopBreak {
+    display: none;
+  }
+  .welcomeCopy .description {
+    font-size: clamp(12px, 3.5vw, 16px);
+  }
+  .welcomeCopy .next {
+    margin-top: auto;
+    min-height: 56px;
+  }
+  .welcomeTagline {
+    display: block;
+    color: #beb5b0;
+    text-align: center;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+  }
+  .welcomeBubble {
+    left: auto;
+    right: 5%;
+    top: 24%;
+    width: 122px;
+    padding: 12px 14px 25px;
+    font-size: 12px;
+    transform: rotate(4deg);
+  }
+  .desktopSpeech {
+    display: none;
+  }
+  .welcomeBubble svg {
+    transform: scaleX(-1);
+  }
+  .welcomeBubble > span {
+    text-transform: capitalize;
+  }
+  .welcomeNote,
+  .features {
+    display: none;
+  }
+  .coachScene,
+  .interestScene,
+  .choiceScene {
+    height: calc(100svh - var(--story-header-height));
+    padding: 14px 6% 8px;
+    gap: 14px;
+  }
+  .coachScene {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    gap: 16px 14px;
+  }
+  .coachScene .intro {
+    grid-column: 1 / 3;
+    grid-row: 1;
+    gap: 10px;
+  }
+  .coachScene .title {
+    font-size: clamp(34px, 12vw, 56px);
+    justify-self: start;
+  }
+  .character {
+    font-size: clamp(14px, 3.9vw, 19px);
+    text-wrap: initial;
+  }
+  .coachArt {
+    grid-column: 2;
+    grid-row: 2;
+    border-radius: 90px 90px 18px 18px;
+  }
+  .coachArt img {
+    object-position: center 15%;
+    transform: scale(1.18);
+    transform-origin: center 20%;
+  }
+  .artNote {
+    font-size: 16px;
+    left: 12px;
+    bottom: 18px;
+  }
+  .coachDetails {
+    grid-column: 1;
+    grid-row: 2;
+    justify-content: center;
+    gap: 14px;
+  }
+  .coachDetails .speech {
+    padding: 12px 13px 23px;
+    font-size: clamp(11px, 3vw, 14px);
+    line-height: 1.4;
+  }
+  .benefits {
+    gap: 16px;
+  }
+  .benefits li {
+    gap: 8px;
+  }
+  .benefitIcon {
+    width: 30px;
+    height: 30px;
+    border-radius: 11px;
+  }
+  .benefitIcon svg {
+    width: 17px;
+    height: 17px;
+  }
+  .benefits h2 {
+    font-size: 11px;
+    line-height: 1.35;
+  }
+  .benefits p {
+    font-size: 10px;
+    line-height: 1.4;
+    margin-top: 3px;
+  }
+  .coachScene .actions {
+    grid-column: 1 / 3;
+    grid-row: 3;
+  }
+  .actionFooter {
+    margin-top: 2px;
+  }
+  .interestScene {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+  .interestScene .intro {
+    gap: 10px;
+  }
+  .interestScene .title {
+    font-size: clamp(31px, 10vw, 45px);
+  }
+  .interestScene .title br {
+    display: none;
+  }
+  .interestArt {
+    display: none;
+  }
+  .selection {
+    gap: 12px;
+  }
+  .choices {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .interestCard {
+    border-radius: 16px;
+  }
+  .cardCopy {
+    padding: 8px 10px;
+    gap: 3px;
+    min-height: auto;
+  }
+  .cardTitle {
+    font-size: 12px;
+  }
+  .cardDetail {
+    font-size: 9px;
+  }
+  .check {
+    top: 10px;
+    right: 10px;
+    width: 24px;
+    height: 24px;
+  }
+  .check svg {
+    width: 15px;
+    height: 15px;
+  }
+  .explore > svg {
+    width: 34px;
+    height: 34px;
+    margin-top: 5px;
+  }
+  .explore .cardCopy {
+    padding: 10px;
+  }
+  .selection .actions {
+    grid-template-columns: 65px minmax(0, 1fr);
+    gap: 12px;
+  }
+  .choiceScene {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+  }
+  .choiceScene .intro {
+    grid-row: 1;
+    grid-column: 1;
+    gap: 10px;
+  }
+  .choiceScene .title {
+    font-size: clamp(30px, 10vw, 46px);
+  }
+  .choiceScene .title br {
+    display: none;
+  }
+  .choiceNote {
+    display: none;
+  }
+  .coachChoices {
+    grid-column: 1;
+    grid-row: 2;
+    gap: 12px;
+  }
+  .coachCard {
+    border-radius: 20px;
+  }
+  .choicePortrait img {
+    object-position: center 17%;
+  }
+  .coachCardCopy {
+    padding: 12px 12px 14px;
+    gap: 6px;
+  }
+  .coachName {
+    font-size: clamp(24px, 7.5vw, 34px);
+  }
+  .coachTrait {
+    font-size: 10px;
+    line-height: 1.3;
+  }
+  .cardQuote {
+    font-size: 15px;
+    line-height: 1.2;
+    min-height: 3.6em;
+  }
+  .choiceScene .actions {
+    grid-column: 1;
+    grid-row: 3;
+  }
+  .choiceHint {
+    min-height: 2.8em;
+    padding-bottom: 6px;
+    font-size: 10px;
+  }
+  .finalScene {
+    height: calc(100svh - var(--story-header-height));
+    padding: 20px 6% 15px;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto auto;
+    gap: 14px;
+  }
+  .finalScene .intro {
+    grid-row: 1;
+    padding-top: 0;
+    gap: 14px;
+  }
+  .finalScene .title {
+    font-size: clamp(32px, 10.5vw, 48px);
+  }
+  .screen[data-kind="finish"] .finalArt {
+    position: relative;
+    inset: auto;
+    grid-row: 2;
+    margin-inline: -6.82%;
+  }
+  .screen[data-kind="finish"] .finalArt img {
+    object-fit: cover;
+    object-position: 70% center;
+  }
+  .screen[data-kind="finish"] .finalArt::after {
+    background: linear-gradient(180deg, #191a1e, transparent 25%, transparent 75%, #191a1e);
+  }
+  .finalScene > .actions {
+    grid-row: 3;
+  }
+  .finalScene > .tagline {
+    grid-row: 4;
+    text-align: center;
+    font-size: 9px;
+  }
+  .finalNote {
+    display: none;
+  }
+  .screen[data-kind="prepare"] .finalArt {
+    left: 0;
+  }
+  .screen[data-kind="prepare"] .finalArt img {
+    object-fit: cover;
+    object-position: center bottom;
+  }
+  .screen[data-kind="prepare"] .finalArt::after {
+    background: linear-gradient(
+      180deg,
+      #191a1eec 0%,
+      #191a1ebb 26%,
+      #191a1e70 50%,
+      transparent 75%,
+      #191a1e 100%
+    );
+  }
+  .screen[data-kind="prepare"] .finalScene {
+    grid-template-rows: auto minmax(0, 1fr) auto;
+  }
+  .screen[data-kind="prepare"] .finalScene > .tagline {
+    grid-row: 3;
+  }
+  .adultConfirmation {
+    margin-bottom: 5px;
+    font-size: 11px;
+  }
+}
+@media (max-width: 700px) and (min-height: 451px) and (max-height: 700px) {
+  .welcomeCopy {
+    padding-top: 8px;
+    padding-bottom: 10px;
+    gap: 10px;
+  }
+  .welcomeIntro {
+    gap: 9px;
+  }
+  .welcomeBubble {
+    display: none;
+  }
+  .welcomeCopy .next {
+    min-height: 48px;
+  }
+  .coachScene,
+  .interestScene,
+  .choiceScene {
+    padding-top: 8px;
+    gap: 10px;
+  }
+  .coachScene .intro {
+    gap: 7px;
+  }
+  .coachScene .title {
+    font-size: 34px;
+  }
+  .coachScene .description {
+    font-size: 11px;
+  }
+  .character {
+    font-size: 13px;
+  }
+  .coachDetails {
+    gap: 10px;
+  }
+  .coachDetails .speech {
+    font-size: 11px;
+    padding: 10px 12px 21px;
+  }
+  .benefits {
+    gap: 12px;
+  }
+  .benefits p,
+  .artNote {
+    display: none;
+  }
+  .benefitIcon {
+    width: 26px;
+    height: 26px;
+    border-radius: 9px;
+  }
+  .next {
+    min-height: 46px;
+    font-size: 13px !important;
+  }
+  .choiceScene .title,
+  .interestScene .title {
+    font-size: 29px;
+  }
+  .choiceScene .description,
+  .interestScene .description {
+    font-size: 11px;
+  }
+  .coachCardCopy {
+    padding: 10px;
+    gap: 4px;
+  }
+  .coachName {
+    font-size: 23px;
+  }
+  .coachTrait {
+    font-size: 9px;
+  }
+  .cardQuote {
+    font-size: 13px;
+  }
+  .choiceHint {
+    min-height: 2.4em;
+    font-size: 9px;
+  }
+  .cardDetail {
+    display: none;
+  }
+  .cardTitle {
+    font-size: 11px;
+  }
+  .finalScene {
+    padding-top: 12px;
+    gap: 10px;
+  }
+  .finalScene .intro {
+    gap: 10px;
+  }
+  .finalScene .title {
+    font-size: 30px;
+  }
+  .finalScene .description {
+    font-size: 11px;
+  }
+  .adultConfirmation {
+    font-size: 10px;
+  }
+}
+@media (min-width: 701px) and (max-height: 650px), (max-height: 450px) {
+  .welcome {
+    grid-template-rows: minmax(0, 1fr);
+    padding-inline: 5%;
+  }
+  .welcomeCopy {
+    width: 42%;
+    gap: 18px;
+  }
+  .welcomeIntro {
+    gap: 12px;
+  }
+  .welcomeCopy .title {
+    font-size: clamp(28px, 4.8vw, 48px);
+  }
+  .welcomeCopy .eyebrow {
+    font-size: 9px;
+  }
+  .welcomeCopy .description {
+    font-size: 12px;
+  }
+  .welcomeBubble,
+  .welcomeNote,
+  .features {
+    display: none;
+  }
+  .next {
+    min-height: 44px;
+    padding: 10px 14px;
+    font-size: 12px !important;
+  }
+  .coachScene,
+  .choiceScene,
+  .interestScene {
+    padding-block: 12px;
+    gap: 18px;
+  }
+  .title {
+    font-size: 34px;
+  }
+  .description {
+    font-size: 11px;
+  }
+  .eyebrow {
+    font-size: 9px;
+  }
+  .coachScene {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+  .coachScene .intro {
+    gap: 10px;
+  }
+  .character {
+    font-size: 14px;
+  }
+  .coachArt {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    border-radius: 50px 50px 16px 16px;
+  }
+  .coachDetails {
+    grid-column: 3;
+    grid-row: 1 / 3;
+    gap: 10px;
+  }
+  .coachDetails .speech {
+    font-size: 11px;
+    padding: 10px 12px 23px;
+  }
+  .benefits {
+    gap: 10px;
+  }
+  .benefits li {
+    gap: 8px;
+  }
+  .benefits h2 {
+    font-size: 11px;
+    line-height: 1.2;
+  }
+  .benefits p,
+  .artNote {
+    display: none;
+  }
+  .benefitIcon {
+    width: 28px;
+    height: 28px;
+    border-radius: 10px;
+  }
+  .benefitIcon svg {
+    width: 18px;
+    height: 18px;
+  }
+  .coachScene .actions {
+    grid-row: 2;
+  }
+  .tagline {
+    display: none;
+  }
+  .actionFooter {
+    margin-top: 0;
+  }
+  .choiceScene {
+    gap: 12px 24px;
+  }
+  .choiceScene .intro {
+    gap: 10px;
+  }
+  .choiceNote {
+    display: none;
+  }
+  .coachCardCopy {
+    padding: 10px 12px;
+    gap: 4px;
+  }
+  .coachName {
+    font-size: 24px;
+  }
+  .coachTrait {
+    font-size: 10px;
+  }
+  .cardQuote {
+    font-size: 15px;
+  }
+  .choiceHint {
+    min-height: 0;
+    font-size: 10px;
+    padding-bottom: 10px;
+  }
+  .interestScene .intro {
+    gap: 10px;
+  }
+  .interestScene .title {
+    font-size: 32px;
+  }
+  .interestArt {
+    border-radius: 50px 50px 12px 12px;
+  }
+  .choices {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .cardCopy {
+    padding: 7px 9px;
+    min-height: auto;
+  }
+  .cardTitle {
+    font-size: 10px;
+    padding-right: 0;
+  }
+  .cardDetail {
+    display: none;
+  }
+  .explore > svg {
+    width: 30px;
+    height: 30px;
+  }
+  .selection {
+    gap: 10px;
+  }
+  .selection .actions {
+    grid-template-columns: 65px minmax(0, 1fr);
+    gap: 8px;
+  }
+  .check {
+    width: 22px;
+    height: 22px;
+    top: 8px;
+    right: 8px;
+  }
+  .finalScene {
+    padding-block: 12px;
+    gap: 12px;
+  }
+  .finalScene .intro {
+    gap: 10px;
+    padding-top: 0;
+  }
+  .finalScene .title {
+    font-size: 32px;
+  }
+  .finalScene .description {
+    font-size: 11px;
+  }
+  .finalNote {
+    display: none;
+  }
+}
+@media (max-width: 700px) and (max-height: 450px) {
+  .welcome,
+  .coachScene,
+  .interestScene,
+  .choiceScene,
+  .finalScene {
+    height: calc(100svh - var(--story-header-height));
+  }
+  .welcomeArt img {
+    object-position: right center;
+  }
+  .welcomeCopy {
+    width: 45%;
+  }
+  .welcomeCopy .title {
+    font-size: 28px;
+  }
+  .coachScene .title {
+    font-size: 29px;
+  }
+  .coachScene .description {
+    font-size: 10px;
+  }
+  .character {
+    font-size: 11px;
+  }
+  .coachDetails .speech {
+    display: none;
+  }
+  .coachScene .intro {
+    align-self: start;
+  }
+  .choiceScene .title {
+    font-size: 28px;
+  }
+  .coachCard {
+    border-radius: 16px;
+  }
+  .coachTrait,
+  .cardQuote {
+    display: none;
+  }
+  .coachChoices {
+    gap: 10px;
+  }
+  .coachScene .actions .back {
+    font-size: 10px !important;
+  }
+  .interestScene {
+    grid-template-columns: minmax(0, 0.6fr) minmax(0, 1.4fr);
+  }
+  .interestScene .title {
+    font-size: 28px;
+  }
+  .interestArt {
+    display: none;
+  }
+  .finalScene {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .finalScene .title {
+    font-size: 27px;
+  }
+}
+@keyframes sceneIn {
+  from {
+    opacity: 0;
+    transform: translateX(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes sceneBack {
+  from {
+    opacity: 0;
+    transform: translateX(-18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes underlineIn {
+  from {
+    transform: rotate(-2deg) scaleX(0);
+  }
+  to {
+    transform: rotate(-2deg) scaleX(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .screen,
+  .screen *,
+  .screen *::before,
+  .screen *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+@media (max-aspect-ratio: 6/5) and (min-height: 451px) {
+  .screen {
+    --story-header-height: 9svh;
+  }
+}
+@media (max-height: 450px) {
+  .screen {
+    --story-header-height: 54px;
+  }
+}

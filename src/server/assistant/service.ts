@@ -25,21 +25,24 @@ import {
   findAssistantAction,
   finishAssistantTurn,
   readAssistantMessages,
+  assertAssistantTurnActive,
 } from "./repository";
 import { ASSISTANT_TOOLS, executeAssistantTool } from "./tools";
+import { readChatHistory } from "./history";
 
 export const assistantRequestInput = z.strictObject({
   operationId: z.uuid(),
   text: z.string().trim().min(1).max(2_000),
+  expectedHistoryRevision: z.number().int().min(0).max(2147483646).optional(),
+  companion: z.enum(["max", "lika"]).optional(),
 });
 export const assistantActionInput = z.strictObject({ proposalId: z.uuid(), operationId: z.uuid() });
 
-export async function getAssistantHistory(ownerId: string): Promise<AssistantHistory> {
-  const profile = await authorizeAssistant(ownerId);
-  return {
-    enabled: assistantEnabled(),
-    messages: await readAssistantMessages(ownerId, profile.companion),
-  };
+export async function getAssistantHistory(
+  ownerId: string,
+  query: unknown = {},
+): Promise<AssistantHistory> {
+  return readChatHistory(ownerId, query, assistantEnabled());
 }
 
 export async function sendAssistantMessage(
@@ -54,6 +57,7 @@ export async function sendAssistantMessage(
     input.operationId,
     input.text,
     localSafety !== null,
+    { expectedHistoryRevision: input.expectedHistoryRevision, companion: input.companion },
   );
   if ("error" in admission) throw admission.error;
   if ("replay" in admission) return admission.replay;
@@ -102,6 +106,7 @@ export async function sendAssistantMessage(
       history,
       profile,
       provider: async (request) => {
+        await assertAssistantTurnActive(ownerId, input.operationId);
         attempts += 1;
         return provider(request);
       },
@@ -188,9 +193,16 @@ export async function confirmAssistantAction(
       409,
       "Для этого предложения используй исходное подтверждение.",
     );
-  return applyWorkoutCommand(ownerId, proposal.workoutId, {
-    operationId: proposal.operationId,
-    expectedRevision: proposal.expectedRevision,
-    command: { type: "estimate_energy", ...proposal.input },
-  });
+  return applyWorkoutCommand(
+    ownerId,
+    proposal.workoutId,
+    {
+      operationId: proposal.operationId,
+      expectedRevision: proposal.expectedRevision,
+      command: { type: "estimate_energy", ...proposal.input },
+    },
+    async (tx) => {
+      await findAssistantAction(ownerId, input.proposalId, tx);
+    },
+  );
 }

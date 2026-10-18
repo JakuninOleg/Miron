@@ -1,0 +1,2 @@
+ALTER TABLE "custom_workout_template_steps" ADD COLUMN "phase" text DEFAULT 'main' NOT NULL;--> statement-breakpoint
+ALTER TABLE "custom_workout_template_steps" ADD CONSTRAINT "custom_workout_phase_check" CHECK ("custom_workout_template_steps"."phase" in ('warmup','main','cooldown') and ("custom_workout_template_steps"."pair_key" is null or "custom_workout_template_steps"."phase" = 'main') and ("custom_workout_template_steps"."drop_set" is null or "custom_workout_template_steps"."phase" = 'main'));

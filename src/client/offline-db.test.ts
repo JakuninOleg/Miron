@@ -4,11 +4,13 @@ import { buildDemoWorkout, DEFAULT_PROFILE } from "@/shared/demo";
 import type { CommandEnvelope } from "@/shared/contracts";
 import {
   acknowledgeCommand,
+  acceptServerWorkout,
   journalCommand,
   offlineDb,
   ownerCommands,
   persistState,
   endOfflineSession,
+  eraseOwnerOfflineData,
   queueOwnerMatches,
   type CachedState,
   type PendingCommand,
@@ -52,6 +54,179 @@ function operation(
   };
 }
 describe("durable per-account command journal", () => {
+  it("archives conflicting work atomically for its owner and accepts only the compared local revision", async () => {
+    const alice = initial(),
+      bob = initial("user:bob");
+    await persistState(alice);
+    await persistState(bob);
+    const a = operation(alice, {
+      type: "record_set",
+      exerciseId: alice.workout!.exercises[0].id,
+      setId: crypto.randomUUID(),
+      reps: 8,
+      weightKg: 10,
+    });
+    const b = operation(bob, {
+      type: "record_set",
+      exerciseId: bob.workout!.exercises[0].id,
+      setId: crypto.randomUUID(),
+      reps: 10,
+      weightKg: 5,
+    });
+    await journalCommand(a.next, a.item);
+    await journalCommand(b.next, b.item);
+    const canonical = { ...alice.workout!, revision: 9 };
+    await expect(acceptServerWorkout(alice.key, canonical, alice.progress, 1)).rejects.toThrow(
+      "Локальный журнал изменился",
+    );
+    expect(await ownerCommands(alice.key)).toHaveLength(1);
+    const fail = () => {
+      throw new Error("Storage failure");
+    };
+    offlineDb.workoutBackups.hook("creating", fail);
+    try {
+      await expect(
+        acceptServerWorkout(alice.key, canonical, alice.progress, a.next.workout!.revision),
+      ).rejects.toThrow("Storage failure");
+    } finally {
+      offlineDb.workoutBackups.hook("creating").unsubscribe(fail);
+    }
+    expect(await ownerCommands(alice.key)).toHaveLength(1);
+    expect((await offlineDb.states.get(alice.key))?.workout?.recordedSets).toHaveLength(1);
+    const accepted = await acceptServerWorkout(
+      alice.key,
+      canonical,
+      alice.progress,
+      a.next.workout!.revision,
+    );
+    expect(accepted.workout).toEqual(canonical);
+    expect(await ownerCommands(alice.key)).toEqual([]);
+    expect(await ownerCommands(bob.key)).toEqual([b.item]);
+    const copies = await offlineDb.workoutBackups.where("owner").equals(alice.key).toArray();
+    expect(copies).toHaveLength(1);
+    expect(copies[0].commands).toEqual([a.item]);
+    expect(copies[0].localWorkout.recordedSets).toHaveLength(1);
+    expect(await offlineDb.workoutBackups.where("owner").equals(bob.key).count()).toBe(0);
+    vi.stubGlobal("localStorage", { getItem: () => "alice", removeItem: vi.fn() });
+    vi.stubGlobal("sessionStorage", { removeItem: vi.fn() });
+    await endOfflineSession(alice.key);
+    expect(await offlineDb.states.get(alice.key)).toBeUndefined();
+    expect(await offlineDb.workoutBackups.where("owner").equals(alice.key).count()).toBe(1);
+  });
+  it("erases only the explicitly deleted account and leaves another owner's journal and active marker", async () => {
+    const alice = initial(),
+      bob = initial("user:bob");
+    await persistState(alice);
+    await persistState(bob);
+    const queued = operation(bob, {
+      type: "record_set",
+      exerciseId: bob.workout!.exercises[0].id,
+      setId: crypto.randomUUID(),
+      reps: 8,
+      weightKg: 0,
+    });
+    await journalCommand(queued.next, queued.item);
+    const removeItem = vi.fn();
+    vi.stubGlobal("localStorage", { getItem: () => "bob", removeItem });
+    await eraseOwnerOfflineData(alice.key);
+    expect(await offlineDb.states.get(alice.key)).toBeUndefined();
+    expect(await ownerCommands(bob.key)).toEqual([queued.item]);
+    expect(await offlineDb.states.get(bob.key)).toBeDefined();
+    expect(removeItem).not.toHaveBeenCalled();
+  });
+  it("does not restore deleted chat from a stale private cache write or touch another owner", async () => {
+    const before = initial();
+    before.assistantSnapshot = { companion: "max", revision: 1, resetRevision: 0 };
+    before.messages = [
+      { id: "removed", role: "user", text: "Удалённый текст", createdAt: new Date().toISOString() },
+    ];
+    await persistState(before);
+    const deleted = {
+      ...before,
+      messages: [],
+      assistantSnapshot: { companion: "max" as const, revision: 2, resetRevision: 2 },
+    };
+    await persistState(deleted);
+    const stale = await persistState(before);
+    expect(stale.messages).toEqual([]);
+    expect(stale.assistantSnapshot?.revision).toBe(2);
+    const bob = initial("user:bob");
+    bob.messages = [
+      { id: "bob", role: "user", text: "Личная история Боба", createdAt: new Date().toISOString() },
+    ];
+    await persistState(bob);
+    expect((await offlineDb.states.get(bob.key))?.messages).toHaveLength(1);
+    expect((await offlineDb.states.get(before.key))?.messages).toEqual([]);
+  });
+  it("retains the atomic drop result only in its owner's pending journal across logout", async () => {
+    const start = initial();
+    start.workout = structuredClone(start.workout!);
+    start.workout!.exercises[0].sets = 1;
+    start.workout!.exercises[0].dropSet = { kind: "last_set_drop", targetReps: 8 };
+    await persistState(start);
+    const drop = { reps: 8, weightKg: 7.5 };
+    const { next, item } = operation(start, {
+      type: "record_set",
+      exerciseId: start.workout!.exercises[0].id,
+      setId: crypto.randomUUID(),
+      reps: 10,
+      weightKg: 10,
+      drop,
+    });
+    await journalCommand(next, item);
+    vi.stubGlobal("localStorage", { getItem: () => "alice", removeItem: vi.fn() });
+    vi.stubGlobal("sessionStorage", { removeItem: vi.fn() });
+    await endOfflineSession(start.key);
+    expect(await ownerCommands("user:bob")).toEqual([]);
+    const retained = await ownerCommands(start.key);
+    expect(retained).toHaveLength(1);
+    expect(retained[0].envelope.command).toMatchObject({ drop });
+  });
+  it("retains a terminal assessment in its owner's queue across logout and rebases it after the finish ACK", async () => {
+    const start = initial();
+    await persistState(start);
+    const recorded = operation(
+      start,
+      {
+        type: "record_set",
+        exerciseId: start.workout!.exercises[0].id,
+        setId: crypto.randomUUID(),
+        reps: 8,
+        weightKg: 0,
+      },
+      1,
+    );
+    const ended = operation(recorded.next, { type: "end_early" }, 2);
+    const rated = operation(ended.next, { type: "rate_load", feedback: "too_hard" }, 3);
+    for (const item of [recorded, ended, rated]) await journalCommand(item.next, item.item);
+    vi.stubGlobal("localStorage", { getItem: () => "alice", removeItem: vi.fn() });
+    vi.stubGlobal("sessionStorage", { removeItem: vi.fn() });
+    await endOfflineSession(start.key);
+    expect(await ownerCommands("user:bob")).toEqual([]);
+    expect((await ownerCommands(start.key)).map((item) => item.envelope.command.type)).toEqual([
+      "record_set",
+      "end_early",
+      "rate_load",
+    ]);
+    await acknowledgeCommand(start.key, recorded.item.id, recorded.next.workout!, start.progress);
+    const afterEnd = await acknowledgeCommand(
+      start.key,
+      ended.item.id,
+      ended.next.workout!,
+      start.progress,
+    );
+    expect(afterEnd.state.workout?.loadFeedback).toBe("too_hard");
+    expect(afterEnd.pending).toBe(1);
+    const accepted = await acknowledgeCommand(
+      start.key,
+      rated.item.id,
+      rated.next.workout!,
+      start.progress,
+    );
+    expect(accepted.pending).toBe(0);
+    expect(accepted.state.workout?.loadFeedback).toBe("too_hard");
+    expect(accepted.state.progress).toEqual(start.progress);
+  });
   it("logout clears confirmed chat while retaining its owner's unsynced workout journal", async () => {
     vi.stubGlobal("localStorage", { getItem: () => "alice", removeItem: vi.fn() });
     vi.stubGlobal("sessionStorage", { removeItem: vi.fn() });
@@ -215,6 +390,7 @@ describe("durable per-account command journal", () => {
   beforeEach(async () => {
     await offlineDb.states.clear();
     await offlineDb.pending.clear();
+    await offlineDb.workoutBackups.clear();
   });
   afterAll(() => offlineDb.close());
   afterEach(() => vi.unstubAllGlobals());

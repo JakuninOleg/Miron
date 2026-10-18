@@ -12,8 +12,6 @@ import { StoryInterestsScreen } from "@/components/story-interests-screen";
 import { StoryChooseScreen } from "@/components/story-choose-screen";
 import styles from "./story-preview.module.css";
 
-type Panel = (typeof STORY_PANELS)[number];
-
 export function StoryOnboarding({
   completionHref = "/story/home",
 }: {
@@ -21,44 +19,62 @@ export function StoryOnboarding({
 } = {}) {
   const router = useRouter();
   const story = useStoryPreview();
-  const [leaving, setLeaving] = useState<Panel | null>(null);
+  const [navigating, setNavigating] = useState(false);
   const [direction, setDirection] = useState("forward");
   const titleRef = useRef<HTMLHeadingElement>(null);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const navigatingRef = useRef(false);
+  const mounted = useRef(true);
+  const loadedArt = useRef(new Map<string, Promise<void>>());
   const hasNavigated = useRef(false);
   const panel = STORY_PANELS[story.state.step] ?? STORY_PANELS[0];
   const coach = story.state.companion;
-  const locked = leaving !== null || story.completing;
+  const locked = navigating || story.completing;
 
-  useEffect(
-    () => () => {
-      if (timerRef.current) clearTimeout(timerRef.current);
-    },
-    [],
-  );
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
+  function warmScene(step: number) {
+    const scene = STORY_PANELS[step];
+    if (!scene) return Promise.resolve();
+    const portrait = window.matchMedia("(max-aspect-ratio: 6/5) and (min-height: 451px)").matches;
+    const src = portrait ? scene.image.replace("-v2.webp", "-mobile-v2.webp") : scene.image;
+    const cached = loadedArt.current.get(src);
+    if (cached) return cached;
+    const asset = new window.Image();
+    asset.src = src;
+    // Decode public art before swapping screens; a failed image never blocks navigation.
+    const ready = asset.decode().catch(() => undefined);
+    loadedArt.current.set(src, ready);
+    return ready;
+  }
+  useEffect(() => {
+    if (!story.ready) return;
+    void warmScene(story.state.step + 1);
+    void warmScene(story.state.step + 2);
+  }, [story.ready, story.state.step]);
   useEffect(() => {
     if (!story.ready || (!hasNavigated.current && story.state.step === 0)) return;
-    const focusTimer = setTimeout(
-      () => titleRef.current?.focus({ preventScroll: true }),
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 330,
-    );
-    return () => clearTimeout(focusTimer);
+    titleRef.current?.focus({ preventScroll: true });
   }, [story.ready, story.state.step]);
   useEffect(() => {
     if (story.ready && story.state.completed) router.replace(completionHref);
   }, [completionHref, router, story.ready, story.state.completed]);
 
-  function navigate(step: number) {
-    if (locked) return;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  async function navigate(step: number) {
+    if (locked || navigatingRef.current) return;
+    navigatingRef.current = true;
+    setNavigating(true);
+    await warmScene(step);
+    if (!mounted.current) return;
     hasNavigated.current = true;
     window.scrollTo({ top: 0, behavior: "instant" });
     setDirection(step < story.state.step ? "back" : "forward");
-    if (!reduced) {
-      setLeaving(panel);
-      timerRef.current = setTimeout(() => setLeaving(null), 320);
-    }
     story.goToStep(step);
+    navigatingRef.current = false;
+    setNavigating(false);
   }
 
   async function next() {

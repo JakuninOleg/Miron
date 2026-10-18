@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Download, LogOut, Moon, Sun, UserRound } from "lucide-react";
 import { useMiron } from "@/client/use-miron";
 import { PageHeading } from "./app-shell";
@@ -46,6 +47,27 @@ export function SettingsScreen() {
   return (
     <>
       <PageHeading title="Твой профиль" description="Здесь всё можно настроить под себя." />
+      {!isDemo ? (
+        <p>
+          <Link className="text-link" href="/settings/account">
+            Данные, экспорт и доступ
+          </Link>
+        </p>
+      ) : null}
+      {!isDemo ? (
+        <p>
+          <Link href="/workout/recovery" className="text-link">
+            Локальный журнал и копии синхронизации
+          </Link>
+        </p>
+      ) : null}
+      {!isDemo ? (
+        <p>
+          <Link className="text-link" href="/settings/memory">
+            Как со мной общаться · память напарников
+          </Link>
+        </p>
+      ) : null}
       <div className="settings-grid">
         <section className="card settings-section">
           <div className="profile-summary">
@@ -193,7 +215,7 @@ export function SettingsScreen() {
             <h2>Аккаунт и данные</h2>
             <button className="button secondary full" onClick={exportData}>
               <Download size={16} />
-              Скачать данные с устройства
+              {isDemo ? "Скачать демоданные" : "Скачать архив аккаунта"}
             </button>
             {isDemo ? (
               <button

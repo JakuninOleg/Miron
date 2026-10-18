@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { and, asc, desc, eq, inArray, sql } from "drizzle-orm";
+import { and, asc, eq, inArray } from "drizzle-orm";
 import { z } from "zod";
 import type { Workout } from "../../shared/contracts";
 import type { PlannerDay } from "../../shared/workout-planner";
@@ -17,26 +17,37 @@ import {
   variantRequirements,
   variantRevisions,
   variants,
-  workoutPlannerPrograms,
   workoutResources,
   workouts,
   workoutSteps,
+  calendarEntries,
 } from "../db/schema";
 import { DomainError } from "./errors";
+import { assertProductAccess } from "./access";
 import { getAvailableBuilderCatalog } from "./workout-builder";
 import { getWorkout } from "./workouts";
+import { dropSetPlanError } from "../../shared/training-methods";
+import { readPlannerHistory } from "./workout-planner";
+import { recentDifficultStrength, strengthHistory } from "./strength-coaching";
+import { summarizePlannerHistory } from "./workout-planner-engine";
+import {
+  plannerStartInput,
+  readStartSource,
+  savedStartInput,
+  type StartInput,
+} from "./workout-sources";
 
-export const plannerStartInput = z.strictObject({
-  operationId: z.uuid(),
-  expectedProgramRevision: z.number().int().min(1).max(1_000_000),
-  dayKey: z.string().min(1).max(80),
-});
+export { plannerStartInput } from "./workout-sources";
 
 export function assertPlannerDayExecution(day: PlannerDay): void {
+  if (day.steps.filter((step) => step.dropSet).length > 1)
+    throw new DomainError("INVALID_PROGRAM", 409, "В занятии доступен один дропсет.");
   if (!day.steps.length || day.steps.length > 40)
     throw new DomainError("INVALID_PROGRAM", 409, "В плане нет допустимого занятия.");
   const paired = new Map<string, number[]>();
   for (const [index, step] of day.steps.entries()) {
+    if (dropSetPlanError(step))
+      throw new DomainError("INVALID_PROGRAM", 409, "Дропсет в этом составе недоступен.");
     if (
       !Number.isInteger(step.sets) ||
       step.sets < 1 ||
@@ -80,7 +91,12 @@ export function assertPlannerDayExecution(day: PlannerDay): void {
 
 /** Starts only the saved server revision; the request cannot supply exercises or XP. */
 export async function startPlannerWorkout(owner: string, raw: unknown): Promise<Workout> {
-  const input = plannerStartInput.parse(raw);
+  return startWorkoutSource(owner, plannerStartInput.parse(raw));
+}
+export async function startSavedWorkout(owner: string, raw: unknown): Promise<Workout> {
+  return startWorkoutSource(owner, savedStartInput.parse(raw));
+}
+async function startWorkoutSource(owner: string, input: StartInput): Promise<Workout> {
   const hash = createHash("sha256")
     .update(JSON.stringify({ action: "start_planner_day", input }))
     .digest("hex");
@@ -116,37 +132,26 @@ export async function startPlannerWorkout(owner: string, raw: unknown): Promise<
         const [profile] = await tx.select().from(profiles).where(eq(profiles.userId, owner));
         if (!profile?.onboardingCompleted || !profile.adultConfirmed)
           throw new DomainError("ONBOARDING_REQUIRED", 409, "Сначала заполните профиль.");
-        const [program] = await tx
-          .select()
-          .from(workoutPlannerPrograms)
-          .where(
-            and(
-              eq(workoutPlannerPrograms.userId, owner),
-              eq(workoutPlannerPrograms.revision, input.expectedProgramRevision),
-            ),
-          );
-        if (!program)
-          throw new DomainError("PROGRAM_NOT_FOUND", 404, "Подтверждённая программа не найдена.");
-        const [latest] = await tx
-          .select({ revision: workoutPlannerPrograms.revision })
-          .from(workoutPlannerPrograms)
-          .where(
-            and(
-              eq(workoutPlannerPrograms.userId, owner),
-              sql`${workoutPlannerPrograms.draft}->'config'->>'mode' = ${program.draft.config.mode}`,
-            ),
-          )
-          .orderBy(desc(workoutPlannerPrograms.revision))
-          .limit(1);
-        if (latest?.revision !== input.expectedProgramRevision)
-          throw new DomainError(
-            "REVISION_CONFLICT",
-            409,
-            "План изменился. Обновите программу перед началом.",
-          );
-        const day = program.draft.days.find((candidate) => candidate.key === input.dayKey);
-        if (!day) throw new DomainError("DAY_NOT_FOUND", 404, "День отсутствует в этой программе.");
+        await assertProductAccess(owner, tx);
+        const source = await readStartSource(owner, input, tx);
+        const { day, config } = source;
         assertPlannerDayExecution(day);
+        if (day.steps.some((step) => step.dropSet)) {
+          const history = strengthHistory(await readPlannerHistory(owner, tx));
+          const now = new Date();
+          if (
+            profile.experience !== "regular" ||
+            config.direction !== "strength" ||
+            config.intent === "start" ||
+            recentDifficultStrength(history, now) ||
+            summarizePlannerHistory(history, now).returningAfterPause
+          )
+            throw new DomainError(
+              "PROGRAM_UNAVAILABLE",
+              409,
+              "Уровень или недавняя нагрузка изменились. Подготовь обновлённый план без дропсета.",
+            );
+        }
         const [active] = await tx
           .select({ id: workouts.id })
           .from(workouts)
@@ -162,10 +167,7 @@ export async function startPlannerWorkout(owner: string, raw: unknown): Promise<
           .select()
           .from(builderInventories)
           .where(
-            and(
-              eq(builderInventories.userId, owner),
-              eq(builderInventories.place, program.draft.config.place),
-            ),
+            and(eq(builderInventories.userId, owner), eq(builderInventories.place, config.place)),
           )
           .for("update");
         if (!inventory)
@@ -209,12 +211,7 @@ export async function startPlannerWorkout(owner: string, raw: unknown): Promise<
             409,
             "В плане есть исключённое упражнение. Подготовь обновлённый план.",
           );
-        const available = await getAvailableBuilderCatalog(
-          owner,
-          program.draft.config.place,
-          undefined,
-          tx,
-        );
+        const available = await getAvailableBuilderCatalog(owner, config.place, undefined, tx);
         const byRevision = new Map(available.map((exercise) => [exercise.revisionId, exercise]));
         if (
           day.steps.some(
@@ -238,7 +235,7 @@ export async function startPlannerWorkout(owner: string, raw: unknown): Promise<
           .where(
             and(
               eq(builderInventoryResources.userId, owner),
-              eq(builderInventoryResources.place, program.draft.config.place),
+              eq(builderInventoryResources.place, config.place),
             ),
           )
           .for("share");
@@ -256,15 +253,19 @@ export async function startPlannerWorkout(owner: string, raw: unknown): Promise<
             status: "active",
             startedAt,
             rewardDay: rewardDay(startedAt),
-            rewardKind: ["strength", "calisthenics"].includes(program.draft.config.direction)
-              ? "main"
-              : "support",
-            place: program.draft.config.place,
+            rewardKind:
+              source.rewardKind ??
+              (["strength", "calisthenics"].includes(config.direction) ? "main" : "support"),
+            place: config.place,
             availableSeconds: Math.max(1, Math.round(day.estimate.maxSeconds)),
             sourceProfileRevision: inventory.revision,
-            sourcePlannerRevision: program.revision,
-            sourcePlannerDayKey: day.key,
-            energyActivity: program.draft.config.direction,
+            sourcePlannerRevision: source.revision,
+            savedSource:
+              "source" in input
+                ? { kind: input.source, id: input.id, revision: input.expectedSourceRevision }
+                : undefined,
+            sourcePlannerDayKey: source.revision ? day.key : undefined,
+            energyActivity: config.direction,
             isDemo: false,
           })
           .returning();
@@ -298,6 +299,16 @@ export async function startPlannerWorkout(owner: string, raw: unknown): Promise<
           payloadHash: hash,
           result: { workoutId: workout.id },
         });
+        if ("source" in input && input.source === "schedule")
+          await tx
+            .update(calendarEntries)
+            .set({
+              status: "started",
+              workoutId: workout.id,
+              revision: input.expectedSourceRevision + 1,
+              updatedAt: new Date(),
+            })
+            .where(and(eq(calendarEntries.userId, owner), eq(calendarEntries.id, input.id)));
         return getWorkout(owner, workout.id, tx);
       });
     } catch (error) {

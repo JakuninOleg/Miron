@@ -384,7 +384,8 @@ function CompanionPanel({
           >
             <div className={styles.choicePortrait}>
               <Image
-                src={`/story-choose/${id}-v1.webp`}
+                unoptimized
+                src={`/visuals/soft-3d/scenes/${id}-choice-v1.webp`}
                 alt=""
                 width={1024}
                 height={1536}
@@ -576,8 +577,7 @@ function AccountProfilePanel({
           <p>Не удалось прочитать дату пробного периода.</p>
         )}
         <p>
-          Ответов использовано: {runtime.trial.repliesUsed} из {runtime.trial.replyLimit}. Свободный
-          диалог пока не подключён.
+          Ответов использовано: {runtime.trial.repliesUsed} из {runtime.trial.replyLimit}.
         </p>
       </div>
       <Link href="/settings" className={styles.panelSecondary}>

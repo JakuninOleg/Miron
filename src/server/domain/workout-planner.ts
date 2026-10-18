@@ -35,6 +35,7 @@ import {
   summarizePlannerHistory,
 } from "./workout-planner-engine";
 import { DomainError } from "./errors";
+import { assertProductAccess } from "./access";
 
 const variantId = z
   .string()
@@ -56,6 +57,7 @@ export const plannerConfigInput = z
     intent: z.enum(["start", "maintain", "develop"]),
     durationMinutes: z.number().int().min(15).max(120),
     execution: z.enum(["straight", "pairs"]),
+    dropSets: z.boolean().optional(),
     variety: z.enum(["familiar", "different"]),
     preferredTemplateId: z.string().min(1).max(120).optional(),
     excludeVariantIds: uniqueVariants.optional(),
@@ -72,6 +74,12 @@ export const plannerConfigInput = z
       .optional(),
   })
   .superRefine((config, ctx) => {
+    if (config.dropSets && config.direction !== "strength")
+      ctx.addIssue({
+        code: "custom",
+        path: ["dropSets"],
+        message: "Дропсеты доступны только в силовом направлении.",
+      });
     if (config.mode === "program" && config.split === "upper_lower" && config.daysPerWeek < 2)
       ctx.addIssue({
         code: "custom",
@@ -217,7 +225,8 @@ async function experience(owner: string, reader: Reader): Promise<Experience> {
     );
   return z.enum(["beginner", "returning", "regular"]).parse(row.experience);
 }
-async function history(owner: string, reader: Reader): Promise<PlannerHistory[]> {
+/** Internal owner-scoped read; callers must authorize/lock the owner before supplying a reader. */
+export async function readPlannerHistory(owner: string, reader: Reader): Promise<PlannerHistory[]> {
   const sessions = await reader
     .select()
     .from(workouts)
@@ -228,7 +237,7 @@ async function history(owner: string, reader: Reader): Promise<PlannerHistory[]>
         inArray(workouts.status, ["completed", "partial", "aborted"]),
       ),
     )
-    .orderBy(desc(workouts.completedAt))
+    .orderBy(desc(workouts.completedAt), desc(workouts.id))
     .limit(60);
   if (!sessions.length) return [];
   const rows = await reader
@@ -237,9 +246,12 @@ async function history(owner: string, reader: Reader): Promise<PlannerHistory[]>
       reps: recordedSets.reps,
       seconds: recordedSets.durationSeconds,
       weight: recordedSets.weightG,
+      drop: recordedSets.drop,
       variantId: variantRevisions.variantId,
       revisionId: variantRevisions.id,
       snapshot: workoutSteps.snapshot,
+      target: workoutSteps.reps,
+      plannedSets: workoutSteps.sets,
     })
     .from(recordedSets)
     .innerJoin(
@@ -260,7 +272,7 @@ async function history(owner: string, reader: Reader): Promise<PlannerHistory[]>
         ),
       ),
     )
-    .orderBy(desc(recordedSets.createdAt))
+    .orderBy(desc(recordedSets.createdAt), desc(recordedSets.id))
     .limit(6000);
   // Pinned planner snapshots keep phase and muscle provenance even after a catalog revision changes.
   const missingIds = [...new Set(rows.filter((row) => !row.snapshot).map((row) => row.revisionId))];
@@ -278,13 +290,20 @@ async function history(owner: string, reader: Reader): Promise<PlannerHistory[]>
       status: z.enum(["completed", "partial", "aborted"]).parse(session.status),
       programRevision: session.sourcePlannerRevision,
       dayKey: session.sourcePlannerDayKey,
+      ...(session.energyActivity ? { direction: session.energyActivity } : {}),
+      ...(session.loadFeedback ? { loadFeedback: session.loadFeedback } : {}),
       sets: rows
         .filter((row) => row.workoutId === session.id)
         .map((row) => ({
           variantId: row.variantId,
+          revisionId: row.revisionId,
+          target: row.target,
+          plannedSets: row.plannedSets,
           reps: row.reps,
           durationSeconds: row.seconds,
           weightKg: row.weight / 1000,
+          ...(row.drop ? { drop: row.drop } : {}),
+          ...(row.snapshot?.dropSet ? { hadDropSetPlan: true } : {}),
           primaryMuscles:
             row.snapshot?.exercise.primaryMuscles.map((muscle) => muscle.code) ??
             muscleRows
@@ -314,7 +333,7 @@ export async function getPlannerState(owner: string): Promise<PlannerState> {
     const program = await lastProgram(owner, "program", tx);
     const single = await lastProgram(owner, "single", tx);
     const currentExperience = await experience(owner, tx);
-    const recentHistory = await history(owner, tx);
+    const recentHistory = await readPlannerHistory(owner, tx);
     const names = pref.excludedVariantIds.length
       ? await tx
           .select({ variantId: variants.id, name: variants.nameRu })
@@ -335,7 +354,7 @@ async function context(owner: string, config: PlannerConfig, tx: Transaction) {
   const pref = await preferences(owner, tx);
   const previous = await lastProgram(owner, config.mode, tx);
   const currentExperience = await experience(owner, tx);
-  const recentHistory = await history(owner, tx);
+  const recentHistory = await readPlannerHistory(owner, tx);
   const catalog = await getAvailableBuilderCatalog(owner, config.place, undefined, tx);
   return {
     config,
@@ -366,11 +385,20 @@ async function preview(
     preferencesRevision: input.preferences.revision,
     inventoryRevision: inventory.revision,
   };
-  return { ...draft, ...metadata, fingerprint: hash({ owner, draft, ...metadata }) };
+  // Keep confirmation tied to the owner's full source history, even when another
+  // discipline is deliberately excluded from this methodology's calculations.
+  return {
+    ...draft,
+    ...metadata,
+    fingerprint: hash({ owner, draft, ...metadata, history: input.history }),
+  };
 }
 export async function previewPlanner(owner: string, value: unknown): Promise<PlannerPreview> {
   const config = plannerConfigInput.parse(value);
-  return transaction(owner, (tx) => preview(owner, config, tx));
+  return transaction(owner, async (tx) => {
+    await assertProductAccess(owner, tx);
+    return preview(owner, config, tx);
+  });
 }
 export async function plannerReplacementOptions(owner: string, value: unknown) {
   const input = plannerReplacementInput.parse(value);
@@ -388,6 +416,7 @@ export async function confirmPlanner(owner: string, value: unknown): Promise<Pla
   return transaction(owner, async (tx) => {
     const prior = await replay<PlannerProgram>(tx, owner, input.operationId, payloadHash);
     if (prior) return prior;
+    await assertProductAccess(owner, tx);
     const [active] = await tx
       .select({ id: workouts.id })
       .from(workouts)
@@ -468,6 +497,7 @@ export async function savePlannerPreferences(
   return transaction(owner, async (tx) => {
     const prior = await replay<PlannerPreferences>(tx, owner, input.operationId, payloadHash);
     if (prior) return prior;
+    await assertProductAccess(owner, tx);
     const current = await preferences(owner, tx);
     if (current.revision !== input.expectedRevision)
       throw new DomainError(

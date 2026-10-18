@@ -1,9 +1,17 @@
 import Dexie, { type EntityTable } from "dexie";
-import type { AccountState, ChatMessage, CommandEnvelope, Workout } from "@/shared/contracts";
+import type {
+  AccountState,
+  ChatMessage,
+  CommandEnvelope,
+  Workout,
+  Progress,
+} from "@/shared/contracts";
+import type { AssistantSnapshot } from "./assistant-client-state";
 export interface CachedState extends AccountState {
   key: string;
   workout: Workout | null;
   messages: ChatMessage[];
+  assistantSnapshot?: AssistantSnapshot;
   offlineReady: boolean;
 }
 export interface PendingCommand {
@@ -13,9 +21,18 @@ export interface PendingCommand {
   envelope: CommandEnvelope;
   createdAt: number;
 }
+export interface WorkoutConflictBackup {
+  id: string;
+  owner: string;
+  createdAt: string;
+  localWorkout: Workout;
+  serverWorkout: Workout;
+  commands: PendingCommand[];
+}
 const database = new Dexie("miron-offline-v1") as Dexie & {
   states: EntityTable<CachedState, "key">;
   pending: EntityTable<PendingCommand, "id">;
+  workoutBackups: EntityTable<WorkoutConflictBackup, "id">;
 };
 database.version(1).stores({ states: "key", pending: "id,owner" });
 database
@@ -40,7 +57,51 @@ database
         state.offlineReady ??= false;
       });
   });
+database
+  .version(4)
+  .stores({ states: "key", pending: "id,owner,[owner+createdAt]", workoutBackups: "id,owner" });
 export const offlineDb = database;
+
+export async function acceptServerWorkout(
+  owner: string,
+  workout: Workout,
+  progress: Progress,
+  expectedLocalRevision: number,
+): Promise<CachedState> {
+  if (!owner.startsWith("user:")) throw new Error("Нужен исходный аккаунт журнала.");
+  return database.transaction(
+    "rw",
+    database.states,
+    database.pending,
+    database.workoutBackups,
+    async () => {
+      const current = await database.states.get(owner);
+      if (
+        !current?.workout ||
+        current.workout.id !== workout.id ||
+        current.workout.revision !== expectedLocalRevision
+      )
+        throw new Error("Локальный журнал изменился. Обнови сравнение.");
+      const pending = await ownerCommands(owner);
+      if (pending.some((item) => item.workoutId !== workout.id))
+        throw new Error("В журнале есть другое занятие. Его записи не изменялись.");
+      if (pending.length) {
+        await database.workoutBackups.add({
+          id: crypto.randomUUID(),
+          owner,
+          createdAt: new Date().toISOString(),
+          localWorkout: current.workout,
+          serverWorkout: workout,
+          commands: pending,
+        });
+        await database.pending.bulkDelete(pending.map((item) => item.id));
+      }
+      const next = { ...current, workout, progress, offlineReady: false };
+      await database.states.put(next);
+      return next;
+    },
+  );
+}
 export function queueOwnerMatches(ownerKey: string, principalId: string | null | undefined) {
   return Boolean(principalId && ownerKey === `user:${principalId}`);
 }
@@ -99,17 +160,51 @@ export async function persistState(next: CachedState): Promise<CachedState> {
   return database.transaction("rw", database.states, database.pending, async () => {
     const current = await database.states.get(next.key);
     const pending = await database.pending.where("owner").equals(next.key).count();
-    const saved =
+    let saved =
       current && pending ? { ...next, workout: current.workout, progress: current.progress } : next;
+    if (
+      current?.profile.companion === next.profile.companion &&
+      current.assistantSnapshot &&
+      current.assistantSnapshot.companion === next.profile.companion &&
+      current.assistantSnapshot.revision > (next.assistantSnapshot?.revision ?? -1)
+    )
+      saved = {
+        ...saved,
+        messages: current.messages,
+        assistantSnapshot: current.assistantSnapshot,
+      };
     await database.states.put(saved);
     return saved;
   });
 }
+export async function eraseOwnerOfflineData(owner: string) {
+  if (!owner.startsWith("user:")) throw new Error("Нужен исходный аккаунт.");
+  await database.transaction(
+    "rw",
+    database.states,
+    database.pending,
+    database.workoutBackups,
+    async () => {
+      await database.states.delete(owner);
+      await database.pending.where("owner").equals(owner).delete();
+      await database.workoutBackups.where("owner").equals(owner).delete();
+    },
+  );
+  if (`user:${localStorage.getItem("miron:account")}` === owner)
+    localStorage.removeItem("miron:account");
+}
 export async function clearOfflineData() {
-  await database.transaction("rw", database.states, database.pending, async () => {
-    await database.states.clear();
-    await database.pending.clear();
-  });
+  await database.transaction(
+    "rw",
+    database.states,
+    database.pending,
+    database.workoutBackups,
+    async () => {
+      await database.states.clear();
+      await database.pending.clear();
+      await database.workoutBackups.clear();
+    },
+  );
   localStorage.removeItem("miron:account");
   sessionStorage.removeItem("miron:demo");
 }

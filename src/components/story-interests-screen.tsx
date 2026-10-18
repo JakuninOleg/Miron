@@ -1,23 +1,25 @@
 "use client";
 
-import "@fontsource/roboto-condensed/cyrillic-900.css";
-import "@fontsource/roboto-condensed/latin-900.css";
-import "@fontsource/neucha/cyrillic-400.css";
 import Image from "next/image";
 import { ArrowLeft, ArrowRight, Check, Compass } from "lucide-react";
 import type { Ref } from "react";
 import { STORY_INTERESTS, STORY_PANELS } from "@/shared/story-content";
 import { StoryHeader } from "./story-header";
-import styles from "./story-interests-screen.module.css";
+import { StorySceneArt } from "./story-scene-art";
+import { StoryUnderline } from "./story-underline";
+import base from "./story-reference.module.css";
+import styles from "./story-scenes.module.css";
 
 const descriptions = {
-  strength: { title: "Силовые тренировки", detail: "Железо, прогресс, сила" },
-  home: { title: "Тренировки дома", detail: "Удобно, в своём пространстве" },
-  calisthenics: { title: "Турник и свой вес", detail: "Свобода движения" },
-  yoga: { title: "Йога", detail: "Баланс тела и головы" },
-  mobility: { title: "Растяжка и мобильность", detail: "Подвижность и лёгкость" },
-  fitness: { title: "Общая форма", detail: "Выносливость, энергия, тонус" },
-} satisfies Record<(typeof STORY_INTERESTS)[number]["id"], { title: string; detail: string }>;
+  strength: { title: "Зал", detail: "Железо и сила", image: "gym" },
+  home: { title: "Силовые дома", detail: "Свой зал дома", image: "home" },
+  calisthenics: { title: "Калистеника", detail: "Турник и свой вес", image: "park" },
+  yoga: { title: "Йога", detail: "Баланс и дыхание", image: "yoga" },
+  mobility: { title: "Растяжка", detail: "Подвижность и лёгкость", image: "mobility" },
+} satisfies Record<
+  (typeof STORY_INTERESTS)[number]["id"],
+  { title: string; detail: string; image: string }
+>;
 
 type Props = {
   interests: readonly string[];
@@ -29,44 +31,6 @@ type Props = {
   direction?: string;
   total?: number;
 };
-
-function SpeechBubble({ coach }: { coach: "max" | "lika" }) {
-  return (
-    <div className={styles.bubble} data-coach={coach}>
-      <svg viewBox="0 0 280 160" preserveAspectRatio="none" aria-hidden="true">
-        <path
-          d={
-            coach === "max"
-              ? "M28 3H252Q277 3 277 28V105Q277 130 252 130H187L215 156L148 130H28Q3 130 3 105V28Q3 3 28 3Z"
-              : "M28 3H252Q277 3 277 28V105Q277 130 252 130H105L57 156L65 130H28Q3 130 3 105V28Q3 3 28 3Z"
-          }
-          fill="#f5f2eb"
-          stroke="#101719"
-          strokeWidth="3"
-          strokeLinejoin="round"
-          vectorEffect="non-scaling-stroke"
-        />
-      </svg>
-      <span className={styles.speaker}>{coach === "max" ? "МАКС" : "ЛИКА"}</span>
-      <p>
-        {coach === "max" ? (
-          <>
-            Теперь про тебя.
-            <br />
-            Что тебе нравится?
-          </>
-        ) : (
-          <>
-            Можно несколько.
-            <br />
-            Или разберёмся вместе. ♡
-          </>
-        )}
-      </p>
-    </div>
-  );
-}
-
 export function StoryInterestsScreen({
   interests,
   onToggleInterest,
@@ -79,133 +43,115 @@ export function StoryInterestsScreen({
 }: Props) {
   function toggle(id: string) {
     if (id === "explore") {
-      if (!interests.includes("explore")) {
+      if (!interests.includes("explore"))
         interests.filter((interest) => interest !== "explore").forEach(onToggleInterest);
-      }
-    } else if (interests.includes("explore")) {
-      onToggleInterest("explore");
-    }
+    } else if (interests.includes("explore")) onToggleInterest("explore");
     onToggleInterest(id);
   }
-
   return (
-    <main className={styles.screen} data-direction={direction}>
-      <StoryHeader step={4} total={total} caption="Что тебе ближе?" />
-      <section className={styles.scene} aria-label="История знакомства" aria-busy={busy}>
-        <div className={styles.artStage}>
-          <Image
-            src="/story-interests/duo-v1.webp"
-            alt="Макс стоит со скрещёнными руками. Лика рядом, с рукой на бедре. Оба дружелюбно улыбаются."
-            fill
-            sizes="(max-width: 1100px) 1px, 60vw"
-            className={styles.duo}
-          />
-          <div className={styles.shade} aria-hidden="true" />
-        </div>
-        <SpeechBubble coach="max" />
-        <SpeechBubble coach="lika" />
+    <main
+      className={`${base.screen} ${styles.screen}`}
+      data-scene="interests"
+      data-direction={direction}
+    >
+      <StoryHeader step={4} total={total} caption="Что тебе ближе?" overlay />
+      <section
+        className={`${base.stage} ${styles.interestScene}`}
+        aria-label="История знакомства"
+        aria-busy={busy}
+      >
+        <StorySceneArt scene="interests" className={styles.sceneArt} />
         <div className={styles.intro}>
-          <p className={styles.eyebrow}>ТЕПЕРЬ ПРО ТЕБЯ</p>
-          <h1 ref={titleRef} tabIndex={-1} className={styles.title}>
-            ЧТО ТЕБЕ
-            <br />
-            <span>БЛИЖЕ?</span>
+          <p className={styles.eyebrow}>Теперь про тебя</p>
+          <h1 className={`${base.title} ${styles.title}`} ref={titleRef} tabIndex={-1}>
+            Что тебе
+            <br /> ближе?
+            <StoryUnderline />
           </h1>
           <p className={styles.description} id="interests-hint">
-            Выбери, чем тебе интересно заниматься. Можно несколько. Всё можно изменить позже.
-          </p>
-          <p className={styles.handNote} aria-hidden="true">
-            Твой темп.
-            <br />
-            Твой выбор.
-            <span>♡</span>
+            <span className={styles.desktopCopy}>
+              Выбери несколько направлений — или попробуем вместе.
+            </span>
+            <span className={styles.mobileCopy}>Можно выбрать несколько.</span>
           </p>
         </div>
         <div className={styles.selection}>
           <div
             className={styles.choices}
             role="group"
-            aria-label="Что тебе интересно"
+            aria-label="Направления тренировок"
             aria-describedby="interests-hint"
           >
-            {STORY_INTERESTS.map(({ id, label }) => {
-              const { title, detail } = descriptions[id];
+            {STORY_INTERESTS.map((interest) => {
+              const option = descriptions[interest.id];
               return (
                 <button
-                  key={id}
+                  key={interest.id}
                   type="button"
-                  className={styles.card}
-                  aria-label={label}
-                  aria-pressed={interests.includes(id)}
+                  className={styles.interestCard}
+                  aria-label={interest.label}
+                  aria-pressed={interests.includes(interest.id)}
                   disabled={busy}
-                  onClick={() => toggle(id)}
+                  onClick={() => toggle(interest.id)}
                 >
                   <span className={styles.cardArt}>
                     <Image
-                      src={`/story-interests/${id}-${id === "calisthenics" ? "v2" : "v1"}.webp`}
+                      unoptimized
+                      src={`/visuals/soft-3d/${option.image}.webp`}
                       alt=""
                       fill
-                      sizes="(max-width: 599px) 70vw, (max-width: 1100px) 50vw, 25vw"
-                      loading="eager"
+                      sizes="(max-width: 700px) 45vw, 24vw"
                     />
                   </span>
                   <span className={styles.cardCopy}>
-                    <span className={styles.cardTitle}>
-                      {id === "mobility" ? (
-                        <>
-                          <span className={styles.fullTitle}>{title}</span>
-                          <span className={styles.compactTitle}>Растяжка</span>
-                        </>
-                      ) : (
-                        title
-                      )}
-                    </span>
-                    <span className={styles.cardDetail}>{detail}</span>
+                    <span className={styles.cardTitle}>{option.title}</span>
+                    <span className={styles.cardDetail}>{option.detail}</span>
                   </span>
-                  <span className={styles.check} aria-hidden="true">
-                    <Check />
+                  <span className={styles.check}>
+                    <Check aria-hidden="true" />
                   </span>
-                  <svg className={styles.selectionStroke} viewBox="0 0 200 20" aria-hidden="true">
-                    <path d="M4 13Q76 2 194 8M10 18Q81 8 174 12" />
-                  </svg>
                 </button>
               );
             })}
             <button
               type="button"
-              className={`${styles.card} ${styles.explore}`}
-              aria-pressed={interests.includes("explore")}
+              className={`${styles.interestCard} ${styles.explore}`}
               aria-label="Пока не знаю"
+              aria-pressed={interests.includes("explore")}
               disabled={busy}
               onClick={() => toggle("explore")}
             >
-              <Compass className={styles.compass} aria-hidden="true" />
+              <Compass aria-hidden="true" />
               <span className={styles.cardCopy}>
                 <span className={styles.cardTitle}>Пока не знаю</span>
-                <span className={styles.cardDetail}>Найдём твоё вместе</span>
+                <span className={styles.cardDetail}>Разберёмся вместе</span>
               </span>
-              <span className={styles.check} aria-hidden="true">
-                <Check />
+              <span className={styles.check}>
+                <Check aria-hidden="true" />
               </span>
             </button>
           </div>
           <nav className={styles.actions} aria-label="Навигация по знакомству">
             <button
+              className={`${base.back} ${styles.back}`}
               type="button"
-              className={styles.back}
-              aria-label="Предыдущая сцена"
-              disabled={busy}
               onClick={onBack}
+              disabled={busy}
+              aria-label="Предыдущая сцена"
             >
               <ArrowLeft aria-hidden="true" />
               Назад
             </button>
-            <button type="button" className={styles.next} disabled={busy} onClick={onNext}>
+            <button
+              className={`${base.next} ${styles.next}`}
+              type="button"
+              onClick={onNext}
+              disabled={busy}
+            >
               Дальше
               <ArrowRight aria-hidden="true" />
             </button>
           </nav>
-          <p className={styles.tagline}>СВОЙ ТЕМП. СВОЯ ИСТОРИЯ.</p>
         </div>
       </section>
     </main>

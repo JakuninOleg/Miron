@@ -12,9 +12,12 @@ import type {
   WorkoutEnergyInput,
 } from "@/shared/contracts";
 import { DEFAULT_PROFILE, buildDemoWorkout } from "@/shared/demo";
+import { isProductPath } from "@/shared/product-routes";
 import {
   acknowledgeCommand,
+  acceptServerWorkout,
   endOfflineSession,
+  eraseOwnerOfflineData,
   journalCommand,
   offlineDb,
   ownerCommands,
@@ -24,18 +27,24 @@ import {
 } from "./offline-db";
 import { demoProgress, demoReward, reduceWorkout } from "./workout-reducer";
 import { isTerminalWorkout } from "@/shared/xp-policy";
+import type { WorkoutLoadFeedback } from "@/shared/workout-feedback";
+import type { DropSetResult } from "@/shared/training-methods";
 import type { CompleteOnboardingInput } from "@/shared/onboarding";
 import type {
   AssistantEnergyAction,
   AssistantHistory,
   AssistantReply,
   AssistantChatMessage,
+  AssistantHistoryAction,
+  AssistantHistoryMutation,
+  AssistantHistoryReceipt,
 } from "@/shared/assistant";
 import {
   mergeAssistantMessages,
   pendingAssistantMessage,
   PENDING_ASSISTANT_KEY,
   readPendingAssistant,
+  reconcileAssistantHistory,
   type PendingAssistantOperation,
 } from "./assistant-client-state";
 
@@ -73,6 +82,16 @@ class RequestError extends Error {
     super(message);
   }
 }
+function notifyAssistantHistory(owner: string, companion: CompanionId) {
+  try {
+    localStorage.setItem(
+      "miron:chat:changed",
+      JSON.stringify({ owner, companion, id: crypto.randomUUID() }),
+    );
+  } catch {
+    /* Focus and visible-page polling still synchronize other sessions. */
+  }
+}
 async function request<T>(url: string, options?: RequestInit): Promise<T> {
   const response = await fetch(url, {
     credentials: "same-origin",
@@ -98,6 +117,10 @@ interface MironContext extends Omit<CachedState, "key" | "messages"> {
   isSending: boolean;
   assistantEnabled: boolean | null;
   assistantLoading: boolean;
+  assistantHasMore: boolean;
+  assistantHistoryBusy: boolean;
+  assistantEditing: boolean;
+  assistantHistoryRevision: number | null;
   assistantError: string | null;
   pendingAssistantText: string | null;
   error: string | null;
@@ -107,23 +130,55 @@ interface MironContext extends Omit<CachedState, "key" | "messages"> {
   completeOnboarding: (input: CompleteOnboardingInput) => Promise<void>;
   switchCompanion: (id: CompanionId) => Promise<void>;
   startWorkout: () => Promise<void>;
-  recordSet: (exerciseId: string, reps: number, weightKg: number) => Promise<void>;
+  recordSet: (
+    exerciseId: string,
+    reps: number,
+    weightKg: number,
+    drop?: DropSetResult,
+  ) => Promise<void>;
   recordTimedSet: (exerciseId: string, durationSeconds: number) => Promise<void>;
+  editSet: (
+    command: import("@/shared/contracts").SetCorrectionCommand,
+    expected?: { id: string; revision: number },
+  ) => Promise<void>;
+  lightenRemaining: (id: string, revision: number) => Promise<void>;
+  replaceExercise: (
+    exerciseId: string,
+    revisionId: string,
+    expected: { id: string; revision: number },
+  ) => Promise<void>;
   advanceExercise: () => Promise<void>;
   finishWorkout: () => Promise<void>;
+  rateWorkout: (feedback: WorkoutLoadFeedback) => Promise<void>;
   skipExercise: (exerciseId: string) => Promise<void>;
   endWorkoutEarly: () => Promise<void>;
   estimateEnergy: (input: WorkoutEnergyInput) => Promise<void>;
   sendMessage: (text: string) => Promise<void>;
   retryAssistant: () => Promise<void>;
   refreshAssistant: () => Promise<void>;
+  loadOlderAssistant: () => Promise<void>;
+  editAssistantHistory: (
+    companion: CompanionId,
+    action: AssistantHistoryAction,
+    expectedRevision?: number,
+  ) => Promise<void>;
   confirmAssistantAction: (action: AssistantEnergyAction) => Promise<void>;
   confirmedAssistantActions: string[];
   downloadWorkout: () => Promise<void>;
   syncPending: () => Promise<void>;
+  readWorkoutRecovery: (
+    id: string,
+    signal?: AbortSignal,
+  ) => Promise<Pick<CommandAck, "workout" | "progress">>;
+  recoverWorkout: (expected: {
+    id: string;
+    localRevision: number;
+    serverRevision: number;
+  }) => Promise<void>;
   resetDemo: () => Promise<void>;
   logout: () => Promise<void>;
-  exportAccount: () => void;
+  exportAccount: () => Promise<void>;
+  deleteAccount: (confirmation: string, password?: string) => Promise<void>;
 }
 const Context = createContext<MironContext | null>(null);
 export function MironProvider({ children }: { children: React.ReactNode }) {
@@ -131,6 +186,7 @@ export function MironProvider({ children }: { children: React.ReactNode }) {
   const previousPathRef = useRef(pathname);
   const [state, setState] = useState<CachedState>(freshState);
   const stateRef = useRef(state);
+  const replacementAttempt = useRef<{ signature: string; input: CommandEnvelope } | null>(null);
   const [isReady, setReady] = useState(false);
   const [isDemo, setDemo] = useState(false);
   const [isOnline, setOnline] = useState(true);
@@ -143,6 +199,14 @@ export function MironProvider({ children }: { children: React.ReactNode }) {
   const assistantPendingRef = useRef<PendingAssistantOperation | null>(null);
   const assistantControllerRef = useRef<AbortController | null>(null);
   const assistantHistoryRef = useRef<Promise<void> | null>(null);
+  const [assistantCursor, setAssistantCursor] = useState<string | null>(null);
+  const [assistantHistoryBusy, setAssistantHistoryBusy] = useState(false);
+  const [assistantEditing, setAssistantEditing] = useState(false);
+  const [assistantHydrated, setAssistantHydrated] = useState(false);
+  const assistantEditingRef = useRef(false);
+  const assistantMutationRef = useRef<AssistantHistoryMutation | null>(null);
+  const assistantEpochRef = useRef(0);
+  const assistantOlderLoadedRef = useRef(false);
   const [confirmedAssistantActions, setConfirmedAssistantActions] = useState<string[]>([]);
   const confirmingAssistantRef = useRef(false);
   const [error, setError] = useState<string | null>(null);
@@ -153,6 +217,12 @@ export function MironProvider({ children }: { children: React.ReactNode }) {
   const authProbeRef = useRef<Promise<{ user?: { id: string } } | null> | null>(null);
   const blockedRef = useRef<string | null>(null);
   const forgetAssistant = useCallback(() => {
+    assistantEpochRef.current++;
+    assistantMutationRef.current = null;
+    assistantHistoryRef.current = null;
+    assistantOlderLoadedRef.current = false;
+    setAssistantCursor(null);
+    setAssistantHydrated(false);
     assistantControllerRef.current?.abort();
     assistantPendingRef.current = null;
     setPendingAssistantText(null);
@@ -246,6 +316,7 @@ export function MironProvider({ children }: { children: React.ReactNode }) {
       try {
         const ack = await request<CommandAck>(`/api/workouts/${item.workoutId}/commands`, {
           method: "POST",
+          headers: { "x-miron-owner": owner.slice(5) },
           body: JSON.stringify(item.envelope),
         });
         if (stateRef.current.key !== owner) return;
@@ -275,6 +346,65 @@ export function MironProvider({ children }: { children: React.ReactNode }) {
     setError(null);
   }, [publish, forgetAssistant]);
   const syncPending = useCallback(() => enqueue(drain), [enqueue, drain]);
+  const readWorkoutRecovery = useCallback(
+    async (id: string, signal?: AbortSignal) => {
+      const owner = stateRef.current.key;
+      if (closedRef.current || !owner.startsWith("user:"))
+        throw new Error("Войди в исходный аккаунт журнала.");
+      try {
+        const value = await request<Pick<CommandAck, "workout" | "progress">>(
+          `/api/workouts/${id}/recovery`,
+          { signal, headers: { "x-miron-owner": owner.slice(5) } },
+        );
+        if (closedRef.current || stateRef.current.key !== owner || value.workout.id !== id)
+          throw new Error("Аккаунт или запись изменились.");
+        return value;
+      } catch (cause) {
+        if (
+          cause instanceof RequestError &&
+          (cause.status === 401 || cause.code === "OWNER_CHANGED")
+        )
+          await detachAssistantOwner(owner);
+        throw cause;
+      }
+    },
+    [detachAssistantOwner],
+  );
+  const recoverWorkout = useCallback(
+    (expected: { id: string; localRevision: number; serverRevision: number }) =>
+      enqueue(async () => {
+        const current = stateRef.current;
+        const owner = current.key;
+        if (closedRef.current || !owner.startsWith("user:") || !navigator.onLine)
+          throw new Error("Войди в исходный аккаунт и подключись к интернету.");
+        if (
+          current.workout?.id !== expected.id ||
+          current.workout.revision !== expected.localRevision
+        )
+          throw new Error("Журнал изменился. Обнови сравнение.");
+        const result = await readWorkoutRecovery(expected.id);
+        if (closedRef.current || stateRef.current.key !== owner)
+          throw new Error("Аккаунт изменился.");
+        if (
+          result.workout.id !== expected.id ||
+          result.workout.revision !== expected.serverRevision
+        )
+          throw new Error("Серверная запись уже изменилась. Обнови сравнение.");
+        const next = await acceptServerWorkout(
+          owner,
+          result.workout,
+          result.progress,
+          expected.localRevision,
+        );
+        if (closedRef.current || stateRef.current.key !== owner) return;
+        blockedRef.current = null;
+        publish(next);
+        setDownloaded(false);
+        setPendingCount(0);
+        setError(null);
+      }),
+    [enqueue, publish, readWorkoutRecovery],
+  );
 
   // Next keeps this provider mounted during sign-in navigation. Re-enter with a fresh
   // server principal so a cached null/A session cannot survive authentication as B.
@@ -285,15 +415,7 @@ export function MironProvider({ children }: { children: React.ReactNode }) {
       previous &&
       ["/sign-in", "/sign-up", "/reset-password", "/forgot-password"].includes(previous) &&
       pathname &&
-      [
-        "/dashboard",
-        "/onboarding",
-        "/workout",
-        "/programs",
-        "/progress",
-        "/settings",
-        "/chat",
-      ].includes(pathname)
+      isProductPath(pathname)
     )
       window.location.reload();
   }, [pathname]);
@@ -365,15 +487,7 @@ export function MironProvider({ children }: { children: React.ReactNode }) {
         setPendingCount(pending.length);
         setReady(true);
         setDownloaded(Boolean(next.offlineReady));
-        const product = [
-          "/dashboard",
-          "/onboarding",
-          "/workout",
-          "/programs",
-          "/progress",
-          "/settings",
-          "/chat",
-        ].includes(window.location.pathname);
+        const product = isProductPath(window.location.pathname);
         if (product && !owner && !demo) window.location.replace("/sign-in");
         else if (
           product &&
@@ -444,13 +558,19 @@ export function MironProvider({ children }: { children: React.ReactNode }) {
             method: "PUT",
             body: JSON.stringify(profile),
           });
-          await commit({ ...stateRef.current, ...account });
+          const changedCompanion = stateRef.current.profile.companion !== account.profile.companion;
+          if (changedCompanion) forgetAssistant();
+          await commit({
+            ...stateRef.current,
+            ...account,
+            ...(changedCompanion ? { messages: [], assistantSnapshot: undefined } : {}),
+          });
         } catch (cause) {
           setError(cause instanceof Error ? cause.message : "Не удалось сохранить профиль.");
           throw cause;
         }
       }),
-    [enqueue, commit],
+    [enqueue, commit, forgetAssistant],
   );
   const completeOnboarding = useCallback(
     (input: CompleteOnboardingInput) =>
@@ -498,12 +618,14 @@ export function MironProvider({ children }: { children: React.ReactNode }) {
     [enqueue, commit, drain],
   );
   const execute = useCallback(
-    (command: CommandEnvelope["command"]) =>
+    (command: CommandEnvelope["command"], expected?: { id: string; revision: number }) =>
       enqueue(async () => {
         if (blockedRef.current) throw new Error(`Синхронизация остановлена: ${blockedRef.current}`);
         const previous = stateRef.current;
         const workout = previous.workout;
         if (!workout) throw new Error("Сначала начни занятие.");
+        if (expected && (workout.id !== expected.id || workout.revision !== expected.revision))
+          throw new Error("Тренировка изменилась. Проверь изменения заново.");
         const knownWeight = previous.progress.history
           .flatMap((item) =>
             item.energyEstimate?.weightSource === "user_reported" ? [item.energyEstimate] : [],
@@ -515,7 +637,12 @@ export function MironProvider({ children }: { children: React.ReactNode }) {
           demo && isTerminalWorkout(nextWorkout.status)
             ? demoProgress(previous.progress, nextWorkout)
             : previous.progress;
-        if (!demo && command.type === "estimate_energy") {
+        if (
+          !demo &&
+          (command.type === "estimate_energy" ||
+            command.type === "correct_set" ||
+            command.type === "correct_timed_set")
+        ) {
           // A terminal estimate is provisional until ACK, just like recorded work.
           // Keep the cached history usable offline without altering confirmed XP.
           progress = {
@@ -565,9 +692,91 @@ export function MironProvider({ children }: { children: React.ReactNode }) {
     [enqueue, commit, publish, drain],
   );
   const recordSet = useCallback(
-    (exerciseId: string, reps: number, weightKg: number) =>
-      execute({ type: "record_set", exerciseId, reps, weightKg, setId: crypto.randomUUID() }),
+    (exerciseId: string, reps: number, weightKg: number, drop?: DropSetResult) =>
+      execute({
+        type: "record_set",
+        exerciseId,
+        reps,
+        weightKg,
+        ...(drop ? { drop } : {}),
+        setId: crypto.randomUUID(),
+      }),
     [execute],
+  );
+  const replaceExercise = useCallback(
+    (exerciseId: string, revisionId: string, expected: { id: string; revision: number }) =>
+      enqueue(async () => {
+        const owner = stateRef.current.key;
+        if (closedRef.current || !owner.startsWith("user:") || !navigator.onLine)
+          throw new Error("Для замены войди в аккаунт и подключись к интернету.");
+        await drain();
+        const current = stateRef.current;
+        if (
+          closedRef.current ||
+          current.key !== owner ||
+          current.workout?.id !== expected.id ||
+          current.workout.revision !== expected.revision
+        )
+          throw new Error("Занятие изменилось. Открой сравнение заново.");
+        const command: CommandEnvelope["command"] = {
+          type: "replace_exercise",
+          exerciseId,
+          revisionId,
+        };
+        const signature = JSON.stringify({ owner, expected, command });
+        if (replacementAttempt.current?.signature !== signature)
+          replacementAttempt.current = {
+            signature,
+            input: {
+              operationId: crypto.randomUUID(),
+              expectedRevision: expected.revision,
+              command,
+            },
+          };
+        try {
+          const input = replacementAttempt.current.input;
+          const ack = await request<CommandAck>(`/api/workouts/${expected.id}/commands`, {
+            method: "POST",
+            headers: { "x-miron-owner": owner.slice(5) },
+            body: JSON.stringify(input),
+          });
+          if (closedRef.current || stateRef.current.key !== owner)
+            throw new Error("Аккаунт изменился. Проверь результат после входа в исходный аккаунт.");
+          if (
+            ack.operationId !== input.operationId ||
+            ack.workout.id !== expected.id ||
+            ack.workout.revision !== expected.revision + 1
+          )
+            throw new Error("Сервер не подтвердил эту замену.");
+          const latest = await readWorkoutRecovery(expected.id);
+          if (latest.workout.revision < ack.workout.revision)
+            throw new Error("Не удалось прочитать актуальную запись. Обнови тренировку.");
+          await commit({
+            ...stateRef.current,
+            workout: latest.workout,
+            progress: latest.progress,
+            offlineReady: false,
+          });
+          setDownloaded(false);
+          const remaining = await ownerCommands(owner);
+          setPendingCount(remaining.length);
+          if (remaining.length) {
+            blockedRef.current =
+              "В другой вкладке появились локальные действия. Проверь синхронизацию перед продолжением.";
+            setError(blockedRef.current);
+            throw new Error(blockedRef.current);
+          }
+          replacementAttempt.current = null;
+        } catch (cause) {
+          if (
+            cause instanceof RequestError &&
+            (cause.status === 401 || cause.code === "OWNER_CHANGED")
+          )
+            await detachAssistantOwner(owner);
+          throw cause;
+        }
+      }),
+    [enqueue, drain, commit, detachAssistantOwner, readWorkoutRecovery],
   );
   const advanceExercise = useCallback(() => execute({ type: "next_exercise" }), [execute]);
   const recordTimedSet = useCallback(
@@ -581,6 +790,10 @@ export function MironProvider({ children }: { children: React.ReactNode }) {
     [execute],
   );
   const finishWorkout = useCallback(() => execute({ type: "finish" }), [execute]);
+  const rateWorkout = useCallback(
+    (feedback: WorkoutLoadFeedback) => execute({ type: "rate_load", feedback }),
+    [execute],
+  );
   const estimateEnergy = useCallback(
     (input: WorkoutEnergyInput) => execute({ type: "estimate_energy", ...input }),
     [execute],
@@ -627,55 +840,298 @@ export function MironProvider({ children }: { children: React.ReactNode }) {
     });
   }, [startWorkout, enqueue, commit]);
 
-  const refreshAssistant = useCallback(async () => {
-    if (assistantHistoryRef.current) return assistantHistoryRef.current;
+  const refreshAssistant = useCallback(
+    async (background = false) => {
+      if (assistantHistoryRef.current) return assistantHistoryRef.current;
+      const owner = stateRef.current.key;
+      if (
+        !owner.startsWith("user:") ||
+        closedRef.current ||
+        sendingRef.current ||
+        assistantEditingRef.current
+      )
+        return;
+      const companion = stateRef.current.profile.companion;
+      const epoch = assistantEpochRef.current;
+      if (!stateRef.current.profile.onboardingCompleted || !stateRef.current.profile.adultConfirmed)
+        return;
+      if (!navigator.onLine) return;
+      const task = (async () => {
+        if (!background) setAssistantLoading(true);
+        setAssistantError(null);
+        const controller = new AbortController();
+        assistantControllerRef.current = controller;
+        try {
+          const query = new URLSearchParams({ companion });
+          const pendingId = (
+            assistantPendingRef.current ?? readPendingAssistant(sessionStorage, owner)
+          )?.operationId;
+          if (pendingId) query.set("pendingOperationId", pendingId);
+          const history = await request<AssistantHistory>(`/api/assistant?${query}`, {
+            cache: "no-store",
+            headers: { "x-miron-owner": owner.slice(5) },
+            signal: AbortSignal.any([controller.signal, AbortSignal.timeout(15000)]),
+          });
+          if (
+            closedRef.current ||
+            controller.signal.aborted ||
+            stateRef.current.key !== owner ||
+            stateRef.current.profile.companion !== companion ||
+            assistantEpochRef.current !== epoch
+          )
+            return;
+          let pending = assistantPendingRef.current ?? readPendingAssistant(sessionStorage, owner);
+          const oldPending = pending;
+          if (
+            pending &&
+            (pending.companion !== companion ||
+              (history.pending?.operationId === pending.operationId &&
+                ["removed", "failed", "completed"].includes(history.pending.state)) ||
+              (history.pending?.state === "absent" &&
+                (pending.historyRevision === undefined ||
+                  pending.historyRevision !== history.revision)) ||
+              history.messages.some(
+                (message) =>
+                  message.role === "assistant" && message.operationId === pending?.operationId,
+              ))
+          ) {
+            pending = null;
+          }
+          await enqueue(async () => {
+            if (
+              closedRef.current ||
+              controller.signal.aborted ||
+              stateRef.current.key !== owner ||
+              stateRef.current.profile.companion !== companion ||
+              assistantEpochRef.current !== epoch
+            )
+              return;
+            const previousSnapshot = stateRef.current.assistantSnapshot;
+            const current = (stateRef.current.messages as AssistantChatMessage[]).filter(
+              (message) => pending || !oldPending || message.id !== oldPending.operationId,
+            );
+            const reconciled = reconcileAssistantHistory(current, previousSnapshot, history);
+            if (!reconciled) return;
+            assistantPendingRef.current = pending;
+            setPendingAssistantText(pending?.text ?? null);
+            if (!pending && oldPending) {
+              try {
+                sessionStorage.removeItem(PENDING_ASSISTANT_KEY);
+              } catch {
+                /* Server confirmed completion or removal. */
+              }
+            }
+            const messages =
+              pending &&
+              !history.messages.some(
+                (message) =>
+                  message.role === "user" && message.operationId === pending?.operationId,
+              )
+                ? mergeAssistantMessages(
+                    reconciled.messages,
+                    [pendingAssistantMessage(pending)],
+                    undefined,
+                    Infinity,
+                  )
+                : reconciled.messages;
+            const reset =
+              previousSnapshot?.companion !== companion ||
+              previousSnapshot.resetRevision !== history.resetRevision;
+            if (reset) assistantOlderLoadedRef.current = false;
+            if (!assistantOlderLoadedRef.current) setAssistantCursor(history.nextCursor);
+            await commitAssistant(
+              { ...stateRef.current, messages, assistantSnapshot: reconciled.snapshot },
+              owner,
+            );
+            setAssistantHydrated(true);
+            if (
+              assistantMutationRef.current &&
+              history.revision > assistantMutationRef.current.expectedRevision
+            )
+              assistantMutationRef.current = null;
+            if (!closedRef.current && stateRef.current.key === owner)
+              setAssistantEnabled(history.enabled);
+          });
+        } catch (cause) {
+          if (
+            cause instanceof RequestError &&
+            (cause.status === 401 || cause.code === "OWNER_CHANGED")
+          ) {
+            await detachAssistantOwner(owner);
+            return;
+          }
+          if (!closedRef.current && !controller.signal.aborted && stateRef.current.key === owner)
+            setAssistantError(
+              cause instanceof RequestError
+                ? cause.message
+                : "Не удалось загрузить разговор. Проверь сеть и повтори.",
+            );
+        } finally {
+          if (assistantControllerRef.current === controller) assistantControllerRef.current = null;
+          if (!background && assistantEpochRef.current === epoch) setAssistantLoading(false);
+        }
+      })();
+      assistantHistoryRef.current = task;
+      try {
+        await task;
+      } finally {
+        if (assistantHistoryRef.current === task) assistantHistoryRef.current = null;
+      }
+    },
+    [commitAssistant, enqueue, detachAssistantOwner],
+  );
+
+  const loadOlderAssistant = useCallback(async () => {
     const owner = stateRef.current.key;
-    if (!owner.startsWith("user:") || closedRef.current || sendingRef.current) return;
-    if (!stateRef.current.profile.onboardingCompleted || !stateRef.current.profile.adultConfirmed)
-      return;
-    if (!navigator.onLine) return;
-    const task = (async () => {
-      setAssistantLoading(true);
+    const companion = stateRef.current.profile.companion;
+    const epoch = assistantEpochRef.current;
+    if (!assistantCursor || assistantHistoryBusy || assistantEditingRef.current) return;
+    if (!owner.startsWith("user:") || !navigator.onLine)
+      throw new Error("Для загрузки истории подключись к интернету.");
+    setAssistantHistoryBusy(true);
+    try {
+      const query = new URLSearchParams({ companion, before: assistantCursor });
+      const page = await request<AssistantHistory>(`/api/assistant?${query}`, {
+        cache: "no-store",
+        headers: { "x-miron-owner": owner.slice(5) },
+      });
+      await enqueue(async () => {
+        if (
+          closedRef.current ||
+          stateRef.current.key !== owner ||
+          stateRef.current.profile.companion !== companion ||
+          assistantEpochRef.current !== epoch
+        )
+          return;
+        const reconciled = reconcileAssistantHistory(
+          stateRef.current.messages as AssistantChatMessage[],
+          stateRef.current.assistantSnapshot,
+          page,
+        );
+        if (!reconciled) return;
+        await commitAssistant(
+          {
+            ...stateRef.current,
+            messages: reconciled.messages,
+            assistantSnapshot: reconciled.snapshot,
+          },
+          owner,
+        );
+        assistantOlderLoadedRef.current = true;
+        setAssistantCursor(page.nextCursor);
+      });
+    } catch (cause) {
+      if (
+        cause instanceof RequestError &&
+        (cause.status === 401 || cause.code === "OWNER_CHANGED")
+      ) {
+        await detachAssistantOwner(owner);
+        return;
+      }
+      if (cause instanceof RequestError && cause.code === "AI_HISTORY_CHANGED")
+        await refreshAssistant();
+      throw cause instanceof RequestError
+        ? cause
+        : new Error("Не удалось загрузить ранние сообщения. Проверь сеть и повтори.");
+    } finally {
+      setAssistantHistoryBusy(false);
+    }
+  }, [
+    assistantCursor,
+    assistantHistoryBusy,
+    commitAssistant,
+    enqueue,
+    detachAssistantOwner,
+    refreshAssistant,
+  ]);
+
+  const editAssistantHistory = useCallback(
+    async (companion: CompanionId, action: AssistantHistoryAction, expectedRevision?: number) => {
+      const owner = stateRef.current.key;
+      if (
+        !owner.startsWith("user:") ||
+        closedRef.current ||
+        stateRef.current.profile.companion !== companion
+      )
+        throw new Error("Аккаунт или напарник изменился. Открой разговор заново.");
+      if (!navigator.onLine) throw new Error("Для удаления подключись к интернету.");
+      if (sendingRef.current || assistantEditingRef.current)
+        throw new Error("Дождись завершения текущего действия.");
+      const snapshot = stateRef.current.assistantSnapshot;
+      if (!snapshot || snapshot.companion !== companion)
+        throw new Error("Сначала обнови историю разговора.");
+      if (expectedRevision !== undefined && snapshot.revision !== expectedRevision)
+        throw new Error("Разговор изменился. Проверь историю и открой подтверждение ещё раз.");
+      assistantEditingRef.current = true;
+      setAssistantEditing(true);
       setAssistantError(null);
+      assistantControllerRef.current?.abort();
+      assistantHistoryRef.current = null;
+      const epoch = ++assistantEpochRef.current;
+      const old = assistantMutationRef.current;
+      const input: AssistantHistoryMutation =
+        old?.companion === companion && JSON.stringify(old.action) === JSON.stringify(action)
+          ? old
+          : {
+              operationId: crypto.randomUUID(),
+              companion,
+              expectedRevision: snapshot.revision,
+              action,
+            };
+      assistantMutationRef.current = input;
       const controller = new AbortController();
       assistantControllerRef.current = controller;
       try {
-        const history = await request<AssistantHistory>("/api/assistant", {
+        const receipt = await request<AssistantHistoryReceipt>("/api/assistant", {
+          method: "DELETE",
           headers: { "x-miron-owner": owner.slice(5) },
           signal: AbortSignal.any([controller.signal, AbortSignal.timeout(15000)]),
+          body: JSON.stringify(input),
         });
-        if (closedRef.current || controller.signal.aborted || stateRef.current.key !== owner)
-          return;
-        let pending = assistantPendingRef.current ?? readPendingAssistant(sessionStorage, owner);
-        if (
-          pending &&
-          history.messages.some(
-            (message) =>
-              message.role === "assistant" && message.operationId === pending?.operationId,
+        if (receipt.operationId !== input.operationId || receipt.companion !== companion)
+          throw new Error("Сервер не подтвердил удаление. Повтори действие.");
+        await enqueue(async () => {
+          if (
+            closedRef.current ||
+            stateRef.current.key !== owner ||
+            stateRef.current.profile.companion !== companion ||
+            assistantEpochRef.current !== epoch
           )
-        ) {
-          pending = null;
+            return;
+          const pending = assistantPendingRef.current;
+          assistantPendingRef.current = null;
+          setPendingAssistantText(null);
           try {
             sessionStorage.removeItem(PENDING_ASSISTANT_KEY);
           } catch {
-            /* Server history confirmed the reply. */
+            /* Already detached in this tab. */
           }
-        }
-        assistantPendingRef.current = pending;
-        setPendingAssistantText(pending?.text ?? null);
-        await enqueue(async () => {
-          if (closedRef.current || controller.signal.aborted || stateRef.current.key !== owner)
-            return;
-          const messages =
-            pending &&
-            !history.messages.some(
-              (message) => message.role === "user" && message.operationId === pending?.operationId,
-            )
-              ? mergeAssistantMessages(history.messages, [pendingAssistantMessage(pending)])
-              : history.messages;
-          await commitAssistant({ ...stateRef.current, messages }, owner);
-          if (!closedRef.current && stateRef.current.key === owner)
-            setAssistantEnabled(history.enabled);
+          if ((stateRef.current.assistantSnapshot?.revision ?? 0) <= receipt.revision) {
+            const messages = (stateRef.current.messages as AssistantChatMessage[]).filter(
+              (message) => {
+                if (message.id === pending?.operationId) return false;
+                if (action.type === "clear") return false;
+                if (message.operationId !== action.turnId) return true;
+                return action.type === "delete_message" && message.role !== action.role;
+              },
+            );
+            await commitAssistant(
+              {
+                ...stateRef.current,
+                messages,
+                assistantSnapshot: {
+                  companion,
+                  revision: receipt.revision,
+                  resetRevision: receipt.revision,
+                },
+              },
+              owner,
+            );
+          }
+          setAssistantCursor(null);
+          assistantOlderLoadedRef.current = false;
+          assistantMutationRef.current = null;
+          notifyAssistantHistory(owner, companion);
         });
       } catch (cause) {
         if (
@@ -685,24 +1141,27 @@ export function MironProvider({ children }: { children: React.ReactNode }) {
           await detachAssistantOwner(owner);
           return;
         }
-        if (!closedRef.current && !controller.signal.aborted && stateRef.current.key === owner)
-          setAssistantError(
-            cause instanceof RequestError
-              ? cause.message
-              : "Не удалось загрузить разговор. Проверь сеть и повтори.",
-          );
+        if (cause instanceof RequestError && cause.code === "AI_HISTORY_CHANGED") {
+          assistantMutationRef.current = null;
+          assistantEditingRef.current = false;
+          await refreshAssistant();
+        }
+        const message =
+          cause instanceof RequestError
+            ? cause.message
+            : "Удаление не подтверждено. Проверь сеть и повтори.";
+        if (!closedRef.current && stateRef.current.key === owner) setAssistantError(message);
+        throw new Error(message);
       } finally {
-        if (assistantControllerRef.current === controller) assistantControllerRef.current = null;
+        assistantEditingRef.current = false;
+        setAssistantEditing(false);
         setAssistantLoading(false);
+        if (assistantControllerRef.current === controller) assistantControllerRef.current = null;
       }
-    })();
-    assistantHistoryRef.current = task;
-    try {
-      await task;
-    } finally {
-      if (assistantHistoryRef.current === task) assistantHistoryRef.current = null;
-    }
-  }, [commitAssistant, enqueue, detachAssistantOwner]);
+      await refreshAssistant(true);
+    },
+    [commitAssistant, enqueue, detachAssistantOwner, refreshAssistant],
+  );
 
   useEffect(() => {
     if (
@@ -726,10 +1185,48 @@ export function MironProvider({ children }: { children: React.ReactNode }) {
     state.profile.adultConfirmed,
     refreshAssistant,
   ]);
+  useEffect(() => {
+    if (
+      !isReady ||
+      isDemo ||
+      !isOnline ||
+      !state.key.startsWith("user:") ||
+      !state.profile.onboardingCompleted
+    )
+      return;
+    const refresh = () => {
+      if (document.visibilityState === "visible") void refreshAssistant(true);
+    };
+    const storage = (event: StorageEvent) => {
+      if (event.key === "miron:chat:changed") refresh();
+    };
+    window.addEventListener("focus", refresh);
+    window.addEventListener("storage", storage);
+    document.addEventListener("visibilitychange", refresh);
+    const timer = window.setInterval(refresh, 15000);
+    return () => {
+      window.removeEventListener("focus", refresh);
+      window.removeEventListener("storage", storage);
+      document.removeEventListener("visibilitychange", refresh);
+      window.clearInterval(timer);
+    };
+  }, [
+    isReady,
+    isDemo,
+    isOnline,
+    state.key,
+    state.profile.companion,
+    state.profile.onboardingCompleted,
+    refreshAssistant,
+  ]);
 
   const sendAssistantOperation = useCallback(
     async (pending: PendingAssistantOperation) => {
       const { owner } = pending;
+      const companion = pending.companion ?? stateRef.current.profile.companion;
+      const epoch = assistantEpochRef.current;
+      if (stateRef.current.profile.companion !== companion)
+        throw new Error("Напарник изменился. Открой нужный разговор.");
       if (closedRef.current || stateRef.current.key !== owner)
         throw new Error("Аккаунт изменился. Открой разговор заново.");
       if (!navigator.onLine)
@@ -758,9 +1255,12 @@ export function MironProvider({ children }: { children: React.ReactNode }) {
           await commitAssistant(
             {
               ...stateRef.current,
-              messages: mergeAssistantMessages(stateRef.current.messages, [
-                pendingAssistantMessage(pending),
-              ]),
+              messages: mergeAssistantMessages(
+                stateRef.current.messages,
+                [pendingAssistantMessage(pending)],
+                undefined,
+                Infinity,
+              ),
             },
             owner,
           );
@@ -771,9 +1271,22 @@ export function MironProvider({ children }: { children: React.ReactNode }) {
           method: "POST",
           headers: { "x-miron-owner": owner.slice(5) },
           signal: AbortSignal.any([controller.signal, AbortSignal.timeout(60000)]),
-          body: JSON.stringify({ operationId: pending.operationId, text: pending.text }),
+          body: JSON.stringify({
+            operationId: pending.operationId,
+            text: pending.text,
+            companion,
+            ...(pending.historyRevision !== undefined
+              ? { expectedHistoryRevision: pending.historyRevision }
+              : {}),
+          }),
         });
-        if (closedRef.current || controller.signal.aborted || stateRef.current.key !== owner)
+        if (
+          closedRef.current ||
+          controller.signal.aborted ||
+          stateRef.current.key !== owner ||
+          stateRef.current.profile.companion !== companion ||
+          assistantEpochRef.current !== epoch
+        )
           return;
         if (
           response.operationId !== pending.operationId ||
@@ -781,20 +1294,49 @@ export function MironProvider({ children }: { children: React.ReactNode }) {
         )
           throw new Error("Сервер не подтвердил ответ на это сообщение. Повтори запрос.");
         await enqueue(async () => {
-          if (closedRef.current || controller.signal.aborted || stateRef.current.key !== owner)
+          if (
+            closedRef.current ||
+            controller.signal.aborted ||
+            stateRef.current.key !== owner ||
+            stateRef.current.profile.companion !== companion ||
+            assistantEpochRef.current !== epoch
+          )
             return;
+          if (
+            response.historyRevision !== undefined &&
+            (stateRef.current.assistantSnapshot?.revision ?? 0) > response.historyRevision
+          )
+            throw new RequestError(
+              "История уже изменилась. Обнови разговор.",
+              409,
+              "AI_HISTORY_CHANGED",
+            );
           await commitAssistant(
             {
               ...stateRef.current,
               messages: mergeAssistantMessages(
                 stateRef.current.messages,
-                response.messages,
+                response.messages.map((message) => ({
+                  ...message,
+                  companion: message.companion ?? companion,
+                })),
                 pending.operationId,
+                Infinity,
               ),
+              ...(response.historyRevision !== undefined
+                ? {
+                    assistantSnapshot: {
+                      companion,
+                      revision: response.historyRevision,
+                      resetRevision: stateRef.current.assistantSnapshot?.resetRevision ?? 0,
+                    },
+                  }
+                : {}),
             },
             owner,
           );
           assistantPendingRef.current = null;
+          notifyAssistantHistory(owner, companion);
           setPendingAssistantText(null);
           try {
             sessionStorage.removeItem(PENDING_ASSISTANT_KEY);
@@ -854,7 +1396,7 @@ export function MironProvider({ children }: { children: React.ReactNode }) {
   const sendMessage = useCallback(
     async (raw: string) => {
       const text = raw.trim().slice(0, 2000);
-      if (!text || sendingRef.current) return;
+      if (!text || sendingRef.current || assistantEditingRef.current) return;
       sendingRef.current = true;
       setSending(true);
       setAssistantError(null);
@@ -871,6 +1413,8 @@ export function MironProvider({ children }: { children: React.ReactNode }) {
               operationId: crypto.randomUUID(),
               text,
               createdAt: new Date().toISOString(),
+              companion: stateRef.current.profile.companion,
+              historyRevision: stateRef.current.assistantSnapshot?.revision,
             },
           );
         } finally {
@@ -1045,22 +1589,99 @@ export function MironProvider({ children }: { children: React.ReactNode }) {
       }),
     [enqueue, commit],
   );
-  const exportAccount = useCallback(() => {
-    const { key, ...data } = stateRef.current;
-    void key;
-    const url = URL.createObjectURL(
-      new Blob([JSON.stringify(data, null, 2)], { type: "application/json" }),
-    );
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "miron-device-data.json";
-    link.click();
-    URL.revokeObjectURL(url);
-  }, []);
+  const deleteAccount = useCallback(
+    (confirmation: string, password?: string) =>
+      enqueue(async () => {
+        const owner = stateRef.current.key;
+        if (!owner.startsWith("user:") || closedRef.current || !navigator.onLine)
+          throw new Error("Для удаления войди в исходный аккаунт и подключись к интернету.");
+        if (confirmation !== "УДАЛИТЬ") throw new Error("Подтверди удаление словом УДАЛИТЬ.");
+        if ((await ownerCommands(owner)).length)
+          throw new Error(
+            "Сначала синхронизируй действия или сохрани копию журнала и выбери серверную версию.",
+          );
+        // Erase explicitly confirmed local copies before the irreversible server action: a lost ACK cannot strand them.
+        await eraseOwnerOfflineData(owner);
+        let confirmed = false;
+        try {
+          const result = await request<{ success: boolean }>("/api/account/delete", {
+            method: "POST",
+            headers: { "x-miron-owner": owner.slice(5) },
+            body: JSON.stringify({ confirmation, ...(password ? { password } : {}) }),
+          });
+          if (!result.success) throw new Error("Сервер не подтвердил удаление.");
+          confirmed = true;
+        } catch (cause) {
+          if (
+            cause instanceof RequestError &&
+            cause.status >= 400 &&
+            cause.status < 500 &&
+            cause.status !== 401 &&
+            cause.status !== 403
+          )
+            throw cause;
+          // Unknown outcome is never presented as success. Detach the erased owner before leaving the page.
+        }
+        if (stateRef.current.key !== owner) return;
+        closedRef.current = true;
+        forgetAssistant();
+        publish(freshState());
+        setPendingCount(0);
+        setDownloaded(false);
+        window.location.replace(confirmed ? "/sign-in?deleted=1" : "/sign-in?deletion=unconfirmed");
+      }),
+    [enqueue, forgetAssistant, publish],
+  );
+  const exportAccount = useCallback(
+    () =>
+      enqueue(async () => {
+        const owner = stateRef.current.key;
+        const data: unknown =
+          owner === "demo"
+            ? { version: "miron-demo-v1", state: stateRef.current }
+            : await request("/api/account/export", {
+                headers: { "x-miron-owner": owner.slice(5) },
+              });
+        if (stateRef.current.key !== owner || closedRef.current)
+          throw new Error("Аккаунт изменился. Открой экспорт заново.");
+        const journal =
+          owner === "demo"
+            ? null
+            : await offlineDb.transaction(
+                "r",
+                offlineDb.pending,
+                offlineDb.workoutBackups,
+                async () => ({
+                  pending: await ownerCommands(owner),
+                  backups: await offlineDb.workoutBackups.where("owner").equals(owner).toArray(),
+                }),
+              );
+        if (stateRef.current.key !== owner || closedRef.current)
+          throw new Error("Аккаунт изменился. Экспорт остановлен.");
+        const url = URL.createObjectURL(
+          new Blob([JSON.stringify({ account: data, deviceJournal: journal }, null, 2)], {
+            type: "application/json",
+          }),
+        );
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "miron-account-data.json";
+        link.click();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+      }),
+    [enqueue],
+  );
   return (
     <Context.Provider
       value={{
         ...state,
+        messages: isDemo
+          ? state.messages
+          : assistantHydrated || !isOnline
+            ? (state.messages as AssistantChatMessage[]).filter(
+                (message) => message.companion === state.profile.companion,
+              )
+            : [],
         ownerId: state.key.startsWith("user:") ? state.key.slice(5) : null,
         isReady,
         isDemo,
@@ -1068,6 +1689,13 @@ export function MironProvider({ children }: { children: React.ReactNode }) {
         isSending,
         assistantEnabled: isDemo ? true : assistantEnabled,
         assistantLoading,
+        assistantHasMore: Boolean(assistantCursor),
+        assistantHistoryBusy,
+        assistantEditing,
+        assistantHistoryRevision:
+          state.assistantSnapshot?.companion === state.profile.companion
+            ? state.assistantSnapshot.revision
+            : null,
         assistantError,
         pendingAssistantText,
         error,
@@ -1079,21 +1707,31 @@ export function MironProvider({ children }: { children: React.ReactNode }) {
         startWorkout,
         recordSet,
         recordTimedSet,
+        editSet: execute,
+        replaceExercise,
+        lightenRemaining: (id, revision) =>
+          execute({ type: "lighten_remaining" }, { id, revision }),
         advanceExercise,
         finishWorkout,
+        rateWorkout,
         skipExercise,
         endWorkoutEarly,
         estimateEnergy,
         sendMessage,
         retryAssistant,
         refreshAssistant,
+        loadOlderAssistant,
+        editAssistantHistory,
         confirmAssistantAction,
         confirmedAssistantActions,
         downloadWorkout,
         syncPending,
+        recoverWorkout,
+        readWorkoutRecovery,
         resetDemo,
         logout,
         exportAccount,
+        deleteAccount,
       }}
     >
       {children}

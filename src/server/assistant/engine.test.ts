@@ -39,6 +39,109 @@ function setup(responses: ProviderReply[], overrides: Partial<EngineOptions<{ id
 }
 
 describe("bounded beta assistant orchestration", () => {
+  it.each(["max", "lika"] as const)(
+    "allows friendly flirting with %s through output review without tools",
+    async (companion) => {
+      const social = JSON.stringify({
+        route: "in_scope",
+        topics: ["companion_relationship"],
+        riskFlags: [],
+        trainingSafety: "allow",
+        requestedAction: "discuss",
+      });
+      const text = "Ты умеешь сделать разговор интереснее 😉";
+      const { options, provider, executeTool } = setup(
+        [reply(social), reply(text), reply(reviewed)],
+        {
+          companion,
+          text: "Давай немного пофлиртуем 😉",
+          tools: [
+            {
+              type: "function",
+              function: { name: "preview_workout", description: "Workout draft", parameters: {} },
+            },
+          ],
+        },
+      );
+      const result = await runAssistantEngine(options);
+      expect(result.source).toBe("model");
+      expect(result.text).toBe(text);
+      expect(result.action).toBeUndefined();
+      expect(provider).toHaveBeenCalledTimes(3);
+      expect(provider.mock.calls[1][0].tools).toEqual([]);
+      expect(provider.mock.calls[1][0].toolsAllowed).toBe(false);
+      expect(executeTool).not.toHaveBeenCalled();
+    },
+  );
+
+  it("rejects an unsolicited tool call in a social conversation before execution", async () => {
+    const social = JSON.stringify({
+      route: "in_scope",
+      topics: ["contextual_smalltalk"],
+      riskFlags: [],
+      trainingSafety: "allow",
+    });
+    const { options, executeTool } = setup([
+      reply(social),
+      reply("", [
+        { id: "call1", type: "function", function: { name: "preview_workout", arguments: "{}" } },
+      ]),
+    ]);
+    await expect(runAssistantEngine(options)).rejects.toMatchObject({ code: "AI_TOOL_FORBIDDEN" });
+    expect(executeTool).not.toHaveBeenCalled();
+  });
+
+  it("blocks a harmful request even if the classifier mistakenly allows its topic", async () => {
+    const { options, provider, executeTool } = setup([
+      reply(
+        JSON.stringify({
+          route: "in_scope",
+          topics: ["companion_relationship"],
+          riskFlags: ["harmful_request"],
+          trainingSafety: "allow",
+        }),
+      ),
+    ]);
+    const result = await runAssistantEngine(options);
+    expect(result.source).toBe("prepared");
+    expect(result.useful).toBe(false);
+    expect(result.text).toContain("причинения вреда");
+    expect(provider).toHaveBeenCalledTimes(1);
+    expect(executeTool).not.toHaveBeenCalled();
+  });
+
+  it("distinguishes explicit adult scenes from light flirt and instructions to harm", async () => {
+    const { options, executeTool } = setup([
+      reply(
+        JSON.stringify({
+          route: "out_of_scope",
+          topics: [],
+          riskFlags: ["explicit_sexual_content"],
+          trainingSafety: "allow",
+        }),
+      ),
+    ]);
+    const result = await runAssistantEngine(options);
+    expect(result.source).toBe("prepared");
+    expect(result.text).toContain("Лёгкий флирт");
+    expect(result.text).not.toContain("насилия");
+    expect(executeTool).not.toHaveBeenCalled();
+  });
+
+  it("keeps urgent assistance ahead of the harmful-request boundary", async () => {
+    const { options } = setup([
+      reply(
+        JSON.stringify({
+          route: "out_of_scope",
+          topics: ["safety"],
+          riskFlags: ["harmful_request", "urgent_distress"],
+          trainingSafety: "urgent_help",
+        }),
+      ),
+    ]);
+    expect((await runAssistantEngine(options)).text).toContain("103 или 112");
+  });
+
   it("runs scope, generation and output review before returning a model reply", async () => {
     const { options, provider } = setup([
       reply(allowed),

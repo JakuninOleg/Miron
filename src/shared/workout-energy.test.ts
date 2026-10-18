@@ -35,6 +35,21 @@ function completed(activity: EnergyActivity = "strength"): Workout {
   };
 }
 describe("rough workout energy from performed work", () => {
+  it("counts only actual drop work, without another rest, and replaces it on correction", () => {
+    const workout = completed();
+    const base = estimateWorkoutEnergy(workout, {}, now);
+    workout.recordedSets[2].drop = { reps: 8, weightKg: 7.5 };
+    const dropped = estimateWorkoutEnergy(workout, {}, now);
+    expect(dropped.durationSeconds - base.durationSeconds).toBe(37);
+    expect(
+      estimateWorkoutEnergy(
+        workout,
+        { workload: [{ exerciseId: workout.exercises[0].id, sets: 3, repsPerSet: 10 }] },
+        now,
+      ).durationSeconds,
+    ).toBe(base.durationSeconds);
+    expect(workout.recordedSets).toHaveLength(3);
+  });
   it("automatically models normal pace/rest and discloses reference weight", () => {
     const result = estimateWorkoutEnergy(completed(), {}, now);
     expect(result).toMatchObject({

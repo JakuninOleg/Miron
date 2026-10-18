@@ -2,7 +2,9 @@ import { createHash } from "node:crypto";
 import { and, eq, sql } from "drizzle-orm";
 import { z } from "zod";
 import { workoutExecution } from "../../shared/workout-execution";
+import { dropSetResultError } from "../../shared/training-methods";
 import { estimateWorkoutEnergy, isEnergyActivity } from "../../shared/workout-energy";
+import { canRateWorkout, type WorkoutLoadFeedback } from "../../shared/workout-feedback";
 import type {
   CommandAck,
   RewardKind,
@@ -44,7 +46,12 @@ import {
 } from "../db/schema";
 import { resourcesSatisfy } from "./catalog";
 import { DomainError } from "./errors";
+import { assertProductAccess } from "./access";
 import { getProgress } from "./profile";
+import { correctWorkoutSet } from "../../shared/workout-edits";
+import { lighterWorkout } from "../../shared/workout-adjustment";
+import { estimateBuilderWorkout } from "../../shared/workout-builder";
+import { getWorkoutAlternatives } from "./workout-alternatives";
 
 export function kilogramsToGrams(value: number) {
   const decimal = value.toString();
@@ -59,6 +66,38 @@ export const workoutCommandInput = z
     operationId: z.string().uuid(),
     expectedRevision: z.number().int().positive(),
     command: z.discriminatedUnion("type", [
+      z.strictObject({ type: z.literal("lighten_remaining") }),
+      z.strictObject({
+        type: z.literal("replace_exercise"),
+        exerciseId: z.uuid(),
+        revisionId: z.uuid(),
+      }),
+      z.strictObject({
+        type: z.literal("correct_set"),
+        setId: z.uuid(),
+        reps: z.number().int().min(1).max(1000),
+        weightKg: z
+          .number()
+          .min(0)
+          .max(1000)
+          .refine((value) => /^\d+(?:\.\d{1,3})?$/.test(value.toString())),
+        drop: z
+          .strictObject({
+            reps: z.number().int().min(1).max(100),
+            weightKg: z
+              .number()
+              .positive()
+              .max(1000)
+              .refine((value) => /^\d+(?:\.\d{1,3})?$/.test(value.toString())),
+          })
+          .optional(),
+      }),
+      z.strictObject({
+        type: z.literal("correct_timed_set"),
+        setId: z.uuid(),
+        durationSeconds: z.number().int().min(1).max(86400),
+      }),
+      z.strictObject({ type: z.literal("undo_set"), setId: z.uuid() }),
       z
         .object({
           type: z.literal("record_timed_set"),
@@ -78,10 +117,26 @@ export const workoutCommandInput = z
             .min(0)
             .max(1000)
             .refine((n) => /^\d+(?:\.\d{1,3})?$/.test(n.toString())),
+          drop: z
+            .strictObject({
+              reps: z.number().int().min(1).max(100),
+              weightKg: z
+                .number()
+                .positive()
+                .max(1000)
+                .refine((n) => /^\d+(?:\.\d{1,3})?$/.test(n.toString())),
+            })
+            .optional(),
         })
         .strict(),
       z.object({ type: z.literal("next_exercise") }).strict(),
       z.object({ type: z.literal("finish") }).strict(),
+      z
+        .object({
+          type: z.literal("rate_load"),
+          feedback: z.enum(["easy", "just_right", "hard", "too_hard"]),
+        })
+        .strict(),
       z.object({ type: z.literal("end_early") }).strict(),
       z.object({ type: z.literal("skip_exercise"), exerciseId: z.uuid() }).strict(),
       z
@@ -163,6 +218,7 @@ export async function getWorkout(
   return {
     id: workout.id,
     title: workout.name,
+    ...(workout.savedSource ? { source: workout.savedSource } : {}),
     subtitle: workout.sourcePlannerRevision
       ? "Подтверждённый личный план · инструкции могут быть черновиками"
       : workout.isDemo
@@ -170,6 +226,7 @@ export async function getWorkout(
         : "Персональная программа",
     estimatedMinutes: Math.round(workout.availableSeconds / 60),
     exercises: steps.map((step) => ({
+      revisionId: step.variantRevisionId,
       id: step.id,
       name: step.name,
       description: step.instructions,
@@ -191,6 +248,8 @@ export async function getWorkout(
         ? { transitionSeconds: step.snapshot.transitionSeconds }
         : {}),
       ...(step.snapshot?.phase ? { phase: step.snapshot.phase } : {}),
+      ...(step.snapshot?.coaching ? { coaching: step.snapshot.coaching } : {}),
+      ...(step.snapshot?.dropSet ? { dropSet: step.snapshot.dropSet } : {}),
     })),
     currentIndex: workout.currentIndex,
     status: workout.status as Workout["status"],
@@ -198,9 +257,11 @@ export async function getWorkout(
     recordedSets: sets.map((s) => ({
       id: s.id,
       exerciseId: s.stepId,
+      setIndex: s.setIndex,
       reps: s.reps,
       durationSeconds: s.durationSeconds,
       weightKg: s.weightG / 1000,
+      ...(s.drop ? { drop: s.drop } : {}),
       completedAt: s.createdAt.toISOString(),
     })),
     startedAt: workout.startedAt?.toISOString() ?? null,
@@ -214,6 +275,7 @@ export async function getWorkout(
     ...(workout.sourcePlannerDayKey ? { sourcePlannerDayKey: workout.sourcePlannerDayKey } : {}),
     ...(workout.energyActivity ? { energyActivity: workout.energyActivity } : {}),
     ...(workout.energyEstimate ? { energyEstimate: workout.energyEstimate } : {}),
+    ...(workout.loadFeedback ? { loadFeedback: workout.loadFeedback } : {}),
   };
 }
 export async function listWorkouts(userId: string) {
@@ -268,7 +330,8 @@ export async function createWorkout(userId: string, raw: unknown = {}) {
       .orderBy(sql`${workouts.createdAt} desc`)
       .limit(1);
     if (active) {
-      if (active.status === "ready")
+      if (active.status === "ready") {
+        await assertProductAccess(userId, tx);
         await tx
           .update(workouts)
           .set({
@@ -279,8 +342,10 @@ export async function createWorkout(userId: string, raw: unknown = {}) {
             updatedAt: new Date(),
           })
           .where(and(eq(workouts.userId, userId), eq(workouts.id, active.id)));
+      }
       return active.id;
     }
+    await assertProductAccess(userId, tx);
     const [template] = await tx
       .select()
       .from(templates)
@@ -473,6 +538,9 @@ export async function applyWorkoutCommand(
   userId: string,
   workoutId: string,
   raw: unknown,
+  authorizeProposal?: (
+    tx: Parameters<Parameters<ReturnType<typeof getDb>["transaction"]>[0]>[0],
+  ) => Promise<void>,
 ): Promise<CommandAck> {
   const input = workoutCommandInput.parse(raw);
   const hash = commandHash(input);
@@ -485,6 +553,7 @@ export async function applyWorkoutCommand(
       .for("update");
     if (!owner || owner.status !== "active")
       throw new DomainError("ACCOUNT_UNAVAILABLE", 403, "Аккаунт недоступен.");
+    if (authorizeProposal) await authorizeProposal(tx);
     const [workout] = await tx
       .select()
       .from(workouts)
@@ -507,24 +576,240 @@ export async function applyWorkoutCommand(
         409,
         "Тренировка изменилась на другом устройстве. Обновите занятие.",
       );
-    if (input.command.type === "estimate_energy") {
-      let energyEstimate: WorkoutEnergyEstimate;
-      try {
-        energyEstimate = estimateWorkoutEnergy(
-          await getWorkout(userId, workout.id, tx),
-          input.command,
-          new Date().toISOString(),
-        );
-      } catch (error) {
+    if (input.command.type === "replace_exercise") {
+      await assertProductAccess(userId, tx);
+      const command = input.command;
+      await tx
+        .select({ id: variants.id })
+        .from(variants)
+        .innerJoin(variantRevisions, eq(variantRevisions.variantId, variants.id))
+        .where(eq(variantRevisions.id, command.revisionId))
+        .for("share");
+      const available = await getWorkoutAlternatives(userId, workout.id, command.exerciseId, tx);
+      const candidate = available.candidates.find(
+        (exercise) => exercise.revisionId === command.revisionId,
+      );
+      if (!candidate)
         throw new DomainError(
-          "ENERGY_ESTIMATE_UNAVAILABLE",
+          "EXERCISE_UNAVAILABLE",
           409,
-          error instanceof Error ? error.message : "Не удалось оценить расход.",
+          "Эта замена больше не подходит условиям. Обнови варианты.",
         );
+      const steps = await tx
+        .select()
+        .from(workoutSteps)
+        .where(and(eq(workoutSteps.userId, userId), eq(workoutSteps.workoutId, workout.id)))
+        .orderBy(workoutSteps.ordinal);
+      const selected = steps.find((step) => step.id === command.exerciseId)!;
+      if (!selected.snapshot)
+        throw new DomainError("REPLACEMENT_UNAVAILABLE", 409, "Нет сохранённого состава.");
+      const snapshot = {
+        ...selected.snapshot,
+        exercise: candidate,
+        revisionId: candidate.revisionId,
+        changeNote: `Замена: ${selected.name} → ${candidate.name}`,
+      };
+      await tx
+        .update(workoutSteps)
+        .set({
+          variantRevisionId: candidate.revisionId,
+          name: candidate.name,
+          metric: candidate.metric,
+          instructions: candidate.instructions.join("\n"),
+          snapshot,
+        })
+        .where(and(eq(workoutSteps.userId, userId), eq(workoutSteps.id, selected.id)));
+      const pinned = steps.flatMap((step) =>
+        step.id === selected.id ? [snapshot] : step.snapshot ? [step.snapshot] : [],
+      );
+      await tx
+        .update(workouts)
+        .set({
+          revision: workout.revision + 1,
+          updatedAt: new Date(),
+          ...(pinned.length === steps.length
+            ? {
+                availableSeconds: Math.max(
+                  1,
+                  Math.round(estimateBuilderWorkout(pinned).maxSeconds),
+                ),
+              }
+            : {}),
+        })
+        .where(and(eq(workouts.userId, userId), eq(workouts.id, workout.id)));
+      const result: CommandAck = {
+        operationId: input.operationId,
+        workout: await getWorkout(userId, workout.id, tx),
+        progress: await getProgress(userId, tx),
+      };
+      await tx.insert(workoutCommands).values({
+        userId,
+        workoutId: workout.id,
+        operationId: input.operationId,
+        requestHash: hash,
+        result,
+      });
+      return result;
+    }
+    if (input.command.type === "lighten_remaining") {
+      let next: Workout;
+      try {
+        next = lighterWorkout(await getWorkout(userId, workout.id, tx));
+      } catch (cause) {
+        throw new DomainError(
+          "WORKOUT_EDIT_UNAVAILABLE",
+          409,
+          cause instanceof Error ? cause.message : "Не удалось изменить состав.",
+        );
+      }
+      const steps = await tx
+        .select()
+        .from(workoutSteps)
+        .where(and(eq(workoutSteps.userId, userId), eq(workoutSteps.workoutId, workout.id)))
+        .orderBy(workoutSteps.ordinal);
+      for (const step of steps) {
+        const changed = next.exercises.find((exercise) => exercise.id === step.id);
+        if (changed && changed.sets !== step.sets)
+          await tx
+            .update(workoutSteps)
+            .set({
+              sets: changed.sets,
+              snapshot: step.snapshot ? { ...step.snapshot, sets: changed.sets } : null,
+            })
+            .where(and(eq(workoutSteps.userId, userId), eq(workoutSteps.id, step.id)));
+      }
+      const pinned = steps.flatMap((step) =>
+        step.snapshot
+          ? [
+              {
+                ...step.snapshot,
+                sets: next.exercises.find((exercise) => exercise.id === step.id)?.sets ?? step.sets,
+              },
+            ]
+          : [],
+      );
+      await tx
+        .update(workouts)
+        .set({
+          revision: next.revision,
+          updatedAt: new Date(),
+          ...(pinned.length === steps.length
+            ? {
+                availableSeconds: Math.max(
+                  1,
+                  Math.round(estimateBuilderWorkout(pinned).maxSeconds),
+                ),
+              }
+            : {}),
+        })
+        .where(and(eq(workouts.userId, userId), eq(workouts.id, workout.id)));
+      const result: CommandAck = {
+        operationId: input.operationId,
+        workout: await getWorkout(userId, workout.id, tx),
+        progress: await getProgress(userId, tx),
+      };
+      await tx.insert(workoutCommands).values({
+        userId,
+        workoutId: workout.id,
+        operationId: input.operationId,
+        requestHash: hash,
+        result,
+      });
+      return result;
+    }
+    if (
+      input.command.type === "correct_set" ||
+      input.command.type === "correct_timed_set" ||
+      input.command.type === "undo_set"
+    ) {
+      const current = await getWorkout(userId, workout.id, tx);
+      const setId = input.command.setId;
+      let next: Workout;
+      try {
+        next = correctWorkoutSet(current, input.command);
+      } catch (cause) {
+        throw new DomainError(
+          "WORKOUT_EDIT_UNAVAILABLE",
+          409,
+          cause instanceof Error ? cause.message : "Не удалось исправить запись.",
+        );
+      }
+      const target = and(
+        eq(recordedSets.userId, userId),
+        eq(recordedSets.workoutId, workout.id),
+        eq(recordedSets.id, input.command.setId),
+      );
+      if (input.command.type === "undo_set") await tx.delete(recordedSets).where(target);
+      else {
+        const corrected = next.recordedSets.find((set) => set.id === setId)!;
+        await tx
+          .update(recordedSets)
+          .set({
+            reps: corrected.reps,
+            durationSeconds: corrected.durationSeconds ?? null,
+            weightG: kilogramsToGrams(corrected.weightKg),
+            drop: corrected.drop ?? null,
+          })
+          .where(target);
       }
       await tx
         .update(workouts)
-        .set({ energyEstimate, revision: workout.revision + 1, updatedAt: new Date() })
+        .set({
+          currentIndex: next.currentIndex,
+          revision: next.revision,
+          energyEstimate: next.energyEstimate ?? null,
+          updatedAt: new Date(),
+        })
+        .where(and(eq(workouts.userId, userId), eq(workouts.id, workout.id)));
+      const result: CommandAck = {
+        operationId: input.operationId,
+        workout: await getWorkout(userId, workout.id, tx),
+        progress: await getProgress(userId, tx),
+      };
+      await tx.insert(workoutCommands).values({
+        userId,
+        operationId: input.operationId,
+        workoutId: workout.id,
+        requestHash: hash,
+        result,
+      });
+      return result;
+    }
+    if (input.command.type === "estimate_energy" || input.command.type === "rate_load") {
+      let energyEstimate: WorkoutEnergyEstimate | undefined;
+      let loadFeedback: WorkoutLoadFeedback | undefined;
+      const currentWorkout = await getWorkout(userId, workout.id, tx);
+      if (input.command.type === "rate_load") {
+        if (!canRateWorkout(currentWorkout))
+          throw new DomainError(
+            "WORKOUT_FEEDBACK_UNAVAILABLE",
+            409,
+            "Оценить нагрузку можно после занятия с выполненной основной работой.",
+          );
+        loadFeedback = input.command.feedback;
+      } else {
+        try {
+          energyEstimate = estimateWorkoutEnergy(
+            currentWorkout,
+            input.command,
+            new Date().toISOString(),
+          );
+        } catch (error) {
+          throw new DomainError(
+            "ENERGY_ESTIMATE_UNAVAILABLE",
+            409,
+            error instanceof Error ? error.message : "Не удалось оценить расход.",
+          );
+        }
+      }
+      await tx
+        .update(workouts)
+        .set({
+          energyEstimate,
+          loadFeedback,
+          revision: workout.revision + 1,
+          updatedAt: new Date(),
+        })
         .where(and(eq(workouts.userId, userId), eq(workouts.id, workout.id)));
       const result: CommandAck = {
         operationId: input.operationId,
@@ -578,6 +863,20 @@ export async function applyWorkoutCommand(
         throw new DomainError("INVALID_SET", 409, "Все подходы этого упражнения сохранены.");
       if (!execution.canRecord)
         throw new DomainError("PAIR_ORDER", 409, "Продолжите пару со следующего упражнения.");
+      if (command.type === "record_set") {
+        const invalidDrop = dropSetResultError(
+          {
+            sets: step.sets,
+            metric: step.metric,
+            dropSet: step.snapshot?.dropSet,
+            pairKey: step.snapshot?.pairKey,
+          },
+          existing.length,
+          command.weightKg,
+          command.drop,
+        );
+        if (invalidDrop) throw new DomainError("INVALID_DROP_SET", 400, invalidDrop);
+      }
       await tx.insert(recordedSets).values({
         id: command.setId,
         userId,
@@ -587,6 +886,7 @@ export async function applyWorkoutCommand(
         reps: command.type === "record_set" ? command.reps : null,
         durationSeconds: command.type === "record_timed_set" ? command.durationSeconds : null,
         weightG: command.type === "record_set" ? kilogramsToGrams(command.weightKg) : 0,
+        drop: command.type === "record_set" ? (command.drop ?? null) : null,
       });
     } else {
       const step = steps[currentIndex];

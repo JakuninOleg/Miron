@@ -114,9 +114,32 @@ for (const account of accounts) {
     await page.getByRole("button", { name: "Завершить тренировку", exact: true }).click();
     const response = await completed;
     expect(response.status()).toBe(200);
-    const ack = (await response.json()) as CommandAck;
+    let ack = (await response.json()) as CommandAck;
     expect(ack.workout.energyEstimate).toBeDefined();
     expect(ack.workout.reward?.awardedXp).toBe(50);
+    await expect(
+      page.getByRole("heading", { name: "Как тебе нагрузка?", exact: true }),
+    ).toBeVisible();
+    const ratingSaved = page.waitForResponse(
+      (result) =>
+        result.url().endsWith(`/api/workouts/${account.workoutId}/commands`) &&
+        result.request().method() === "POST",
+    );
+    await page.getByRole("button", { name: "Слишком тяжело", exact: true }).click();
+    const ratingResponse = await ratingSaved;
+    expect(ratingResponse.status()).toBe(200);
+    const rated = (await ratingResponse.json()) as CommandAck;
+    expect(rated.workout.loadFeedback).toBe("too_hard");
+    expect(rated.progress).toEqual(ack.progress);
+    expect(rated.workout.recordedSets).toEqual(ack.workout.recordedSets);
+    await expect(page.getByRole("button", { name: "Слишком тяжело", exact: true })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
+    ack = rated;
+    await page.getByRole("region", { name: "Как тебе нагрузка?", exact: true }).screenshot({
+      path: `.local/previews/load-feedback-${account.theme}.png`,
+    });
     await expect(
       page.getByRole("heading", { name: "Примерный расход", exact: true }),
     ).toBeVisible();
@@ -169,11 +192,12 @@ for (const account of accounts) {
     await page.goto("/progress");
     await expect(page.getByText(/ккал от занятия/)).toHaveCount(0);
     const stored = (
-      await pool.query<{ energy_estimate: unknown }>(
-        "SELECT energy_estimate FROM workouts WHERE id=$1 AND user_id=$2",
+      await pool.query<{ energy_estimate: unknown; load_feedback: string }>(
+        "SELECT energy_estimate,load_feedback FROM workouts WHERE id=$1 AND user_id=$2",
         [account.workoutId, account.id],
       )
     ).rows[0];
     expect(stored.energy_estimate).toEqual(revised.workout.energyEstimate);
+    expect(stored.load_feedback).toBe("too_hard");
   });
 }

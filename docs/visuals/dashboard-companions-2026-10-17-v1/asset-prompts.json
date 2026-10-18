@@ -1,0 +1,18 @@
+[
+  [
+    "max-desktop",
+    "Create a production illustration asset ONLY, no UI. Reference 1 is the approved dashboard concept: reproduce the male character and the quiet modern gym on its RIGHT side, NOT any interface. Reference 2 is his identity. Soft polished animated-movie 3D, adult friendly Max, handsome tousled dark brown hair, athletic realistic stylized proportions, plain charcoal tee with small white-and-pink angular M on left chest, charcoal joggers, white trainers. Entire head including hair and entire shoes inside frame with breathing room. Max casually seated sideways on a black gym bench, one hand resting on bench, crossed ankles, looking warmly toward viewer; exact relaxed pose of concept. Black shaker by bench with small M. Warm window light, defocused weights and rack, no dramatic comic outlines. Portrait 2:3 composition, character occupies central 70%, gym fills entire backdrop. Natural colors work for both dark and white interfaces. No text, badges, speech bubbles, UI, panels, neon green, letters other than chest M."
+  ],
+  [
+    "lika-desktop",
+    "Create a production illustration asset ONLY, no UI. Reference 1 is approved dashboard concept: reproduce the female character and quiet modern gym on RIGHT side, NOT interface. Reference 2 is her identity. Soft polished animated-movie 3D, adult friendly Lika, chestnut messy high bun with loose curls, warm brown eyes, gold small hoops, dusty rose loose sweatshirt with small white-and-pink angular M on left chest, burgundy leggings, white socks and trainers. Entire head including bun and entire shoes inside frame with breathing room. Lika casually sits on black gym bench, one knee comfortably bent up, other foot resting toward floor, relaxed hand on knee, smiling at viewer, exact personable pose of concept. Black shaker small M beside bench. Warm window daylight, muted modern gym in background, no pink filter. Portrait 2:3, character central70%, gym entire backdrop. No text/bubbles/UI/neon/otherpeople."
+  ],
+  [
+    "max-mobile",
+    "Production illustration asset ONLY for a mobile app welcome header, landscape 3:2. Reference 1 is approved mobile dashboard; preserve Max identity and friendly soft animated-movie 3D style. Reference 2 is character identity. Max chest-up on RIGHT HALF, he waves hello, entire tousled dark hair and waving hand within frame with safe margins. Charcoal tee, small crisp white-and-pink angular M chest. Warm modern gym behind, cinematic but gentle window daylight, dark charcoal neutral shadows, no comic outlines. LEFT HALF contains quiet defocused gym with no foreground objects, to place a short heading later in code. Full scene to edges, no alpha, natural colors, no text, bubbles, UI, badges or other people. No hands crossing into left30%. Designed to be displayed as a standalone landscape scene above chat, not as chat background."
+  ],
+  [
+    "lika-mobile",
+    "Production illustration asset ONLY for mobile app welcome header, landscape 3:2. Reference 1 is approved mobile dashboard; preserve Lika identity and soft animated-movie3D style. Reference 2 is character identity. Lika chest-up on RIGHT HALF, leaning her cheek on one hand, elbow just below frame, warm friendly smile, entire high chestnut bun and head inside frame safe margins. Dusty rose sweatshirt small white-and-pink angular M chest, gold hoop earrings. Quiet modern gym with window light and muted warm natural colors, no pinkwash. LEFT HALF quiet defocused gym for short heading placed later by code. Full backdrop no alpha. No text, UI, bubbles, frames, badges, other people. Keep left30% free. Displayed as separate scene ABOVE conversation, never behind messages."
+  ]
+]

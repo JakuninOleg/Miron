@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowRight, Clock3, Copy, Dumbbell, Pencil, Plus, Trash2 } from "lucide-react";
 import type { CustomWorkoutSummary } from "@/shared/workout-builder";
 import { builderDurationLabel } from "@/shared/workout-builder";
@@ -132,6 +133,13 @@ export function WorkoutLibrary({
                   </span>
                 </p>
                 <div className={styles.templateActions}>
+                  <Link
+                    className={styles.primary}
+                    href={`/workout-builder/start?source=template&id=${template.id}`}
+                  >
+                    Начать<span className={styles.srOnly}> {template.name}</span>
+                    <ArrowRight size={17} aria-hidden="true" />
+                  </Link>
                   <button
                     type="button"
                     className={styles.secondary}

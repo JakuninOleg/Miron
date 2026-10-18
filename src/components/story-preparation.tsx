@@ -59,7 +59,11 @@ export function StoryPreparation({ onDone }: { onDone: () => void }) {
       <p className={styles.status} role="status" aria-live="polite">
         {done === labels.length
           ? "Всё на месте. Погнали!"
-          : `На месте ${done} из ${labels.length}. Всё можно будет изменить.`}
+          : done === 0
+            ? "Начинаем…"
+            : done === labels.length - 1
+              ? "Последние штрихи…"
+              : `На месте ${done} из ${labels.length}`}
       </p>
       <div className={styles.track} aria-hidden="true">
         <span style={{ transform: `scaleX(${done / labels.length})` }} />

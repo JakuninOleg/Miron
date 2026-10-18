@@ -7,6 +7,7 @@ const mocks = vi.hoisted(() => ({
   authorize: vi.fn(),
   rate: vi.fn(),
   fetch: vi.fn(),
+  access: vi.fn(),
 }));
 vi.mock("@/server/auth", () => ({
   getCurrentUser: mocks.user,
@@ -21,6 +22,8 @@ vi.mock("@/server/auth", () => ({
   },
 }));
 vi.mock("@/server/auth/rate-limit", () => ({ consumeAuthRateLimit: mocks.rate }));
+vi.mock("@/server/domain/access", () => ({ assertProductAccess: mocks.access }));
+import { DomainError } from "@/server/domain/errors";
 import { establishVoiceSession, transcribeVoice } from "./gateway";
 const origin = "http://127.0.0.1:3074";
 const id = "8a6d9860-035a-4d86-90f4-833d8a3b44a2";
@@ -70,6 +73,7 @@ beforeEach(() => {
   mocks.user.mockReset().mockResolvedValue({ id: "user-a", emailVerified: true });
   mocks.authorize.mockReset().mockResolvedValue({ id: "user-a", emailVerified: true });
   mocks.rate.mockReset().mockResolvedValue({ allowed: true, retryAfter: 42 });
+  mocks.access.mockReset().mockResolvedValue(undefined);
   mocks.fetch.mockReset().mockResolvedValue(
     Response.json({
       operationId: id,
@@ -86,6 +90,16 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 describe("voice private HTTP boundary", () => {
+  it("blocks expired account before reading audio or spending STT", async () => {
+    mocks.access.mockRejectedValue(
+      new DomainError("PRODUCT_ACCESS_EXPIRED", 403, "Доступ закончился."),
+    );
+    const response = await transcribeVoice(upload());
+    expect(response.status).toBe(403);
+    expect(await response.json()).toMatchObject({ error: { code: "PRODUCT_ACCESS_EXPIRED" } });
+    expect(mocks.fetch).not.toHaveBeenCalled();
+    expect(mocks.rate).not.toHaveBeenCalled();
+  });
   it("requires an account before reading audio or calling a provider", async () => {
     mocks.user.mockResolvedValue(null);
     const response = await transcribeVoice(upload());

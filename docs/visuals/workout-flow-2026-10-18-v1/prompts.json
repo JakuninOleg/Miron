@@ -1,0 +1,100 @@
+[
+  {
+    "id": "01-plan-desktop",
+    "prompt": "Use case: ui-mockup. Create ONE polished full-screen MIRON fitness product UI mockup, NOT a collage, no browser/device frame, no explanation outside the app. Russian UI, clean readable Manrope-like text, consistent thin stroke icons and geometric spaced MIRON wordmark exactly like reference. Friendly premium soft animated-film 3D art, no comic outlines, no lime double slashes. Calm practical adult fitness companion. Content must be comfortably readable at actual app scale. Only one selected companion per screen, no theme/companion switches, no personality tags, no nested cards. Anatomy: every depicted human has exactly TWO arms/two hands/two legs, no duplicated limbs or faces. Keep hands simple and separated, ideally show portrait avatars rather than a large full-body person in dense task views. Respect safe areas and large 48px touch targets. All numbers are illustrative mock data.\nVisual system: charcoal #171a1e canvas, #24282e surfaces, warm white main text, muted slate secondary text, coral #ff977f primary buttons with dark text, coral account XP bar. Thin quiet borders, modest 14px corners, no glass, neon or excessive gradients. Match supplied dark dashboard typography and component scale.\nLandscape desktop screen, 1920x1200. WORKOUT PLAN REVIEW before starting. Sidebar MIRON, Сегодня, Тренировки selected, Календарь, Прогресс, bottom Профиль. Main page title 'Всё тело · зал'; subtitle 'Около 40 мин · 5 упражнений'. Small account progress top right 'Уровень 1 · 100 / 500 XP'. Main wide left area: clean ordered workout list with small attractive soft-3D EQUIPMENT thumbnails (no human doing exercises): 'Разминка', then 1 'Жим гантелей лёжа' '3 × 10', 2 'Тяга горизонтального блока' '3 × 12', 3 'Жим ногами' '3 × 12', 4 'Ягодичный мост' '3 × 12', 5 'Планка' '3 × 30 сек'. Each row has a quiet 'Заменить' action, a grip to reorder and expansion chevron; show counts clearly. Small note 'План можно отредактировать до старта'. Bottom main coral button 'Начать тренировку' and secondary 'Сохранить шаблон'. Right separate companion workspace with an expressive modest waist-up Max, black M shirt, ONLY TWO ARMS, both hands relaxed visible by his sides (no hand at head), warm gym background inside his own area. Below his portrait a concise chat 'Макс' message 'Вот план на сегодня. Если что-то не подходит — заменим.' Input 'Спроси о плане…', microphone and send. Make the plan the hero, character no more than 25% screen area. No huge empty gaps, no crowded tiny text.",
+    "source": "exec-6c427430-17f6-4660-b856-2beb025907ae.png",
+    "output": "01-plan-desktop.png",
+    "tool": "built-in imagegen"
+  },
+  {
+    "id": "02-plan-mobile",
+    "prompt": "Precise UI correction only, preserve this mockup's entire style/layout/art/text except numbering. 'Разминка' is a SEPARATE UNNUMBERED preparation block, not exercise1. Remove its numeric circle. Number the FIVE main exercises exactly: Жим гантелей лёжа1; Тяга горизонтального блока2; Жим ногами3; Ягодичный мост4; Планка5. Metadata '5 упражнений' stays correct. No other changes. This is one full-screen mobile UI, do not crop.",
+    "source": "exec-639c0eff-79c6-4247-9397-7a5582d0429e.png",
+    "output": "02-plan-mobile.png",
+    "tool": "built-in imagegen"
+  },
+  {
+    "id": "03-active-mobile",
+    "prompt": "Use case: ui-mockup. Create ONE polished full-screen MIRON fitness product UI mockup, NOT a collage, no browser/device frame, no explanation outside the app. Russian UI, clean readable Manrope-like text, consistent thin stroke icons and geometric spaced MIRON wordmark exactly like reference. Friendly premium soft animated-film 3D art, no comic outlines, no lime double slashes. Calm practical adult fitness companion. Content must be comfortably readable at actual app scale. Only one selected companion per screen, no theme/companion switches, no personality tags, no nested cards. Anatomy: every depicted human has exactly TWO arms/two hands/two legs, no duplicated limbs or faces. Keep hands simple and separated, ideally show portrait avatars rather than a large full-body person in dense task views. Respect safe areas and large 48px touch targets. All numbers are illustrative mock data.\nVisual system: charcoal #171a1e canvas, #24282e surfaces, warm white main text, muted slate secondary text, coral #ff977f primary buttons with dark text, coral account XP bar. Thin quiet borders, modest 14px corners, no glass, neon or excessive gradients. Match supplied dark dashboard typography and component scale.\nONE portrait mobile PWA screen 1000x2000, actual design viewport 402x874. ACTIVE WORKOUT, focused one-hand use, content all fits. Top back chevron, 'Тренировка', small overflow; below small segmented execution progress '2 из 5 упражнений' and 'Подход 2 из 3'. Main heading 'Тяга горизонтального блока'. Under it an elegant small 3D render of the cable-row MACHINE ONLY, no exercising human, gym atmosphere contained in the top third. A compact 'Как выполнять' text link opens technique. Main working area uses clean table columns 'Подход', 'Вес, кг', 'Повторы': first row '1 | 30 | 12' completed with coral check; current outlined row '2 | 30 | 12' has large editable numeric fields and is clearly selected; third upcoming row '3 | 30 | 12' muted. No mandatory stopwatch, no tiny plus/minus stepper barrage, no calorie countdown. One large coral button 'Записать подход' above bottom safe area. Below/near it a clean always-accessible row with small Max face avatar, label 'Спросить Макса', speech and microphone icons. Secondary actions 'Заменить' and 'Завершить раньше' quiet, not competing with primary. A small 'Сохранено' status near exercise counter. No global bottom navigation during an active workout; no theme/partner switch. Keep picture and controls separate, no chat laid over character. XP not awarded for simply opening this screen.",
+    "source": "exec-09564a14-718e-499b-8a57-8f38182d81d0.png",
+    "output": "03-active-mobile.png",
+    "tool": "built-in imagegen"
+  },
+  {
+    "id": "04-active-desktop",
+    "prompt": "ONE targeted UI cleanup. Keep this whole desktop screen exactly unchanged EXCEPT remove ALL numeric circles/digits in the LEFT exercise-list column. That list must show ONLY thumbnails, exercise titles/prescriptions and status markers: completed green checks; current coral OUTLINE around the selected cable-row row; upcoming empty dots. No ordinals anywhere in that list, no duplicate 2/3/4/5 circles. The top header already correctly says '2 из 5 упражнений'; keep it. Do NOT remove digits from the center set-entry table or from the metadata/prescriptions. Preserve all artwork, avatar, chat, typography and layout. This removes contradictory duplicate list numbers and is not a redesign.",
+    "source": "exec-edb97b38-ee54-409b-a026-6e6ea6b7ff6e.png",
+    "output": "04-active-desktop.png",
+    "tool": "built-in imagegen"
+  },
+  {
+    "id": "05-rest-chat-mobile",
+    "prompt": "Use case: ui-mockup. Create ONE polished full-screen MIRON fitness product UI mockup, NOT a collage, no browser/device frame, no explanation outside the app. Russian UI, clean readable Manrope-like text, consistent thin stroke icons and geometric spaced MIRON wordmark exactly like reference. Friendly premium soft animated-film 3D art, no comic outlines, no lime double slashes. Calm practical adult fitness companion. Content must be comfortably readable at actual app scale. Only one selected companion per screen, no theme/companion switches, no personality tags, no nested cards. Anatomy: every depicted human has exactly TWO arms/two hands/two legs, no duplicated limbs or faces. Keep hands simple and separated, ideally show portrait avatars rather than a large full-body person in dense task views. Respect safe areas and large 48px touch targets. All numbers are illustrative mock data.\nVisual system: warm pearl off-white #fffafb background, white surfaces, deep charcoal typography, subtle blush #fce8ef highlights, raspberry #c32662 actions. ACCOUNT XP BAR REMAINS CORAL #ff977f, exactly the same XP system as dark version. No all-screen pink filter or giant character background. Match the supplied light Lika dashboard's Manrope type, icons, airy readable spacing.\nPortrait mobile PWA 1000x2000, dedicated WORKOUT CHAT during an optional REST TIMER. This is the expanded chat, not chat overlaid across a giant character. Header left 'К тренировке', small Lika avatar full hair in circle and title 'Лика'. Immediately below fixed compact workout context 'Тяга горизонтального блока · 2 / 3 подхода' and a coral-accent neutral timer strip 'Отдых 01:20' with pause and 'Свернуть таймер' controls. The countdown is an optional rest timer already running, not work measurement. Chat messages in a comfortable scrolling region: user 'Тренажёр занят. Можно заменить эту тягу?'; Lika 'Да. Подберём похожее движение. Записанные подходы останутся в истории.' Assistant proposes one compact replacement preview, soft-3D dumbbell and bench EQUIPMENT only, title 'Тяга гантели с опорой', secondary 'Осталось 1 подход', button 'Посмотреть замену'. Below another short user question 'А отдых не сбросится?'; Lika 'Нет, таймер продолжает идти. К подходам вернёшься одной кнопкой.' Composer anchored bottom with 'Напиши Лике…', microphone and raspberry send button, safe area clear. NO full-body mascot, no floating overlay hiding text, no keyboard consuming half the mockup. Show friendly natural conversation but concise, workout context always visible. Do not award XP in chat.",
+    "source": "exec-6d2a0e9d-5d7d-46cb-83c7-d45d81bd9737.png",
+    "output": "05-rest-chat-mobile.png",
+    "tool": "built-in imagegen"
+  },
+  {
+    "id": "06-summary-mobile",
+    "prompt": "Precise copy and badge consistency correction only. Keep all layout, results, XP and controls identical. Remove the sentence 'Ты стал сильнее.' Replace the two-line secondary greeting under Тренировка завершена with just 'Ещё одно занятие в твоей истории.' This is a saved workout, not proof of a measured strength increase. In the small 'Снова в деле' achievement, use a PINK dumbbell and CORAL flame matching our light progress reference, not a black dumbbell. Account XPbar150/500 must be30% coral. Preserve all other content, no crop.",
+    "source": "exec-c9c58743-ca6e-4edc-a622-f2e916ffcee3.png",
+    "output": "06-summary-mobile.png",
+    "tool": "built-in imagegen"
+  },
+  {
+    "id": "07-summary-desktop",
+    "prompt": "Precise one-value correction only, preserve the whole mockup. In the results table row 'Тяга горизонтального блока', change its recorded weight from36кг to30кг to match the active workout. The other exercises and all other text/values/art/style/layout remain exactly unchanged. No added limbs, no changes to Lika portrait.",
+    "source": "exec-503b3f20-d648-4593-99ed-8c21f43db2f4.png",
+    "output": "07-summary-desktop.png",
+    "tool": "built-in imagegen"
+  },
+  {
+    "id": "08-achievement-mobile",
+    "prompt": "Use case: ui-mockup. Create ONE polished full-screen MIRON fitness product UI mockup, NOT a collage, no browser/device frame, no explanation outside the app. Russian UI, clean readable Manrope-like text, consistent thin stroke icons and geometric spaced MIRON wordmark exactly like reference. Friendly premium soft animated-film 3D art, no comic outlines, no lime double slashes. Calm practical adult fitness companion. Content must be comfortably readable at actual app scale. Only one selected companion per screen, no theme/companion switches, no personality tags, no nested cards. Anatomy: every depicted human has exactly TWO arms/two hands/two legs, no duplicated limbs or faces. Keep hands simple and separated, ideally show portrait avatars rather than a large full-body person in dense task views. Respect safe areas and large 48px touch targets. All numbers are illustrative mock data.\nVisual system: warm pearl off-white #fffafb background, white surfaces, deep charcoal typography, subtle blush #fce8ef highlights, raspberry #c32662 actions. ACCOUNT XP BAR REMAINS CORAL #ff977f, exactly the same XP system as dark version. No all-screen pink filter or giant character background. Match the supplied light Lika dashboard's Manrope type, icons, airy readable spacing.\nPortrait mobile 1000x2000, NEW ACHIEVEMENT MOMENT presented as a calm celebratory full-page state. Top 'Достижение получено', small close control, geometric MIRON. Hero center a premium friendly softly sculpted 3D collectible badge EXACTLY resembling the second badge in reference: a pink dumbbell with coral flame above, a few tiny coral/rose confetti sparks, no neon, no casino explosion. Large title 'Снова в деле'. Clear condition 'Ты завершил 3 тренировки'. Small confirmation 'Сохранено в твоих достижениях'. Small Lika face avatar with full hair circle and one warm sentence 'Три встречи с собой — уже начало привычки.' NO hands or full body on this screen. Below unobtrusive account progress 'Уровень 1 · 150 / 500 XP', coral30% bar; explain 'Достижения отмечают твой путь и не добавляют XP.' Main raspberry 'К моему прогрессу', secondary 'Готово'. This is an optional skippable celebration; achievement already belongs to account, no 'Забрать' or 'Получить' button. Beautiful airy layout, readable at actual phone scale, no giant empty white void. Keep the same badge icon, not a trophy with a different symbol.",
+    "source": "exec-99d74aed-ee2b-4b7f-b417-eaf9eb1b8fd7.png",
+    "output": "08-achievement-mobile.png",
+    "tool": "built-in imagegen"
+  },
+  {
+    "id": "09-progress-desktop",
+    "prompt": "Precise information consistency correction only, preserve this entire beautiful light desktop mockup and all three badge artworks. Account XP150/500: make coral fill exactly30% of its track. Weekly activity must match the dates in history: color ONLY Tuesday/Вторник (Вт), Thursday/Четверг (Чт), Saturday/Суббота (Сб), leave Пн/Ср/Пт/Вс grey. In 'Как начисляется опыт?' use concise exact lines: 'Основное занятие: 50 XP целиком, 25 — частично.' 'Короткое поддерживающее: 20 или 10 XP.' 'Максимум за день — 50 XP.' Keep 'Достижения не дают опыт, но отмечают твой прогресс.' These are different workout reward categories. Do not change titles,150XP,3workouts,2of3achievements,character or overall layout.",
+    "source": "exec-f0ec9bfe-d4de-45e5-9820-28c23e314ecf.png",
+    "output": "09-progress-desktop.png",
+    "tool": "built-in imagegen"
+  },
+  {
+    "id": "10-progress-mobile",
+    "prompt": "Precise progress consistency correction only. Keep the entire mobile mockup style/art/layout/content. XP150/500 means the coral bar fills30% of its track, not40%. Weekly activity colors ONLY Вт, Чт, Сб to match the workout history; Пн, Ср, Пт, Вс remain grey. Keep three completed workouts,150XP level1, all three badge designs and two earned vsonegrey exactly unchanged. No other edits.",
+    "source": "exec-2c1d1074-72af-420a-810b-f917925db067.png",
+    "output": "10-progress-mobile.png",
+    "tool": "built-in imagegen"
+  },
+  {
+    "id": "11-plan-changes-mobile",
+    "prompt": "Use case: ui-mockup. Create ONE polished full-screen MIRON fitness product UI mockup, NOT a collage, no browser/device frame, no explanation outside the app. Russian UI, clean readable Manrope-like text, consistent thin stroke icons and geometric spaced MIRON wordmark exactly like reference. Friendly premium soft animated-film 3D art, no comic outlines, no lime double slashes. Calm practical adult fitness companion. Content must be comfortably readable at actual app scale. Only one selected companion per screen, no theme/companion switches, no personality tags, no nested cards. Anatomy: every depicted human has exactly TWO arms/two hands/two legs, no duplicated limbs or faces. Keep hands simple and separated, ideally show portrait avatars rather than a large full-body person in dense task views. Respect safe areas and large 48px touch targets. All numbers are illustrative mock data.\nVisual system: warm pearl off-white #fffafb background, white surfaces, deep charcoal typography, subtle blush #fce8ef highlights, raspberry #c32662 actions. ACCOUNT XP BAR REMAINS CORAL #ff977f, exactly the same XP system as dark version. No all-screen pink filter or giant character background. Match the supplied light Lika dashboard's Manrope type, icons, airy readable spacing.\nPortrait mobile1000x2000, EXPLAINABLE PLAN CHANGES before workout start. Header back 'Изменения плана'. Small user bubble 'Лика, сегодня хочу полегче'. Small Lika face avatar, no body/hands, reply 'Сократим объём. Вот что предлагаю поменять.' Main title 'Что изменится'. Clear side-by-side comparison columns 'Было' and 'Станет', legible per exercise row: 'Жим гантелей лёжа' '3 подхода → 2 подхода'; 'Жим ногами' '3 подхода → 2 подхода'; 'Планка' '3 подхода → 2 подхода'. Untouched row 'Тяга горизонтального блока · без изменений' and 'Ягодичный мост · без изменений' muted but readable. Compact time estimate 'Около 40 мин → около 30 мин'. Small note 'Это предложение. План изменится после подтверждения.' Strong raspberry 'Принять изменения', secondary 'Оставить как было'. No automatic application, no extra XP, no color-coded shame or crossing out already completed work. Clean positive white/rose style, plenty of space for actual diff, no full mascot background.",
+    "source": "exec-4b01877c-8741-4e72-b929-adcdeb2626d8.png",
+    "output": "11-plan-changes-mobile.png",
+    "tool": "built-in imagegen"
+  },
+  {
+    "id": "12-level-up-mobile",
+    "prompt": "Precise TWO corrections only; preserve all other pixels/design/layout. Current achieved level is2. The lower progress block must be labelled 'До уровня 3', NOT 'Уровень 3' because the person is not level3 yet. It keeps an empty0/500XP bar and 'Ещё 500 XP до уровня 3'. Secondly, the 'Своя привычка' collectible must be the same round MEDAL with a LEAF engraved in its center as our progress page, now colored coral/rose instead of grey. Replace the generic star/laurel icon with that medal-and-leaf, no stars in its center. Everything else unchanged:500XPtotal,10workouts,level2 hero,Maxavatar,buttons.",
+    "source": "exec-c26f854d-ec3e-473a-964a-19154035eea4.png",
+    "output": "12-level-up-mobile.png",
+    "tool": "built-in imagegen"
+  },
+  {
+    "id": "13-partial-offline-mobile",
+    "prompt": "Precise small copy correction only. Keep all current UI,100XP unchanged, offline status, saved results, Lika portrait and choices. Add a readable small caption 'Поддержка без сети' directly above Lika's generic encouragement bubble 'На сегодня достаточно.' This is a prewritten offline encouragement, NOT a new online AI response. No online dot or claim that the model replied. Preserve everything else exactly.",
+    "source": "exec-13f1162a-f16a-4bce-b7f1-653baf648a08.png",
+    "output": "13-partial-offline-mobile.png",
+    "tool": "built-in imagegen"
+  },
+  {
+    "id": "14-timed-mobile",
+    "prompt": "Precise UX-copy correction only. In the pink information block below 'Как выполнять', REMOVE the verbose paragraph about ending time not being enough for the workout to count. Replace the whole block text with this ONE clear instruction: 'По окончании появится кнопка «Выполнено».' No further warning or anti-cheating explanation. Keep the timer00:24, pause, side switching, equipment art, Lika avatar and all other controls exactly unchanged.",
+    "source": "exec-ffa411ec-2536-4f7f-b2ba-35bf78186851.png",
+    "output": "14-timed-mobile.png",
+    "tool": "built-in imagegen"
+  }
+]

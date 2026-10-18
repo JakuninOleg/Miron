@@ -126,6 +126,18 @@ export function estimateWorkoutEnergy(
               : exercise.targetReps)) *
           midpoint(timing.secondsPerRep) *
           (perSide ? 2 : 1);
+    // A correction replaces the whole exercise estimate; do not add old drop facts again.
+    const dropSeconds =
+      !correction && exercise.metric === "reps"
+        ? recorded.reduce(
+            (sum, set) =>
+              sum +
+              (set.drop
+                ? set.drop.reps * midpoint(timing.secondsPerRep) * (perSide ? 2 : 1) + 12.5
+                : 0),
+            0,
+          )
+        : 0;
     // Timed records already cover both sides; modeled repetitions need the side multiplier.
     return [
       {
@@ -133,6 +145,7 @@ export function estimateWorkoutEnergy(
         count,
         seconds:
           seconds +
+          dropSeconds +
           midpoint(timing.setupSeconds) +
           (perSide ? count * midpoint(timing.sideSwitchSeconds) : 0),
       },

@@ -30,6 +30,7 @@ export interface AssistantEnergyAction {
 export type AssistantAction = AssistantPlannerAction | AssistantEnergyAction;
 
 export interface AssistantChatMessage extends ChatMessage {
+  replyState?: "pending" | "failed";
   operationId?: string;
   companion?: CompanionId;
   source?: "model" | "prepared";
@@ -38,17 +39,45 @@ export interface AssistantChatMessage extends ChatMessage {
 
 export interface AssistantHistory {
   enabled: boolean;
+  companion: CompanionId;
+  revision: number;
+  resetRevision: number;
+  nextCursor: string | null;
+  pending?: {
+    operationId: string;
+    state: "running" | "completed" | "failed" | "removed" | "absent";
+  };
   messages: AssistantChatMessage[];
+}
+
+export type AssistantHistoryAction =
+  | { type: "delete_message"; turnId: string; role: "user" | "assistant" }
+  | { type: "delete_turn"; turnId: string }
+  | { type: "clear" };
+export interface AssistantHistoryMutation {
+  operationId: string;
+  companion: CompanionId;
+  expectedRevision: number;
+  action: AssistantHistoryAction;
+}
+export interface AssistantHistoryReceipt {
+  operationId: string;
+  companion: CompanionId;
+  revision: number;
 }
 
 export interface AssistantRequest {
   operationId: string;
   text: string;
+  expectedHistoryRevision?: number;
+  companion?: CompanionId;
 }
 
 export interface AssistantReply {
   operationId: string;
   messages: AssistantChatMessage[];
+  /** Absent only on replies persisted before chat history versioning. */
+  historyRevision?: number;
 }
 
 export interface AssistantActionRequest {

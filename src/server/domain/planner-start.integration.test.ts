@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import { applyCalendarCommand, listCalendar } from "./calendar";
 import { existsSync } from "node:fs";
 import { and, eq, inArray } from "drizzle-orm";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
@@ -9,13 +10,16 @@ import { loadCatalogSeed } from "../db/catalog-input";
 import {
   dailyXp,
   exercises,
+  muscleGroups,
   plannerCommands,
   plans,
   profiles,
   resourceTypes,
+  trials,
   user,
   variantRequirements,
   variantRevisions,
+  variantRevisionMuscles,
   variants,
   workoutPlannerPrograms,
   workoutResources,
@@ -23,9 +27,16 @@ import {
   workoutSteps,
   xpEvents,
 } from "../db/schema";
-import { startPlannerWorkout } from "./planner-start";
-import { getAvailableBuilderCatalog, saveBuilderInventory } from "./workout-builder";
+import { startPlannerWorkout, startSavedWorkout } from "./planner-start";
+import {
+  getAvailableBuilderCatalog,
+  saveBuilderInventory,
+  saveCustomWorkout,
+} from "./workout-builder";
+import { getSavedWorkoutPreview } from "./workout-sources";
+import { getProgress } from "./profile";
 import { applyWorkoutCommand, getWorkout } from "./workouts";
+import { getWorkoutAlternatives } from "./workout-alternatives";
 
 if (existsSync(".env.local")) process.loadEnvFile(".env.local");
 const enabled = process.env.RUN_DB_TESTS === "true";
@@ -103,6 +114,9 @@ describe.runIf(enabled)("PostgreSQL confirmed planner starts and paired executio
         { id: alice, name: "Planner Alice", email: `${alice}@example.test`, emailVerified: true },
         { id: bob, name: "Planner Bob", email: `${bob}@example.test`, emailVerified: true },
       ]);
+    await db()
+      .insert(trials)
+      .values([alice, bob].map((userId) => ({ userId })));
     await db()
       .insert(profiles)
       .values(
@@ -446,6 +460,384 @@ describe.runIf(enabled)("PostgreSQL confirmed planner starts and paired executio
     expect(active.recordedSets).toHaveLength(3);
   });
 
+  it("starts an owned template exactly once, rejects stale/foreign sources and repeats a fresh session", async () => {
+    const template = await saveCustomWorkout(alice, {
+      operationId: randomUUID(),
+      id: randomUUID(),
+      expectedRevision: 0,
+      name: "Мой короткий комплекс",
+      place: "home",
+      direction: "strength",
+      inventoryRevision,
+      steps: [
+        {
+          revisionId: program.days[0].steps[0].revisionId,
+          sets: 1,
+          target: 8,
+          restSeconds: 30,
+          phase: "warmup",
+        },
+      ],
+    });
+    const input = {
+      source: "template" as const,
+      id: template.id,
+      expectedSourceRevision: template.revision,
+      operationId: randomUUID(),
+    };
+    await expect(
+      getSavedWorkoutPreview(bob, { source: "template", id: template.id }),
+    ).rejects.toMatchObject({ code: "TEMPLATE_NOT_FOUND" });
+    await expect(
+      startSavedWorkout(alice, { ...input, expectedSourceRevision: 999 }),
+    ).rejects.toMatchObject({ code: "REVISION_CONFLICT" });
+    const [one, two] = await Promise.all([
+      startSavedWorkout(alice, input),
+      startSavedWorkout(alice, input),
+    ]);
+    expect(one.id).toBe(two.id);
+    expect(template.steps[0].phase).toBe("warmup");
+    expect(one.exercises[0].phase).toBe("warmup");
+    expect(one).toMatchObject({
+      rewardKind: "support",
+      recordedSets: [],
+      source: { kind: "template", id: template.id, revision: template.revision },
+    });
+    await expect(
+      startSavedWorkout(alice, { ...input, operationId: randomUUID() }),
+    ).rejects.toMatchObject({ code: "WORKOUT_ACTIVE" });
+    await expect(
+      startSavedWorkout(alice, { ...input, expectedSourceRevision: 2 }),
+    ).rejects.toMatchObject({ code: "OPERATION_REUSED" });
+    const closed = await command(await record(one), { type: "finish" });
+    const preview = await getSavedWorkoutPreview(alice, { source: "history", id: closed.id });
+    expect(preview.day.steps[0].target).toBe(8);
+    expect(preview.rewardKind).toBe("support");
+    await expect(
+      getSavedWorkoutPreview(bob, { source: "history", id: closed.id }),
+    ).rejects.toMatchObject({ code: "WORKOUT_NOT_FOUND" });
+    const repeat = await startSavedWorkout(alice, {
+      source: "history",
+      id: closed.id,
+      expectedSourceRevision: preview.revision,
+      operationId: randomUUID(),
+    });
+    expect(repeat.id).not.toBe(closed.id);
+    expect(repeat.exercises[0].phase).toBe("warmup");
+    expect(repeat.recordedSets).toEqual([]);
+    expect(repeat.source).toMatchObject({ kind: "history", id: closed.id });
+    expect((await getWorkout(alice, closed.id)).recordedSets[0].weightKg).toBe(2.5);
+    await command(repeat, { type: "end_early" });
+  });
+
+  it("corrects facts idempotently, undoes the last active set and preserves terminal XP", async () => {
+    const template = await saveCustomWorkout(alice, {
+      operationId: randomUUID(),
+      id: randomUUID(),
+      expectedRevision: 0,
+      name: "Исправления",
+      place: "home",
+      direction: "strength",
+      inventoryRevision,
+      steps: [
+        { revisionId: program.days[0].steps[0].revisionId, sets: 2, target: 8, restSeconds: 30 },
+      ],
+    });
+    const started = await startSavedWorkout(alice, {
+      source: "template",
+      id: template.id,
+      expectedSourceRevision: template.revision,
+      operationId: randomUUID(),
+    });
+    const recorded = await record(started);
+    const change = {
+      operationId: randomUUID(),
+      expectedRevision: recorded.revision,
+      command: {
+        type: "correct_set" as const,
+        setId: recorded.recordedSets[0].id,
+        reps: 9,
+        weightKg: 3,
+      },
+    };
+    const [first, second] = await Promise.all([
+      applyWorkoutCommand(alice, started.id, change),
+      applyWorkoutCommand(alice, started.id, change),
+    ]);
+    expect(first).toEqual(second);
+    expect(first.workout.recordedSets[0]).toMatchObject({ reps: 9, weightKg: 3 });
+    await expect(applyWorkoutCommand(bob, started.id, change)).rejects.toMatchObject({
+      code: "WORKOUT_NOT_FOUND",
+    });
+    const undone = await command(first.workout, {
+      type: "undo_set",
+      setId: recorded.recordedSets[0].id,
+    });
+    expect(undone.recordedSets).toEqual([]);
+    const closed = await command(await record(await record(undone)), { type: "finish" });
+    const before = await getProgress(alice);
+    const edited = await command(closed, {
+      type: "correct_set",
+      setId: closed.recordedSets[0].id,
+      reps: 6,
+      weightKg: 2,
+    });
+    expect(edited.status).toBe("completed");
+    expect(edited.reward).toEqual(closed.reward);
+    expect(edited.completedAt).toBe(closed.completedAt);
+    expect((await getProgress(alice)).xp).toBe(before.xp);
+    expect((await getProgress(alice)).journey).toEqual(before.journey);
+    await expect(
+      command(edited, { type: "undo_set", setId: edited.recordedSets[1].id }),
+    ).rejects.toMatchObject({ code: "WORKOUT_EDIT_UNAVAILABLE" });
+  });
+
+  it("rechecks equivalent replacements, preserves facts and replays the confirmed change", async () => {
+    await db()
+      .insert(muscleGroups)
+      .values({ code: "quads", nameRu: "Передняя поверхность бедра" })
+      .onConflictDoNothing();
+    const revisions = await db()
+      .select({ id: variantRevisions.id })
+      .from(variantRevisions)
+      .where(inArray(variantRevisions.variantId, variantIds.slice(0, 2)));
+    await db()
+      .insert(variantRevisionMuscles)
+      .values(
+        revisions.map((revision) => ({
+          variantRevisionId: revision.id,
+          muscleGroupCode: "quads",
+          role: "primary",
+        })),
+      )
+      .onConflictDoNothing();
+    const template = await saveCustomWorkout(alice, {
+      operationId: randomUUID(),
+      id: randomUUID(),
+      expectedRevision: 0,
+      name: "Замена",
+      place: "home",
+      direction: "strength",
+      inventoryRevision,
+      steps: [
+        { revisionId: program.days[0].steps[0].revisionId, sets: 2, target: 8, restSeconds: 30 },
+      ],
+    });
+    const started = await startSavedWorkout(alice, {
+      source: "template",
+      id: template.id,
+      expectedSourceRevision: 1,
+      operationId: randomUUID(),
+    });
+    const alternatives = await getWorkoutAlternatives(alice, started.id, started.exercises[0].id);
+    const chosen = alternatives.candidates.find((exercise) => exercise.variantId === variantIds[1]);
+    expect(chosen).toBeDefined();
+    if (!chosen) throw new Error("Expected fixture alternative");
+    const input = {
+      operationId: randomUUID(),
+      expectedRevision: started.revision,
+      command: {
+        type: "replace_exercise",
+        exerciseId: started.exercises[0].id,
+        revisionId: chosen.revisionId,
+      },
+    };
+    await db()
+      .update(variantRevisions)
+      .set({ status: "revoked" })
+      .where(eq(variantRevisions.id, chosen.revisionId));
+    await expect(applyWorkoutCommand(alice, started.id, input)).rejects.toMatchObject({
+      code: "EXERCISE_UNAVAILABLE",
+    });
+    await db()
+      .update(variantRevisions)
+      .set({ status: "draft" })
+      .where(eq(variantRevisions.id, chosen.revisionId));
+    const [one, replay] = await Promise.all([
+      applyWorkoutCommand(alice, started.id, input),
+      applyWorkoutCommand(alice, started.id, input),
+    ]);
+    expect(replay).toEqual(one);
+    expect(one.workout.exercises[0]).toMatchObject({
+      id: started.exercises[0].id,
+      revisionId: chosen.revisionId,
+      name: chosen.name,
+      sets: 2,
+    });
+    expect(one.workout.recordedSets).toEqual([]);
+    await expect(
+      getWorkoutAlternatives(bob, started.id, started.exercises[0].id),
+    ).rejects.toMatchObject({ code: "WORKOUT_NOT_FOUND" });
+    const logged = await record(one.workout);
+    await expect(
+      getWorkoutAlternatives(alice, logged.id, logged.exercises[0].id),
+    ).rejects.toMatchObject({ code: "REPLACEMENT_UNAVAILABLE" });
+    await command(logged, { type: "end_early" });
+  });
+
+  it("confirms lighter remaining groups idempotently without rewriting recorded work", async () => {
+    const revisionId = program.days[0].steps[0].revisionId;
+    const template = await saveCustomWorkout(alice, {
+      operationId: randomUUID(),
+      id: randomUUID(),
+      expectedRevision: 0,
+      name: "Облегчение",
+      place: "home",
+      direction: "strength",
+      inventoryRevision,
+      steps: [
+        { revisionId, sets: 2, target: 8, restSeconds: 30 },
+        { revisionId, sets: 3, target: 8, restSeconds: 30 },
+        { revisionId, phase: "cooldown", sets: 2, target: 8, restSeconds: 30 },
+      ],
+    });
+    const started = await startSavedWorkout(alice, {
+      source: "template",
+      id: template.id,
+      expectedSourceRevision: 1,
+      operationId: randomUUID(),
+    });
+    const logged = await record(started);
+    const xp = (await getProgress(alice)).xp;
+    const input = {
+      operationId: randomUUID(),
+      expectedRevision: logged.revision,
+      command: { type: "lighten_remaining" },
+    };
+    const [one, replay] = await Promise.all([
+      applyWorkoutCommand(alice, logged.id, input),
+      applyWorkoutCommand(alice, logged.id, input),
+    ]);
+    expect(replay).toEqual(one);
+    expect(one.workout.exercises.map((item) => item.sets)).toEqual([2, 2, 2]);
+    expect(one.workout.recordedSets).toEqual(logged.recordedSets);
+    expect(one.progress.xp).toBe(xp);
+    const previewSteps = await db()
+      .select()
+      .from(workoutSteps)
+      .where(eq(workoutSteps.workoutId, logged.id))
+      .orderBy(workoutSteps.ordinal);
+    expect(previewSteps[1].snapshot?.sets).toBe(2);
+    await expect(applyWorkoutCommand(bob, logged.id, input)).rejects.toMatchObject({
+      code: "WORKOUT_NOT_FOUND",
+    });
+    const closed = await command(one.workout, { type: "end_early" });
+    await expect(command(closed, { type: "lighten_remaining" })).rejects.toMatchObject({
+      code: "WORKOUT_EDIT_UNAVAILABLE",
+    });
+  });
+
+  it("schedules immutable compositions, moves/skips without XP and atomically starts once", async () => {
+    const template = await saveCustomWorkout(alice, {
+      operationId: randomUUID(),
+      id: randomUUID(),
+      expectedRevision: 0,
+      name: "По расписанию",
+      place: "home",
+      direction: "strength",
+      inventoryRevision,
+      steps: [
+        { revisionId: program.days[0].steps[0].revisionId, sets: 1, target: 8, restSeconds: 30 },
+      ],
+    });
+    const payload = {
+      type: "create",
+      operationId: randomUUID(),
+      id: randomUUID(),
+      date: "2026-10-20",
+      selection: { source: "template", id: template.id, revision: template.revision },
+    };
+    const xp = (await getProgress(alice)).xp;
+    const [entry, replay] = await Promise.all([
+      applyCalendarCommand(alice, payload),
+      applyCalendarCommand(alice, payload),
+    ]);
+    expect(replay).toEqual(entry);
+    expect(
+      (await listCalendar(alice, "2026-10-01", "2026-10-31")).filter(
+        (item) => item.id === entry.id,
+      ),
+    ).toHaveLength(1);
+    await expect(
+      applyCalendarCommand(bob, {
+        type: "skip",
+        id: entry.id,
+        expectedRevision: 1,
+        operationId: randomUUID(),
+      }),
+    ).rejects.toMatchObject({ code: "SCHEDULE_NOT_FOUND" });
+    const moved = await applyCalendarCommand(alice, {
+      type: "move",
+      id: entry.id,
+      expectedRevision: 1,
+      date: "2026-10-21",
+      operationId: randomUUID(),
+    });
+    expect(moved.date).toBe("2026-10-21");
+    await expect(
+      applyCalendarCommand(alice, {
+        type: "skip",
+        id: entry.id,
+        expectedRevision: 1,
+        operationId: randomUUID(),
+      }),
+    ).rejects.toMatchObject({ code: "REVISION_CONFLICT" });
+    await saveCustomWorkout(alice, {
+      operationId: randomUUID(),
+      id: template.id,
+      expectedRevision: template.revision,
+      name: "Обновлённая библиотека",
+      place: "home",
+      direction: "strength",
+      inventoryRevision,
+      steps: [
+        { revisionId: program.days[0].steps[0].revisionId, sets: 2, target: 10, restSeconds: 30 },
+      ],
+    });
+    const preview = await getSavedWorkoutPreview(alice, { source: "schedule", id: entry.id });
+    expect(preview.day.title).toBe("По расписанию");
+    expect(preview.day.steps[0].sets).toBe(1);
+    const start = {
+      source: "schedule",
+      id: entry.id,
+      expectedSourceRevision: moved.revision,
+      operationId: randomUUID(),
+    };
+    const [one, two] = await Promise.all([
+      startSavedWorkout(alice, start),
+      startSavedWorkout(alice, start),
+    ]);
+    expect(two.id).toBe(one.id);
+    expect(
+      (await listCalendar(alice, "2026-10-01", "2026-10-31")).find((item) => item.id === entry.id),
+    ).toMatchObject({ status: "started", workoutId: one.id });
+    await expect(
+      startSavedWorkout(alice, { ...start, operationId: randomUUID() }),
+    ).rejects.toMatchObject({ code: "SCHEDULE_CLOSED" });
+    await command(one, { type: "end_early" });
+    const second = await applyCalendarCommand(alice, {
+      ...payload,
+      id: randomUUID(),
+      operationId: randomUUID(),
+      selection: { ...payload.selection, revision: 2 },
+    });
+    await applyCalendarCommand(alice, {
+      type: "skip",
+      id: second.id,
+      expectedRevision: 1,
+      operationId: randomUUID(),
+    });
+    expect((await getProgress(alice)).xp).toBe(xp);
+    await expect(
+      applyCalendarCommand(alice, {
+        ...payload,
+        id: randomUUID(),
+        operationId: randomUUID(),
+        date: "2026-02-31",
+      }),
+    ).rejects.toBeTruthy();
+  });
+
   it("derives support reward from the saved direction and never awards XP at admission", async () => {
     await confirm(1, "single", "yoga", bob);
     const workout = await startPlannerWorkout(bob, startInput());
@@ -471,5 +863,44 @@ describe.runIf(enabled)("PostgreSQL confirmed planner starts and paired executio
       status: "partial",
       reward: { kind: "support", eligibleXp: 10, awardedXp: 10 },
     });
+  });
+  it("keeps an admitted workout and old ACK usable after expiry while denying new sessions", async () => {
+    const save = {
+      operationId: randomUUID(),
+      id: randomUUID(),
+      expectedRevision: 0,
+      name: "До окончания доступа",
+      place: "home",
+      direction: "strength",
+      inventoryRevision,
+      steps: [
+        { revisionId: program.days[0].steps[0].revisionId, sets: 1, target: 8, restSeconds: 30 },
+      ],
+    };
+    const template = await saveCustomWorkout(alice, save);
+    const start = {
+      source: "template",
+      id: template.id,
+      expectedSourceRevision: 1,
+      operationId: randomUUID(),
+    };
+    const admitted = await startSavedWorkout(alice, start);
+    await db()
+      .update(trials)
+      .set({ endsAt: new Date(Date.now() - 1) })
+      .where(eq(trials.userId, alice));
+    expect((await startSavedWorkout(alice, start)).id).toBe(admitted.id);
+    expect((await saveCustomWorkout(alice, save)).id).toBe(template.id);
+    const closed = await command(await record(admitted), { type: "finish" });
+    expect(closed.status).toBe("completed");
+    await expect(
+      startSavedWorkout(alice, { ...start, operationId: randomUUID() }),
+    ).rejects.toMatchObject({ code: "PRODUCT_ACCESS_EXPIRED" });
+    expect((await getSavedWorkoutPreview(alice, { source: "history", id: closed.id })).id).toBe(
+      closed.id,
+    );
+    await expect(
+      saveCustomWorkout(alice, { ...save, operationId: randomUUID(), id: randomUUID() }),
+    ).rejects.toMatchObject({ code: "PRODUCT_ACCESS_EXPIRED" });
   });
 });

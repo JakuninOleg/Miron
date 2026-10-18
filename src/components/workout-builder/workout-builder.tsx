@@ -312,7 +312,7 @@ export function WorkoutBuilder({
     setName(`${day.title.slice(0, 62)} — моя копия`);
     setSteps(
       day.steps.map(
-        ({ exercise, revisionId, sets, target, restSeconds, pairKey, transitionSeconds }) => ({
+        ({
           exercise,
           revisionId,
           sets,
@@ -320,6 +320,18 @@ export function WorkoutBuilder({
           restSeconds,
           pairKey,
           transitionSeconds,
+          dropSet,
+          phase,
+        }) => ({
+          exercise,
+          revisionId,
+          sets,
+          target,
+          restSeconds,
+          pairKey,
+          transitionSeconds,
+          dropSet,
+          phase,
         }),
       ),
     );
@@ -493,13 +505,26 @@ export function WorkoutBuilder({
       place,
       direction,
       inventoryRevision: inventory.revision,
-      steps: steps.map(({ revisionId, sets, target, restSeconds, pairKey, transitionSeconds }) => ({
-        revisionId,
-        sets,
-        target,
-        restSeconds,
-        ...(pairKey ? { pairKey, transitionSeconds: transitionSeconds ?? 30 } : {}),
-      })),
+      steps: steps.map(
+        ({
+          revisionId,
+          sets,
+          target,
+          restSeconds,
+          pairKey,
+          transitionSeconds,
+          dropSet,
+          phase,
+        }) => ({
+          revisionId,
+          sets,
+          target,
+          restSeconds,
+          ...(phase ? { phase } : {}),
+          ...(pairKey ? { pairKey, transitionSeconds: transitionSeconds ?? 30 } : {}),
+          ...(dropSet ? { dropSet } : {}),
+        }),
+      ),
     };
     const signature = JSON.stringify(payload);
     if (saveAttempt.current?.signature !== signature)
@@ -872,6 +897,24 @@ export function WorkoutBuilder({
                             void removedTransition;
                             return unpaired;
                           }),
+                        )
+                      }
+                      allowDropSets={
+                        direction === "strength" && bootstrap?.dropSetsAvailable === true
+                      }
+                      onDropSet={(index, enabled) =>
+                        setSteps((previous) =>
+                          previous.map((step, position) => ({
+                            ...step,
+                            dropSet:
+                              position === index && enabled
+                                ? { kind: "last_set_drop", targetReps: 8 }
+                                : enabled
+                                  ? undefined
+                                  : position === index
+                                    ? undefined
+                                    : step.dropSet,
+                          })),
                         )
                       }
                       onSave={() => void save()}

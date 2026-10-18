@@ -10,13 +10,17 @@ import {
   MessageCircle,
   Settings,
   WifiOff,
+  Utensils,
 } from "lucide-react";
 import { useMiron } from "@/client/use-miron";
+import { ProductAccessNotice } from "./product-access-notice";
 import { useEffect, useState, type ReactNode } from "react";
 
 const navigation = [
   { href: "/dashboard", label: "Сегодня", icon: Home },
   { href: "/programs", label: "Программа", icon: CalendarDays },
+  { href: "/calendar", label: "Календарь", icon: CalendarDays },
+  { href: "/nutrition", label: "Питание", icon: Utensils },
   { href: "/progress", label: "Прогресс", icon: ChartNoAxesColumnIncreasing },
   { href: "/chat", label: "Напарник", icon: MessageCircle },
   { href: "/settings", label: "Профиль", icon: Settings },
@@ -25,14 +29,6 @@ const navigation = [
 export function Brand() {
   return (
     <span className="brand">
-      <Image
-        unoptimized
-        width={192}
-        height={192}
-        className="brand-mark"
-        src="/brand/mark.webp"
-        alt=""
-      />
       <Image
         unoptimized
         width={500}
@@ -136,24 +132,32 @@ export function AppShell({ children }: { children: ReactNode }) {
         {error ? (
           <div className="global-error" role="status">
             {error}
+            {pendingCount > 0 ? (
+              <Link href="/workout/recovery" className="text-link">
+                Разобрать синхронизацию
+              </Link>
+            ) : null}
           </div>
         ) : null}
         <main id="main" className="main-content">
+          {!isDemo ? <ProductAccessNotice /> : null}
           {children}
         </main>
       </div>
       <nav className="bottom-nav" aria-label="Навигация на телефоне">
-        {navigation.map(({ href, label, icon: Icon }) => (
-          <Link
-            key={href}
-            href={href}
-            className={pathname === href ? "active" : ""}
-            aria-current={pathname === href ? "page" : undefined}
-          >
-            <Icon size={21} />
-            <span>{label}</span>
-          </Link>
-        ))}
+        {navigation
+          .filter(({ href }) => href !== "/calendar" && href !== "/settings")
+          .map(({ href, label, icon: Icon }) => (
+            <Link
+              key={href}
+              href={href}
+              className={pathname === href ? "active" : ""}
+              aria-current={pathname === href ? "page" : undefined}
+            >
+              <Icon size={21} />
+              <span>{label}</span>
+            </Link>
+          ))}
       </nav>
     </div>
   );
